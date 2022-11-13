@@ -1,3 +1,4 @@
+import { onAuthStateChanged } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import authService from "../service/auth_service";
 
@@ -35,14 +36,28 @@ export const AuthProvider =  ({children, ...rest}) => {
         let [userInfo, setUserInfo] = useState(null)
         let [checkUserInfo, setCheckUserInfo] = useState(false)
 
-        new authService().getUserInfo() //
-            .then(
-                res => {
-                    setUserInfo(res)  
-                    setCheckUserInfo(true)
-                }
-            )
+        // new authService().getUserInfo() //
+        //     .then(
+        //         res => {
+        //             setUserInfo(res)  
+        //             setCheckUserInfo(true)
+        //         }
+        //     )
 
+        const auth = new authService().getAuthObj();
+        console.log('AuthService / getUserInfo작동 ============================ ')
+        // 프라미스화 
+        onAuthStateChanged(auth, (user) => {
+        setCheckUserInfo(true)
+        if(user) {
+            console.log('state : definitely signed in')
+            setUserInfo(user)
+        }else {
+            console.log('state : definitely signed out')
+            // reject();
+            setUserInfo(null)
+        }
+        })
 
         if(checkUserInfo === true ){
             console.log('====== context.js return 발생 =======')

@@ -3,20 +3,13 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import styles from "./login.module.css";
 import { redirect, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../common/context";
+import { useAuth, useAuthAction } from "../../common/context";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
 
 
 const Login = ({ authService }) => {
-
-  console.log('Login 컴포넌트 실행======================================')
-  // userInfo를 useState로 관리해준다면?
-  // let [userInfo, setUserInfo] = useState(useAuth().userInfo)
-  // let authContext = useAuth()
-  // let userInfo = useContext(authContext).userInfo
-  // console.log('userInfo = ', userInfo)
 
   const userInfo = useAuth().userInfo; // Context API / userAuth는 {userInfo: 결과값}라는 객체이므로 안의 userInfo를 짚어서 사용해줘야함.  
   const location = useLocation();
@@ -50,7 +43,7 @@ console.log('login.jsx / userInfo = ', userInfo)
     if(pathname !== null) {
       navigate(pathname);
     }
-  },[])
+  })
 
 
   const onLogin = (event) => {
@@ -59,13 +52,6 @@ console.log('login.jsx / userInfo = ', userInfo)
 
   };
 
-  
-
-  
- 
-
-
-  
   return (
     <section className={styles.login}>
       <Header />

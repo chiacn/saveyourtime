@@ -39,25 +39,26 @@ class AuthService {
   }
 
 
-  getUserInfo() {
-    const auth = this.getAuthObj();
-    console.log('AuthService / getUserInfo작동 ============================ ')
-    // 프라미스화 
-    return new Promise((resolve, reject) => {
-      onAuthStateChanged(auth, (user) => {
-        console.log(user)
-        if(user) {
-          console.log('state : definitely signed in')
-          resolve(user);
-        }else {
-          console.log('state : definitely signed out')
-          // reject();
-          resolve(null)
-        }
-      })
-    })
+  // context.js에서 직접 사용하는 걸로 변경
+  // getUserInfo() {
+  //   const auth = this.getAuthObj();
+  //   console.log('AuthService / getUserInfo작동 ============================ ')
+  //   // 프라미스화 
+  //   return new Promise((resolve, reject) => {
+  //     onAuthStateChanged(auth, (user) => {
+  //       console.log(user)
+  //       if(user) {
+  //         console.log('state : definitely signed in')
+  //         resolve(user);
+  //       }else {
+  //         console.log('state : definitely signed out')
+  //         // reject();
+  //         resolve(null)
+  //       }
+  //     })
+  //   })
 
-  }
+  // }
 
 
 }
