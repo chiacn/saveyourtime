@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import authService from "../service/auth_service";
+import { getUserInfo } from "../service/auth_service";
 
 
 //1. createContext
@@ -39,8 +39,7 @@ export const AuthProvider =  ({children, ...rest}) => {
         const afterLoginAction = (user) => {
             setUserInfo(user); // setState 콜백으로 보내기
         }
-
-        new authService().getUserInfo(afterLoginAction) //
+        getUserInfo(afterLoginAction) //
             .then(
                 res => {
                     // setUserInfo(res)  

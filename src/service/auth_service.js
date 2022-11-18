@@ -5,20 +5,15 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider,
   onAuthStateChanged,
-  checkActionCode,
+  signOut
 } from "firebase/auth";
-import { resolvePath } from "react-router-dom";
 
-
-class AuthService {
-  getAuthObj() {
-    return getAuth(firebaseApp)
-  }
+  const auth = getAuth(firebaseApp)
 
   // 로그인
-  login(providerName) {
+  export async function login(providerName) {
     // provideName === ex. GoogleAuthProvider()
-    const auth = this.getAuthObj();
+    
 
     let loginProviderName;
     switch (providerName) {
@@ -38,10 +33,18 @@ class AuthService {
     return signInWithPopup(auth, authProvider); // 프라미스 객체 반환
   }
 
+  export async function logout() {
+    return signOut(auth) //
+      .then(() => {
+        console.log('Sign-Out successful')
+      })
+      .catch((error) => {
+        console.log('An error happened')
+      })
+  }
 
   
-  getUserInfo(afterLoginAction) {
-    const auth = this.getAuthObj();
+  export function getUserInfo(afterLoginAction) {
     console.log('AuthService / getUserInfo작동 ============================ ')
     // 프라미스화 
     return new Promise((resolve, reject) => {
@@ -61,6 +64,4 @@ class AuthService {
   }
 
 
-}
 
-export default AuthService;

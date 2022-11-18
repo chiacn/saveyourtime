@@ -7,9 +7,9 @@ import { useAuth, useAuthAction } from "../../common/context";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
+import { login } from "../../service/auth_service";
 
-
-const Login = ({ authService }) => {
+const Login = () => {
 
   const userInfo = useAuth().userInfo; // Context API / userAuth는 {userInfo: 결과값}라는 객체이므로 안의 userInfo를 짚어서 사용해줘야함.  
   const location = useLocation();
@@ -47,9 +47,7 @@ console.log('login.jsx / userInfo = ', userInfo)
 
 
   const onLogin = (event) => {
-    authService //
-      .login(event.currentTarget.textContent)
-
+      login(event.currentTarget.textContent)
   };
 
   return (

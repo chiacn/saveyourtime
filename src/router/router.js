@@ -7,8 +7,6 @@ import Main from "../components/main/main";
 import Maker from "../components/maker/maker";
 
 import React from 'react';
-import AuthService from "../service/auth_service";
-import App from "../App";
 import Posts from "../components/Post/post";
 import NotFound from "../components/error/notFound";
 import ProtectedRoutes from "./protectedRoutes";
@@ -18,7 +16,6 @@ import ProtectedRoutes from "./protectedRoutes";
 export const WrappingRouter = (props) => {
 
   console.log('WrappingRouter 작동 =======================')
-  const authService = new AuthService();
 
 
 /*
@@ -93,7 +90,7 @@ export const WrappingRouter = (props) => {
               </Route>
           </Route>
           <Route path="*" element={<NotFound/>}/>
-          <Route path="login" element={<Login authService={authService}/>}/>
+          <Route path="login" element={<Login/>}/>
             
         </Route>
     )
