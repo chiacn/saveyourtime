@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./header.module.css";
+import styles from "./navbar.module.css";
 
 const Navbar = ({ onLogout }) => {
   return (
@@ -10,7 +10,7 @@ const Navbar = ({ onLogout }) => {
           Logout
         </button>
       )}
-      <h1 className={styles.title}>Card Maker</h1>
+      <h1 className={styles.title}></h1>
     </header>
   );
 };

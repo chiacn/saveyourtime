@@ -1,9 +1,15 @@
 import "./index.module.css";
-import { createApp } from "./common/mainModule";
-import { RouterProvider } from "react-router-dom";
-import { router, routerProvider } from "./router/router";
+import { WrappingRouter } from "./router/router";
 import ReactDOM from "react-dom/client";
+import React from "react";
+import { AuthProvider } from "./common/context";
 
-
-createApp();
-
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    {/* <App /> */}
+    <AuthProvider>
+        <WrappingRouter/>
+    </AuthProvider>
+  </React.StrictMode>
+);
