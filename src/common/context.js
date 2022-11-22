@@ -36,10 +36,10 @@ export const AuthProvider =  ({children, ...rest}) => {
         let [userInfo, setUserInfo] = useState(null)
         let [checkUserInfo, setCheckUserInfo] = useState(false)
 
-        const afterLoginAction = (user) => {
+        const afterSignInOutAction = (user) => {
             setUserInfo(user); // setState 콜백으로 보내기
         }
-        getUserInfo(afterLoginAction) //
+        getUserInfo(afterSignInOutAction) //
             .then(
                 res => {
                     // setUserInfo(res)  

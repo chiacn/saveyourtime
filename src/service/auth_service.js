@@ -39,23 +39,24 @@ import {
         console.log('Sign-Out successful')
       })
       .catch((error) => {
-        console.log('An error happened')
+        console.log('An error happened', error)
       })
   }
 
   
-  export function getUserInfo(afterLoginAction) {
+  export function getUserInfo(afterSignInOutAction) {
     console.log('AuthService / getUserInfo작동 ============================ ')
     // 프라미스화 
     return new Promise((resolve, reject) => {
       onAuthStateChanged(auth, (user) => {
         if(user) {
           console.log('state : definitely signed in')
-          afterLoginAction(user);
+          afterSignInOutAction(user);
           resolve(user);
         }else {
           console.log('state : definitely signed out')
           // reject();
+          afterSignInOutAction(null);
           resolve(null)
         }
       })
