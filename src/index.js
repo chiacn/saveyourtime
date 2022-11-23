@@ -1,4 +1,4 @@
-import "./index.module.css";
+import "./index.css";
 import { WrappingRouter } from "./router/router";
 import ReactDOM from "react-dom/client";
 import React from "react";

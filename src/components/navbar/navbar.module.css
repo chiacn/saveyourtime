@@ -1,13 +1,30 @@
 @value makerGreen, makerBlack, makerWhite from '../../common/colors.css';
 
+@import url('../../assets/font/eng_julius_sans_one.css');
+
+
+
+
+
 .header {
+  display:flex;
+  justify-content: space-between;
   width: 100%;
   text-align: center;
   padding: 0.5em;
-  background-color: makerGreen;
+  background-color: white;
   position: relative;
+  font-family: "julius_sans_one_ENG", Georgia, monospace;
 }
 
+.header__link {
+  color: black;
+  text-decoration-line: none;
+}
+
+
+
+/* 
 .logo {
   width: 3em;
 }
@@ -28,4 +45,4 @@
   outline: 0;
   border: 0;
   cursor: pointer;
-}
+} */

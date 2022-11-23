@@ -1,0 +1,6 @@
+@import url('../../assets/font/eng_julius_sans_one.css');
+
+p {
+    font-family: "julius_sans_one_ENG", Georgia, monospace;
+    font-size: 50px;
+}
