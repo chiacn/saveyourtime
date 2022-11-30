@@ -21,21 +21,21 @@ export const WrappingRouter = (props) => {
         <Route >
           <Route element={<ProtectedRoutes/>}>
             <Route element={<App/>}>
-              <Route path="/" element={<Navigate to="/home"/>}/>
-              <Route path="home" element={<Home/>}/>
-
               <Route path="maker" element={<Maker/>}/>
               <Route path="posts" element={
                   <div> This is Parent Component Example for Outlet Component 
                     <Outlet/> 
                   </div>
                 }>
-              
                   <Route path=":id" element={<Posts/>}/>
                   <Route path="1" element={<Posts/>}/>
               </Route>
             </Route>
           </Route> 
+          <Route element={<App/>}>
+            <Route path="/" element={<Navigate to="/home"/>}/>
+            <Route path="home" element={<Home/>}/>
+          </Route>
           <Route path="login" element={<Login/>}/>
           <Route path="*" element={<NotFound/>}/>
         </Route>

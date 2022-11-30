@@ -1,14 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import styles from "./navbar.module.css";
 import Home from "../../pages/home/home"
 import { useAuth } from "../../common/context";
 import Button from "../ui/button";
 import { login, logout } from "../../service/auth_service";
+import User from "../user/user";
+
 
 
 const Navbar = () => {
-  const user = useAuth();
+  const user = useAuth().userInfo;
+
+  const navigation = useNavigate();
+  const onLogin = () => {
+    navigation('/login')
+  }
+
+  console.log('Navbar.js / user = ', user)
   return (
     // <header className='flex justify-between border-b border-gray-300 p-2'>
     <header className={styles.header}>
@@ -43,12 +52,23 @@ const Navbar = () => {
       } */}
 
 
-
-      {!user && <Button tailwind='text-2xl' text={'Login'} onClick={login} />}
-      {user && <Button tailwind='text-2xl' text={'Logout'} onClick={logout} />}
     </nav>
+    {!user && <Button tailwind={{button:'text-2xl rounded-full mr-4'}} text={'Login'} onClick={onLogin} />}
+    {user && <Button tailwind={{button:'text-2xl rounded-full mr-4'}} text={'Logout'} onClick={logout} />}
+
+    {/* <User user={user} tailwind={{div: 'flex items-center shrink-0', div__img: 'w-10 h-10 rounded-full mr-2', div__name: 'hidden md:block'}}/> */}
+    <User user={user} />
   </header>
   );
 };
 
 export default Navbar;
+
+//     <div className='flex items-center shrink-0'>
+//     <img
+//       className='w-10 h-10 rounded-full mr-2'
+//       src={photoURL}
+//       alt={displayName}
+//     />
+//     <span className='hidden md:block'>{displayName}</span>
+//   </div>
