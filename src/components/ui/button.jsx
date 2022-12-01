@@ -9,27 +9,18 @@ export default function Button({
   tailwind = false,
 }) {
 
-  // let originCSS = !defaultTailwind ? {
-  //   // CSS
-  //   button: styles.button, } :
-  // {
-  //   // defaultTailwind
-  //   button: 'bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110'
-  // }
-  // if(defaultTailwind) tailwind = defaultTailwind;
-
-  let originCSS;
-  if(!defaultTailwind) {
+  let originCSS = !defaultTailwind ? {
     // CSS
-    originCSS = {button: styles.button,}
-  }else {
+    button: styles.button, } :
+  {
     // defaultTailwind
-    originCSS = {button: 'text-xl hover:brightness-200'}
-    tailwind = defaultTailwind;
+    button: 'bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110'
   }
+
   //customTailwind
   const assignCSS = setCSS(originCSS, tailwind);
-  console.log(' button / assignCSS = ', assignCSS)
+  
+  // assignCSS
   const {button} = assignCSS;
 
 

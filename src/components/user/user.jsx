@@ -14,45 +14,25 @@ export default function User({
     const displayName = user?.displayName || null;
 
 
-    // let originCSS = !defaultTailwind ? {
-    //     // CSS
-    //     div: styles.div,
-    //     div__img: styles.div__img,
-    //     div__name: styles.div__name, } :
-    // {
-    //     // defaultTailwind
-    //     div: 'flex items-center shrink-0',
-    //     div__img: 'w-10 h-10 rounded-full mr-2',
-    //     div__name: 'hidden md:block',
-    // }
-    // if(defaultTailwind) tailwind = defaultTailwind;
-
-
-    let originCSS;
-    if(!defaultTailwind) {
-      // CSS
-      originCSS = { 
+    const originCSS = !defaultTailwind ? {
+        // CSS
         div: styles.div,
         div__img: styles.div__img,
-        div__name: styles.div__name,
-      }
-    }else {
-      // defaultTailwind
-      originCSS = {        
+        div__name: styles.div__name, } :
+    {
+        // defaultTailwind
         div: 'flex items-center shrink-0',
         div__img: 'w-10 h-10 rounded-full mr-2',
         div__name: 'hidden md:block',
-      }
-      tailwind = defaultTailwind;
     }
 
     // customTailwind
     const assignCSS = setCSS(originCSS, tailwind);
     
+    // assignCSS
     const { div, 
             div__img, 
             div__name, } = assignCSS;
-
 
     return (
         <div className={div}>
