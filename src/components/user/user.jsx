@@ -44,7 +44,7 @@ export default function User({
                         alt={displayName}
                         onerror="this.style.display='none';"
                     />
-                    <span className={div__name}>{displayName}</span>
+                    {/* <span className={div__name}>{displayName}</span> */}
                 </>
             }
         </div>

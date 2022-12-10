@@ -15,11 +15,36 @@
   background-color: white;
   position: relative;
   font-family: "julius_sans_one_ENG", Georgia, monospace;
+  line-height: 5em;
 }
 
-.header__link {
+.header__home {
+  height:100%;
   color: black;
   text-decoration-line: none;
+  font-size: 3em;
+  /* font-weight: bold; */
+  margin-left: 2rem;
+}
+
+.header__nav {
+  flex: 9 9 30px;;
+}
+
+.header__user-ui {
+  display:flex;
+}
+
+.header__user {
+  flex: 1;
+  align-self: center; /*align-self: flex-item 각각의 개별적 설정*/
+  margin-left:1rem;
+}
+
+.header__button {
+  flex: 2;
+  align-self: center;
+  margin-right: 1rem;
 }
 
 

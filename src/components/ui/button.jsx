@@ -9,7 +9,7 @@ export default function Button({
   tailwind = false,
 }) {
 
-  let originCSS = !defaultTailwind ? {
+  const originCSS = !defaultTailwind ? {
     // CSS
     button: styles.button, } :
   {
@@ -19,7 +19,7 @@ export default function Button({
 
   //customTailwind
   const assignCSS = setCSS(originCSS, tailwind);
-  
+
   // assignCSS
   const {button} = assignCSS;
 
