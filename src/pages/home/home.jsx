@@ -1,13 +1,18 @@
 import React from 'react';
+import Frame from '../../components/main/frame';
 import styles from './home.module.css'
 
 
 
-// bracket notation 사용
-//  const Home = (props) => <p className={styles["font-test"]}>한글 SIMPLE MAIN TEST PAGE</p>
+
  const Home = (props) => 
         <>
-            <p>UMUL Main Page</p>
+            {/* <p>UMUL Main Page</p> */}
+            <div className={styles.frames}>
+                <Frame timer/>
+                <Frame timer/>
+                <Frame timer/>
+            </div>
         </>
 
 

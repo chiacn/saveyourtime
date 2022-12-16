@@ -4,3 +4,8 @@ p {
     font-family: "julius_sans_one_ENG", Georgia, monospace;
     font-size: 50px;
 }
+
+
+.frames {
+    display: flex;
+}

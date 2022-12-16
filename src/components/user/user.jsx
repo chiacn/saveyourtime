@@ -42,7 +42,7 @@ export default function User({
                         className={div__img}
                         src={photoURL}
                         alt={displayName}
-                        onerror="this.style.display='none';"
+                        // onerror="this.style.display='none';"
                     />
                     {/* <span className={div__name}>{displayName}</span> */}
                 </>

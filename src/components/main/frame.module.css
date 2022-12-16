@@ -1,0 +1,15 @@
+.frame {
+    color: black;
+    display: flex;
+    
+
+    border-radius:10px;
+    border: 2px solid black;
+    margin-top: 40px;
+    margin-left: 40px;
+    padding: 10px;
+
+    height: 400px;
+    width: 200px;
+
+}
