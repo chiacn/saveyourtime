@@ -21,7 +21,8 @@ const Navbar = () => {
     <header className={styles.header}>
       {/* <Link to='/' className='flex items-center text-4xl text-brand'> */}
       <Link to='/' className={styles.header__home}>
-        <h1>UMUL</h1>
+        <h1>Save Your Day</h1>
+        {/* <h1>Time Saver</h1> */}
       </Link>
       <nav className={styles.header__nav}>
         {/* <Link to='/products'>Products</Link> */}

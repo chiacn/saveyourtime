@@ -1,21 +1,70 @@
+@import url('../../assets/font/eng_julius_sans_one.css');
 .frame {
     display: flex;
-    align-items: start;
-  }
+    flex-direction: column;
+    margin-top: 10px;
+    /* justify-content:space-between; */
+}
 
-  .hourArea, .minuteArea, .secondArea {
-    display: flex;
-    align-items: center;
-    margin: 0 5px;
-  }
+.timer {
+  display: flex;
+  flex: 2;
+}
 
-  input[type="number"] {
-    width: 50px;
-    height: 50px;
-    font-size:30px;
-    border: 0 solid #ccc;
-    border-radius: 5px;
-    outline:none;
-    text-align: center;
-  }
+.timer__hourArea, .timer__minuteArea, .timer__secondArea {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+  
+}
+
+.timer input {
+  width: 55px;
+  height: 50px;
+  font-size:30px;
+  border: 0 solid #ccc;
+  border-radius: 5px;
+  outline:none;
+  text-align: center;
+  font-family: "julius_sans_one_ENG", Georgia, monospace;
+}
+
+.button__timer-btn {
+  flex:1;
+  justify-content: space-around;
+  align-items: start;
+  flex-direction: row;
+  display: flex;
+  margin-right:10%;
+}
+
+
+.button__timer-btn > * {
+  margin-left:10px;
+}
+
+
+.button__timer-add {
+  flex: 1;
+  display:flex;
+  justify-content: space-around;
+}
+
+
+
+
+.button__click {
+  font-size:30px;
+  display:flex;
+  flex: 2;
+}
+
+
+button {
+  font-family: "julius_sans_one_ENG", Georgia, monospace; 
+}
+
+button:hover {
+  font-weight: bold;
+}
   
