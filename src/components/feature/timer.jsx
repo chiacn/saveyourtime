@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import styles from './timer.module.css';
@@ -7,39 +8,38 @@ export default function Timer() {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
-    
-    // const [time, setTime] = useState({h:0, m:0, s:0});
-
-    // 총합.
-
-    const run = () => {
-        const totalTime = calculateTime(1);
-
-        const hour = parseInt(totalTime / 3600);
-        const remaining_hour = parseInt(totalTime % 3600);
-        const minute = parseInt(remaining_hour / 60);
-        const second = parseInt(remaining_hour % 60);
-
-        console.log('totalTime = ', totalTime)
-        console.log('hour = ', hour)
-        console.log('minute = ', minute)
-        console.log('second = ', second)
-
-        // totalTime 0이면 멈추는 로직 넣기
-        
-        
-        setHour(hour);
-        setMinute(minute);
-        setSecond(second);
-
-    }
+    const [isRunning, setIsRunning] = useState(false);
     
     const start = () => {
-        setInterval(run, 1000);
+        setIsRunning(true);
     }
 
-    const stop = () => {
+    useInterval(
+        run,
+        isRunning ? 1000 : null
+    )
 
+    function useInterval(callback, delay) {
+        const savedCallback = useRef();
+        
+        useEffect(() => {
+            savedCallback.current = callback;
+        },[callback]);
+
+        useEffect(() => {
+            function tick() {
+                savedCallback.current();
+            }
+
+            if(delay !== null) {
+                let id = setInterval(tick, delay);
+                return () => clearInterval(id);
+            }
+        }, [delay]);
+    }        
+
+    const stop = () => {
+        setIsRunning(false);
     }
 
     const add = (time) => {
@@ -47,21 +47,39 @@ export default function Timer() {
     }
 
     const reset = () => {
-        
+        setHour(0);
+        setMinute(0);
+        setSecond(0);
+        setIsRunning(false);
     }
 
+    function run() {
+        const totalTime = calculateTime(1);
+
+        // 정수로 바꿔주기 위해 parseInt
+        const hour = parseInt(totalTime / 3600).toString().padStart(2,"0");
+        const remaining_hour = parseInt(totalTime % 3600).toString().padStart(2,"0");
+        const minute = parseInt(remaining_hour / 60).toString().padStart(2,"0");
+        const second = parseInt(remaining_hour % 60).toString().padStart(2,"0");
+
+        // console.log('totalTime = ', totalTime)
+        // console.log('hour = ', hour)
+        // console.log('minute = ', minute)
+        // console.log('second = ', second)
+
+        setHour(hour);
+        setMinute(minute);
+        setSecond(second);
+
+        if(totalTime == 0) setIsRunning(false);
+    }
 
     function calculateTime(minusNum) {
-        console.log('calculateTime / hour = ', Number(hour))
         const h = hour == undefined ? 0 : Number(hour);
         const m = minute == undefined ? 0 : Number(minute);
         const s = second == undefined ? 0 : Number(second);
-        console.log((h*3600 + m*60 + s))
-
         return (h*3600 + m*60 + s) - minusNum;
     }
-
-
 
     const onChange = (e) => {
 
@@ -76,7 +94,7 @@ export default function Timer() {
         }
         if(e.target.name === 'second') {
             const second = setFormat(e.target.value);
-            setSecond(e.target.value);
+            setSecond(second);
         }
     }
 
@@ -142,7 +160,12 @@ export default function Timer() {
                 <button onClick={start}>
                     START
                 </button>
-                <button>
+
+                <button onClick={stop}>
+                    STOP
+                </button>
+
+                <button onClick={reset}>
                     Reset
                 </button>
             </div>
