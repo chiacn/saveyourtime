@@ -36,6 +36,7 @@ export default function Timer() {
     }
 
     function run() {
+        console.log('run 작동---- ')
         const totalTime = calculateTime(1);
 
         // 정수로 바꿔주기 위해 parseInt
@@ -44,11 +45,15 @@ export default function Timer() {
         const minute = parseInt(remaining_hour / 60).toString().padStart(2,"0");
         const second = parseInt(remaining_hour % 60).toString().padStart(2,"0");
 
+        if(totalTime < 0) {
+            setIsRunning(false)
+            return;
+        };
+
         setHour(hour);
         setMinute(minute);
         setSecond(second);
 
-        if(totalTime == 0) setIsRunning(false);
     }
 
     function calculateTime(minusNum) {
@@ -114,7 +119,7 @@ export default function Timer() {
                         placeholder="00" 
                         value={minute || ''}
                         onChange={onChange} 
-                        maxLength="2" 
+                        maxlength="2" 
                         max="59"
                         min="0"
                     /> :
@@ -127,7 +132,7 @@ export default function Timer() {
                         placeholder="00" 
                         value={second || ''}
                         onChange={onChange} 
-                        maxLength="2"
+                        maxlength="2"
                         max="59"
                         min="0"
                     />
@@ -138,16 +143,17 @@ export default function Timer() {
                     START
                 </button>
 
+                <button onClick={reset}>
+                    Reset
+                </button>
+
                 <button onClick={stop}>
                     STOP
                 </button>
 
-                <button onClick={reset}>
-                    Reset
-                </button>
             </div>
             
-            <div className={styles["button__timer-add"]}>
+            {/* <div className={styles["button__timer-add"]}>
                 <button>
                     +10s 
                 </button>
@@ -164,7 +170,7 @@ export default function Timer() {
                 <button>
                     +1h 
                 </button>
-            </div>
+            </div> */}
 
             <div className={styles.button__click}>
                 <button>

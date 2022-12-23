@@ -1,3 +1,9 @@
+
+.wrapping {
+    display:flex;
+    flex-direction:column;
+}
+
 .frame {
     color: black;
     display: flex;

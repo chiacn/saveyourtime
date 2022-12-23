@@ -4,7 +4,7 @@ import Timer from '../feature/timer';
 import styles from './frame.module.css';
 
 export default function frame({
-    text, 
+    text = true, 
     onClick,
     defaultTailwind = false,
     tailwind = false,
@@ -13,25 +13,30 @@ export default function frame({
 
     const originCSS = !defaultTailwind ? {
     // CSS
-    frame: styles.frame, } :
+    frame: styles.frame,
+    wrapping: styles.wrapping, } :
     {
     // defaultTailwind
-    frame: 'bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110'
+    frame: 'bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110',
+    wrapping: '',
     }
 
     //customTailwind
     const assignCSS = setCSS(originCSS, tailwind);
 
     // assignCSS
-    const {frame} = assignCSS;
-
+    const {frame, wrapping} = assignCSS;
 
 
     return (
-        <div className={frame}>
-            {timer &&
-                <Timer/>  
-            }
+        <div className={wrapping}>
+            {text && <p>{text}</p>}
+            <div className={frame}>
+                {timer &&
+                    <Timer/>  
+                }
+            </div>
         </div>
+        
     );
 }
