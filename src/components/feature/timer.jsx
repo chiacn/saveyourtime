@@ -2,6 +2,7 @@ import React from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useInterval } from '../../common/common';
 import styles from './timer.module.css';
 
 export default function Timer() {
@@ -17,26 +18,7 @@ export default function Timer() {
     useInterval(
         run,
         isRunning ? 1000 : null
-    )
-
-    function useInterval(callback, delay) {
-        const savedCallback = useRef();
-        
-        useEffect(() => {
-            savedCallback.current = callback;
-        },[callback]);
-
-        useEffect(() => {
-            function tick() {
-                savedCallback.current();
-            }
-
-            if(delay !== null) {
-                let id = setInterval(tick, delay);
-                return () => clearInterval(id);
-            }
-        }, [delay]);
-    }        
+    )     
 
     const stop = () => {
         setIsRunning(false);
@@ -61,11 +43,6 @@ export default function Timer() {
         const remaining_hour = parseInt(totalTime % 3600).toString().padStart(2,"0");
         const minute = parseInt(remaining_hour / 60).toString().padStart(2,"0");
         const second = parseInt(remaining_hour % 60).toString().padStart(2,"0");
-
-        // console.log('totalTime = ', totalTime)
-        // console.log('hour = ', hour)
-        // console.log('minute = ', minute)
-        // console.log('second = ', second)
 
         setHour(hour);
         setMinute(minute);
