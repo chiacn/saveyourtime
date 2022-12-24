@@ -172,12 +172,6 @@ export default function Timer() {
                 </button>
             </div> */}
 
-            <div className={styles.button__click}>
-                <button>
-                    Option
-                </button>
-            </div>
-
         </div>
     );
 } 

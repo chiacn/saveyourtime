@@ -8,7 +8,6 @@
 
 .timer {
   display: flex;
-  flex: 2;
 }
 
 .timer__hourArea, .timer__minuteArea, .timer__secondArea {
@@ -29,7 +28,6 @@
 }
 
 .button__timer-btn {
-  flex:1;
   justify-content: space-around;
   align-items: start;
   flex-direction: row;
@@ -44,18 +42,8 @@
 
 
 .button__timer-add {
-  flex: 1;
   display:flex;
   justify-content: space-around;
-}
-
-
-
-
-.button__click {
-  font-size:30px;
-  display:flex;
-  flex: 2;
 }
 
 

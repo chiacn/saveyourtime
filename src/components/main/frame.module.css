@@ -1,21 +1,31 @@
-
 .wrapping {
     display:flex;
     flex-direction:column;
+    font-family: "julius_sans_one_ENG", Georgia, monospace;
 }
 
 .frame {
     color: black;
     display: flex;
-    
-
+    flex-direction: column;
     border-radius:10px;
     border: 2px solid black;
     margin-top: 40px;
     margin-left: 40px;
     padding: 10px;
-
     height: 300px;
     width: 220px;
-
+    
 }
+
+.frame__timer {
+    flex:1;
+    margin-top:30px;
+}
+
+.frame__option {
+    flex:1;
+    font-size:30px;
+    display:flex;
+}
+
