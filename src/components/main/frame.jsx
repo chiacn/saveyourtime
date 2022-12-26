@@ -39,6 +39,15 @@ export default function Frame({
         modal,
     } = assignCSS;
 
+    const openOption = () => {
+        const modal = document.querySelector(`.${styles.modal}`);
+        modal.style.display = 'flex'
+    }
+
+    const closeOption = () => {
+        const modal = document.querySelector(`.${styles.modal}`);
+        modal.style.display = 'none';
+    }
 
     return (
         <>
@@ -51,7 +60,7 @@ export default function Frame({
                     </div>
                 }
                 
-                <div className={frame__option}>
+                <div className={frame__option} onClick={openOption}>
                     <button>
                         Option
                     </button>
@@ -59,7 +68,12 @@ export default function Frame({
             </div>
         </div>
 
-
+        {/* Modal */}
+        <div className={modal}>
+            <div className={styles.modal__close}>
+                <button onClick={closeOption}>Close</button>
+            </div>
+        </div>
 
         </>
         
