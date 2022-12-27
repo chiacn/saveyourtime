@@ -5,7 +5,15 @@ p {
     font-size: 50px;
 }
 
+.main {
+    display: flex;
+}
 
 .frames {
     display: flex;
+}
+
+.add {
+    margin-left: 30px;
+    align-self:flex-end;
 }
