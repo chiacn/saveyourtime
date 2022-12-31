@@ -7,11 +7,11 @@ import styles from './home.module.css'
 
  const Home = (props) => {
 
-    const [frames, setFrames] = useState([<Frame timer frameId="frame1" closeFrame={closeFrame}/>]);
+    const [frames, setFrames] = useState([<Frame timer frameId="frame1" key="frame1" closeFrame={closeFrame}/>]);
     const [closeFrameId, setCloseFrameId] = useState();
 
     const addFrame = () => {
-        setFrames((prevFrames) => [...prevFrames, <Frame timer frameId={createFrameId()} closeFrame={closeFrame}/>])
+        setFrames((prevFrames) => [...prevFrames, <Frame timer frameId={createFrameId()} key={createFrameId()} closeFrame={closeFrame}/>])
     }
 
     function closeFrame(frameId) {
