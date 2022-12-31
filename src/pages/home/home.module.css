@@ -11,9 +11,10 @@ p {
 
 .frames {
     display: flex;
+    flex-wrap:wrap;
 }
 
-.add {
+.frames > button {
     margin-left: 30px;
-    align-self:flex-end;
+    align-self: flex-end;
 }

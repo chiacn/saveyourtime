@@ -15,7 +15,6 @@ import styles from './home.module.css'
     }
 
     function closeFrame(frameId) {
-        console.log('지워진 frameId = ', frameId)
         setCloseFrameId(frameId)
     }
 
@@ -33,8 +32,6 @@ import styles from './home.module.css'
             <div className={styles.main}>
                 <div className={styles.frames}>
                     {frames.map((frame) => frame)}
-                </div>
-                <div className={styles.add}>
                     <button onClick={addFrame}>Add</button>
                 </div>
             </div>

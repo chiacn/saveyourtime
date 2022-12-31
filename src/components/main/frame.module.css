@@ -4,6 +4,10 @@
     font-family: "julius_sans_one_ENG", Georgia, monospace;
 }
 
+.firstClose {
+    height: 25px;
+}
+
 .close {
     align-self: flex-end;
 }
