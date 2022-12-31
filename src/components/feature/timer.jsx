@@ -10,9 +10,16 @@ export default function Timer() {
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
     const [isRunning, setIsRunning] = useState(false);
-    
-    const start = () => {
-        setIsRunning(true);
+
+    const start = (e) => {
+        if(e.target.innerHTML === 'START') {
+            console.log('start = ', hour + minute + second)
+            if(calculateTime() > 0) {
+                setIsRunning(true);
+            }
+        }else {
+            setIsRunning(false);
+        }
     }
 
     useInterval(
@@ -56,11 +63,15 @@ export default function Timer() {
 
     }
 
-    function calculateTime(minusNum) {
+    function calculateTime(minusNum=false) {
         const h = hour == undefined ? 0 : Number(hour);
         const m = minute == undefined ? 0 : Number(minute);
         const s = second == undefined ? 0 : Number(second);
-        return (h*3600 + m*60 + s) - minusNum;
+        if(minusNum) {
+            return (h*3600 + m*60 + s) - minusNum;
+        }else {
+            return (h + m + s);
+        }
     }
 
     const onChange = (e) => {
@@ -140,38 +151,12 @@ export default function Timer() {
             </div>
             <div className={styles["button__timer-btn"]}>
                 <button onClick={start}>
-                    START
+                    {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
                 </button>
-
                 <button onClick={reset}>
                     Reset
                 </button>
-
-                <button onClick={stop}>
-                    STOP
-                </button>
-
             </div>
-            
-            {/* <div className={styles["button__timer-add"]}>
-                <button>
-                    +10s 
-                </button>
-                <button>
-                    +30s 
-                </button>
-                <button>
-                    +10m 
-                </button>
-                
-                <button>
-                    +30m 
-                </button>
-                <button>
-                    +1h 
-                </button>
-            </div> */}
-
         </div>
     );
 } 
