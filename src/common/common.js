@@ -35,3 +35,12 @@ export const useInterval = (callback, delay) => {
         }
     }, [delay]);
 }   
+
+//깊은 복사
+export const clone = (obj) => {
+    let output = [];
+    for(let i in obj) {
+        output[i] = obj[i]
+    }
+    return output;
+}

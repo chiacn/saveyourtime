@@ -4,6 +4,10 @@
     font-family: "julius_sans_one_ENG", Georgia, monospace;
 }
 
+.close {
+    align-self: flex-end;
+}
+
 .frame {
     color: black;
     display: flex;
@@ -15,12 +19,11 @@
     padding: 10px;
     height: 300px;
     width: 220px;
-    
 }
 
 .frame__timer {
     flex:1;
-    margin-top:30px;
+    margin-top:10px;
 }
 
 .frame__option {
@@ -54,4 +57,23 @@
 .modal__close button {
     right:28px;
     left:28px;
+}
+
+.modal__ani {
+    position:absolute;
+    display: none;
+    color: black;
+    flex-direction: column;
+    border: 2px solid black;
+    border-radius:10px;
+    /* 
+        margin-top / margin-left도 Frame과 동일하게 맞춰야지
+        자바스크립트로 기존 Frame의 위치값 알아내서 저장해도
+        Frame과 똑같은 모양으로 나옴.
+    */
+    margin-top: 40px; 
+    margin-left: 40px;
+    padding: 10px;
+    height: 300px;
+    width: 220px;
 }
