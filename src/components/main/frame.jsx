@@ -13,6 +13,10 @@ export default function Frame({
     frameId,
 }) {
 
+    // Setting
+    const unifiedTemplate = true;
+
+    
     const originCSS = !defaultTailwind ? {
     // CSS
     frame: styles.frame,
@@ -70,43 +74,67 @@ export default function Frame({
     }
 
     return (
-        <>
-        <div className={wrapping}>
-            {text && <p>{text}</p>}
-            <div className={frame}>
-                {
-                    (frameId == 'frame1') ?
-                    <div className={styles.firstClose} /> :
-                    <div className={styles.close}>
-                        <button onClick={submitFrameId}>Close</button>
+        ( !unifiedTemplate ?
+            <>
+                <div className={wrapping}>
+                    {text && <p>{text}</p>}
+                    <div className={frame}>
+                        {
+                            (frameId == 'frame1') ?
+                            <div className={styles.firstClose} /> :
+                            <div className={styles.close}>
+                                <button onClick={submitFrameId}>Close</button>
+                            </div>
+                        }
+                        {
+                            timer &&
+                            <div className={frame__timer}>
+                                <Timer />  
+                            </div>
+                        }
+                        
+                        <div className={frame__option} onClick={openOption}>
+                            <button>
+                                Option
+                            </button>
+                        </div>
                     </div>
-                }
-                {
-                    timer &&
-                    <div className={frame__timer}>
-                        <Timer />  
-                    </div>
-                }
-                
-                <div className={frame__option} onClick={openOption}>
-                    <button>
-                        Option
-                    </button>
                 </div>
-            </div>
-        </div>
 
-        {/* Modal */}
-        <div className={modal}>
-            <div className={styles.modal__close}>
-                <button onClick={closeOption}>Close</button>
-            </div>
-        </div>
+                {/* Modal */}
+                <div className={modal}>
+                    <div className={styles.modal__close}>
+                        <button onClick={closeOption}>Close</button>
+                    </div>
+                </div>
 
-        {/* Modal Animation */}
-        <div className={styles.modal__ani}/>
+                {/* Modal Animation */}
+                <div className={styles.modal__ani}/>
 
-        </>
+            </> :
+        
+            <>
+                <div className={styles.uni_wrapping}>
+                    <div className={styles.uni_button}>
+                        <div className={styles.uni_button__timer}>
+                            <button>Timer</button>
+                        </div>
+                        <div className={styles.uni_button__alarm}>
+                            <button>Alarm</button>
+                        </div>
+                    </div>
+                    <div className={styles.uni_frame}>
+                        <div className={styles.uni_frame__header}>
+
+                        </div>
+                        <div className={styles.uni_frame__timer}>
+                            <Timer unifiedTemplate={unifiedTemplate}/>
+                        </div>
+                    </div>
+                </div>
+
+            </>
+        )
         
     );
 }

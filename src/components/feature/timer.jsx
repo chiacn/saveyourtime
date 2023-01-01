@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useInterval } from '../../common/common';
 import styles from './timer.module.css';
 
-export default function Timer() {
+export default function Timer({unifiedTemplate=false}) {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
@@ -29,10 +29,6 @@ export default function Timer() {
 
     const stop = () => {
         setIsRunning(false);
-    }
-
-    const add = (time) => {
-
     }
 
     const reset = () => {
@@ -107,6 +103,7 @@ export default function Timer() {
     }
 
     return (
+        !unifiedTemplate ? (
         <div className={styles.frame}>
             <div className={styles.timer}>
                 <div className={styles.timer__hourArea}>
@@ -158,6 +155,87 @@ export default function Timer() {
                 </button>
             </div>
         </div>
+
+        ) :  // unifiedTemplate =====================================================================
+
+        <div className={styles.uni_frame}>
+            <div className={styles.uni_timer}>
+                <div className={styles.uni_timer__hourArea}>
+                    <input 
+                        type="number"
+                        name="hour"
+                        placeholder="00" 
+                        value={hour || ''} 
+                        onChange={onChange} 
+                        maxlength="2"
+                        max="30"
+                        min="0"
+                        pattern="\d*"
+                    /> :
+                </div> 
+
+                <div className={styles.uni_timer__minuteArea}>
+                    <input 
+                        type="number" 
+                        name="minute"
+                        placeholder="00" 
+                        value={minute || ''}
+                        onChange={onChange} 
+                        maxlength="2" 
+                        max="59"
+                        min="0"
+                    /> :
+                </div>
+
+                <div className={styles.uni_timer__secondArea}>
+                    <input 
+                        type="number" 
+                        name="second"
+                        placeholder="00" 
+                        value={second || ''}
+                        onChange={onChange} 
+                        maxlength="2"
+                        max="59"
+                        min="0"
+                    />
+                </div>
+            </div>
+            <div className={styles["uni_timer__feature"]}>
+                
+                {/* unifiedTemplate 속성 추가 시 button 구성 */}
+                <div className={styles.uni_timer__option}>
+                    <div className={styles["checkbox-wrapper-19"]}>
+                        <input type="checkbox" id="cbtest-19-link" />
+                        <label htmlFor="cbtest-19-link" className={styles["check-box"]}/>
+                    </div>
+                    <p>Link</p>
+
+                    <div className={styles["checkbox-wrapper-19"]}>
+                        <input type="checkbox" id="cbtest-19-alarm" />
+                        <label htmlFor="cbtest-19-alarm" className={styles["check-box"]}/>
+                    </div>
+                    <p>Text</p>
+                </div>
+
+                <div className={styles["uni_timer__input"]}>
+                    <input type="text" />
+                </div>
+
+                <div className={styles.uni_timer__button}>
+                    <div className={styles["uni_timer__button--startStop"]}>
+                        <button onClick={start}>
+                            {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
+                        </button>
+                    </div>
+                    <div className={styles["uni_timer__button--reset"]}>
+                        <button onClick={reset}>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     );
 } 
 
