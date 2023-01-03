@@ -131,7 +131,6 @@ export default function Timer({
         const checkBox = document.getElementsByName('check-box' + frameId);
         const btnStart = document.getElementById("btn_start" + frameId);
         const btnReset = document.getElementById("btn_reset" + frameId);
-        console.log(checkBox[0].after)
         if(alarmMode) {
             checkBox[0].style["border-color"] = 'rgb(0, 184, 147)';
             checkBox[1].style["border-color"] = 'rgb(0, 184, 147)';
@@ -144,6 +143,17 @@ export default function Timer({
             btnReset.style["background-color"] = 'rgb(0, 129, 255)';
         }
     }, [alarmMode])
+
+    // Button 관련
+    useEffect(() => { 
+        const btnStart = document.getElementById("btn_start" + frameId);
+        const btnReset = document.getElementById("btn_reset" + frameId);
+        if(calculateTime() === 0 && !isRunning) {
+            btnReset.style.display = 'none';
+        }else if(isRunning) {
+            btnReset.style.display = 'flex'
+        }
+    }, [isRunning])
 
     return (
         <div className={styles.frame}>
@@ -215,9 +225,17 @@ export default function Timer({
                 </div>
 
                 <div className={styles.timer__button}>
-                    <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start}>
-                        {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
-                    </div>
+                    { !isRunning ?
+                        <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start}>
+                            {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
+                        </div>
+                        :
+                        <div className={styles["timer__button--loading"]} id={"btn_start" + frameId}>
+                            <div className={styles["loading-button1"]} />
+                            <div className={styles["loading-button2"]} />
+                            <div className={styles["loading-button3"]} />
+                        </div>
+                    }
 
                     <div className={styles["timer__button--reset"]} id={"btn_reset" + frameId} onClick={reset}>
                         Reset

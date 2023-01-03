@@ -88,6 +88,56 @@ button:hover {
   cursor: pointer;
 }
 
+@keyframes loading_button {
+  /* 0% {
+    opacity: 1;
+  }
+  33% {
+    opacity: 0.5;
+  }
+  66% {
+    opacity: 0.2;
+  } */
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+.timer__button--loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(0, 129, 255);
+  border-radius: 50%;
+  margin-right:10%;
+}
+
+.timer__button--loading div {
+  width:8px;
+  height:8px;
+  margin: 6%;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.timer__button--loading .loading-button1 {
+  animation: loading_button 2s infinite;
+}
+.timer__button--loading .loading-button2 {
+  animation: loading_button 2s infinite;
+  animation-delay: 0.7s;
+}
+.timer__button--loading .loading-button3 {
+  animation: loading_button 2s infinite;
+  animation-delay: 1.4s;
+}
+
+
 .timer__button--reset {
   display: flex;
   justify-content: center;
