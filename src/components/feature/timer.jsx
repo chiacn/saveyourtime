@@ -129,13 +129,19 @@ export default function Timer({
     // Mode Change
     useEffect(() => {
         const checkBox = document.getElementsByName('check-box' + frameId);
+        const btnStart = document.getElementById("btn_start" + frameId);
+        const btnReset = document.getElementById("btn_reset" + frameId);
         console.log(checkBox[0].after)
         if(alarmMode) {
             checkBox[0].style["border-color"] = 'rgb(0, 184, 147)';
             checkBox[1].style["border-color"] = 'rgb(0, 184, 147)';
+            btnStart.style["background-color"] = 'rgb(0, 184, 147)';
+            btnReset.style["background-color"] = 'rgb(0, 184, 147)';
         }else {
             checkBox[0].style["border-color"] = 'rgb(0, 129, 255)';
             checkBox[1].style["border-color"] = 'rgb(0, 129, 255)';
+            btnStart.style["background-color"] = 'rgb(0, 129, 255)';
+            btnReset.style["background-color"] = 'rgb(0, 129, 255)';
         }
     }, [alarmMode])
 
@@ -149,7 +155,7 @@ export default function Timer({
                         placeholder="00" 
                         value={hour || ''} 
                         onChange={onChange} 
-                        maxlength="2"
+                        maxLength="2"
                         max="30"
                         min="0"
                         pattern="\d*"
@@ -163,7 +169,7 @@ export default function Timer({
                         placeholder="00" 
                         value={minute || ''}
                         onChange={onChange} 
-                        maxlength="2" 
+                        maxLength="2" 
                         max="59"
                         min="0"
                     /> :
@@ -176,7 +182,7 @@ export default function Timer({
                         placeholder="00" 
                         value={second || ''}
                         onChange={onChange} 
-                        maxlength="2"
+                        maxLength="2"
                         max="59"
                         min="0"
                     />
@@ -209,13 +215,13 @@ export default function Timer({
                 </div>
 
                 <div className={styles.timer__button}>
-                    <button onClick={start}>
+                    <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start}>
                         {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
-                    </button>
+                    </div>
 
-                    <button onClick={reset}>
+                    <div className={styles["timer__button--reset"]} id={"btn_reset" + frameId} onClick={reset}>
                         Reset
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
