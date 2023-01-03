@@ -3,9 +3,10 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useInterval } from '../../common/common';
+import Button from '../ui/button';
 import styles from './timer.module.css';
 
-export default function Timer({unifiedTemplate=false, frameId}) {
+export default function Timer({frameId}) {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
@@ -108,8 +109,6 @@ export default function Timer({unifiedTemplate=false, frameId}) {
 
     // checkbox 관련 로직
     const handleOptionCheck = (e) => {
-        console.log('handleOptionCheck / e = ', e.target.id)
-        console.log('frameId = ', frameId)
         if(e.target.id === 'cbtest-19-link' + frameId) { // Link 클릭할 때
             !checkLink && setCheckLink(true) 
             if(!checkLink) {
@@ -125,7 +124,6 @@ export default function Timer({unifiedTemplate=false, frameId}) {
     }
 
     return (
-        !unifiedTemplate ? (
         <div className={styles.frame}>
             <div className={styles.timer}>
                 <div className={styles.timer__hourArea}>
@@ -168,70 +166,9 @@ export default function Timer({unifiedTemplate=false, frameId}) {
                     />
                 </div>
             </div>
-            <div className={styles["button__timer-btn"]}>
-                <button onClick={start}>
-                    {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
-                </button>
-                <button onClick={reset}>
-                    Reset
-                </button>
-            </div>
-        </div>
-
-        ) :  // unifiedTemplate =====================================================================
-
-        <div className={styles.uni_frame}>
-            <div className={styles.uni_timer}>
-                <div className={styles.uni_timer__hourArea}>
-                    <input 
-                        type="number"
-                        name="hour"
-                        placeholder="00" 
-                        value={hour || ''} 
-                        onChange={onChange} 
-                        maxlength="2"
-                        max="30"
-                        min="0"
-                        pattern="\d*"
-                    /> :
-                </div> 
-
-                <div className={styles.uni_timer__minuteArea}>
-                    <input 
-                        type="number" 
-                        name="minute"
-                        placeholder="00" 
-                        value={minute || ''}
-                        onChange={onChange} 
-                        maxlength="2" 
-                        max="59"
-                        min="0"
-                    /> :
-                </div>
-
-                <div className={styles.uni_timer__secondArea}>
-                    <input 
-                        type="number" 
-                        name="second"
-                        placeholder="00" 
-                        value={second || ''}
-                        onChange={onChange} 
-                        maxlength="2"
-                        max="59"
-                        min="0"
-                    />
-                </div>
-            </div>
-            <div className={styles["uni_timer__feature"]}>
-                
-                {/* unifiedTemplate 속성 추가 시 button 구성 */}
-                <div className={styles.uni_timer__option}>
+            <div className={styles["timer__feature"]}>
+                <div className={styles.timer__option}>
                     <div className={styles["checkbox-wrapper-19"]}>
-                        {/* 
-                            id에 frameId를 넣어서 timer 컴포넌트 별로 별개의 input label id를 만드는 이유
-                            - checkbox 관련 CSS에서 input의 display를 지우고 label을 사용하고 있음.
-                                => 그래서 특정 timer의 checkbox를 체크해도 다른 timer의 체크박스가 체크됐음. -> 각 고유의 id값을 줘서 해결.
-                        */}
                         <input type="checkbox" id={"cbtest-19-link" + frameId} checked={checkLink} onChange={handleOptionCheck}/>
                         <label htmlFor={"cbtest-19-link" + frameId} className={styles["check-box"]}/>
                     </div>
@@ -245,17 +182,17 @@ export default function Timer({unifiedTemplate=false, frameId}) {
                     <p>Text</p>
                 </div>
 
-                <div className={styles["uni_timer__input"]}>
+                <div className={styles["timer__input"]}>
                     <input type="text" />
                 </div>
 
-                <div className={styles.uni_timer__button}>
-                    <div className={styles["uni_timer__button--startStop"]}>
+                <div className={styles.timer__button}>
+                    <div className={styles["timer__button--startStop"]}>
                         <button onClick={start}>
                             {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
                         </button>
                     </div>
-                    <div className={styles["uni_timer__button--reset"]}>
+                    <div className={styles["timer__button--reset"]}>
                         <button onClick={reset}>
                             Reset
                         </button>

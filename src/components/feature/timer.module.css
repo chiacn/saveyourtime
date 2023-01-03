@@ -1,13 +1,20 @@
 @import url('../../assets/font/eng_julius_sans_one.css');
+
+button:hover {
+  font-weight: bold;
+}
+
 .frame {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    /* justify-content:space-between; */
+    color: rgb(0,129,255);
+    font-family: 'Roboto', sans-serif;
 }
 
 .timer {
   display: flex;
+  justify-content: center;
 }
 
 .timer__hourArea, .timer__minuteArea, .timer__secondArea {
@@ -17,68 +24,6 @@
 }
 
 .timer input {
-  width: 55px;
-  height: 50px;
-  font-size:30px;
-  border: 0 solid #ccc;
-  border-radius: 5px;
-  outline:none;
-  text-align: center;
-  font-family: "julius_sans_one_ENG", Georgia, monospace;
-}
-
-.button__timer-btn {
-  justify-content: space-around;
-  align-items: start;
-  flex-direction: row;
-  display: flex;
-  margin-right:10%;
-}
-
-
-.button__timer-btn > * {
-  margin-left:10px;
-}
-
-
-.button__timer-add {
-  display:flex;
-  justify-content: space-around;
-}
-
-
-button {
-  font-family: "julius_sans_one_ENG", Georgia, monospace; 
-}
-
-button:hover {
-  font-weight: bold;
-}
-  
-
-
-/* unifiedTemplate CSS */
-
-.uni_frame {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    color: rgb(0,129,255);
-    font-family: 'Roboto', sans-serif;
-}
-
-.uni_timer {
-  display: flex;
-  justify-content: center;
-}
-
-.uni_timer__hourArea, .uni_timer__minuteArea, .uni_timer__secondArea {
-  display: flex;
-  align-items: center;
-  margin: 0 5px;
-}
-
-.uni_timer input {
   width: 65px;
   height: 50px;
   font-size:40px;
@@ -88,47 +33,45 @@ button:hover {
   text-align: center;
 }
 
-/* 많이 바뀐 부분 ---------------------------------------*/
-.uni_timer__feature {
+.timer__feature {
   margin-top: 24px;
   flex-direction: column;
   font-family: 'Roboto', sans-serif;
   color: rgb(0,129,255);
 }
 
-.uni_timer__option {
+.timer__option {
   display: flex;
   justify-content: space-around;
 }
 
-.uni_timer__option > div {
+.timer__option > div {
   display: flex;
   flex-direction: row;
 }
 
-.uni_timer__option p {
+.timer__option p {
   font-size:20px;
   margin-top:5px;
 }
 
-.uni_timer__input {
+.timer__input {
   margin-top: 8px;
 }
 
-.uni_timer__input > input {
+.timer__input > input {
   border-bottom: 1.5px solid;
   width: 240px; 
 }
 
-.uni_timer__input > input:focus {
+.timer__input > input:focus {
   outline: none;
 }
 
-.uni_timer__button {
+.timer__button {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
-
 }
 
 

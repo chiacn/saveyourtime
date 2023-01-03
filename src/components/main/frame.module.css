@@ -1,101 +1,20 @@
 .wrapping {
-    display:flex;
-    flex-direction:column;
-    font-family: "julius_sans_one_ENG", Georgia, monospace;
-}
-
-.firstClose {
-    height: 25px;
-}
-
-.close {
-    align-self: flex-end;
-}
-
-.frame {
-    color: black;
-    display: flex;
-    flex-direction: column;
-    border-radius:10px;
-    border: 2px solid black;
-    margin-top: 40px;
-    margin-left: 40px;
-    padding: 10px;
-    height: 300px;
-    width: 220px;
-}
-
-.frame__timer {
-    flex:1;
-    margin-top:10px;
-}
-
-.frame__option {
-    flex:1;
-    font-size:30px;
-    display:flex;
-}
-
-.modal {
-    display: none;
-    position: absolute;
-    border-radius:10px;
-    border: 2px solid black;
-    background-color:white;
-
-    width: 400px;
-    height: 500px;
-
-    left: 35%;
-    top: 25%;
-}
-
-.modal__close {
-    position:absolute;
-    margin-right:30px;
-    top: 8px;
-    right: 4px;
-    font-size:24px;
-}
-
-.modal__close button {
-    right:28px;
-    left:28px;
-}
-
-.modal__ani {
-    position:absolute;
-    display: none;
-    color: black;
-    flex-direction: column;
-    border: 2px solid black;
-    border-radius:10px;
-    margin-top: 40px; 
-    margin-left: 40px;
-    padding: 10px;
-    height: 300px;
-    width: 220px;
-}
-
-/* ==================================================================== */
-
-.uni_wrapping {
     display: flex;
     flex-direction: column;
     margin-left: 80px;
 }
 
-.uni_wrapping * {
+.wrapping * {
     font-family: 'Roboto', sans-serif;
 }
 
-.uni_button {
+.button {
     display: flex;
     justify-content: center;
     color: white;
 }
 
-.uni_button__timer {
+.button__timer {
     display: flex;
     justify-content: center;
     margin-right: 5%;
@@ -103,14 +22,14 @@
     width:40%;
 }
 
-.uni_button__alarm {
+.button__alarm {
     display: flex;
     justify-content: center;
     background-color:rgb(0, 184, 147);
     width:40%;
 }
 
-.uni_frame {
+.frame {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -122,7 +41,7 @@
     box-shadow: 2px 2px 2px rgb(163, 163, 163);
 }
 
-.uni_frame__header {
+.frame__header {
     width:100%;
     height:8%;
     background-color:rgb(0, 129, 255);
@@ -130,15 +49,15 @@
     padding:0%;
 }
 
-.uni_frame__timer {
+.frame__timer {
     margin-top:30px;
 }
 
-.uni_frame__option {
+.frame__option {
 
 }
 
-.uni_frame__button {
+.frame__button {
 
 }
 

@@ -12,10 +12,6 @@ export default function Frame({
     closeFrame,
     frameId,
 }) {
-
-    // Setting
-    const unifiedTemplate = true;
-
     
     const originCSS = !defaultTailwind ? {
     // CSS
@@ -45,8 +41,6 @@ export default function Frame({
         modal,
     } = assignCSS;
 
-    console.log(`${frameId} Rendering ------------------------`)
-
     const openOption = () => {
         const modal = document.querySelector(`.${styles.modal}`);
         const modal_ani = document.querySelector(`.${styles.modal__ani}`);
@@ -74,67 +68,37 @@ export default function Frame({
     }
 
     return (
-        ( !unifiedTemplate ?
             <>
                 <div className={wrapping}>
-                    {text && <p>{text}</p>}
-                    <div className={frame}>
-                        {
-                            (frameId == 'frame1') ?
-                            <div className={styles.firstClose} /> :
-                            <div className={styles.close}>
-                                <button onClick={submitFrameId}>Close</button>
-                            </div>
-                        }
-                        {
-                            timer &&
-                            <div className={frame__timer}>
-                                <Timer />  
-                            </div>
-                        }
-                        
-                        <div className={frame__option} onClick={openOption}>
-                            <button>
-                                Option
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Modal */}
-                <div className={modal}>
-                    <div className={styles.modal__close}>
-                        <button onClick={closeOption}>Close</button>
-                    </div>
-                </div>
-
-                {/* Modal Animation */}
-                <div className={styles.modal__ani}/>
-
-            </> :
-        
-            <>
-                <div className={styles.uni_wrapping}>
-                    <div className={styles.uni_button}>
-                        <div className={styles.uni_button__timer}>
+                    <div className={styles.button}>
+                        <div className={styles.button__timer}>
                             <button>Timer</button>
                         </div>
-                        <div className={styles.uni_button__alarm}>
+                        <div className={styles.button__alarm}>
                             <button>Alarm</button>
                         </div>
                     </div>
-                    <div className={styles.uni_frame}>
-                        <div className={styles.uni_frame__header}>
+                    <div className={styles.frame}>
+                        <div className={styles.frame__header}>
 
                         </div>
-                        <div className={styles.uni_frame__timer}>
-                            <Timer unifiedTemplate={unifiedTemplate} frameId={frameId}/>
+                        <div className={styles.frame__timer}>
+                            <Timer frameId={frameId}/>
                         </div>
                     </div>
                 </div>
+                
+                {/* Modal */}
+                {/* <div className={modal}>
+                    <div className={styles.modal__close}>
+                        <button onClick={closeOption}>Close</button>
+                    </div>
+                </div> */}
 
+                {/* Modal Animation */}
+                {/* <div className={styles.modal__ani}/> */}
             </>
-        )
+            
         
     );
 }
