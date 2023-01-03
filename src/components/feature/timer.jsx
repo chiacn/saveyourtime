@@ -6,7 +6,10 @@ import { useInterval } from '../../common/common';
 import Button from '../ui/button';
 import styles from './timer.module.css';
 
-export default function Timer({frameId}) {
+export default function Timer({
+    frameId,
+    alarmMode=false,
+}) {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
@@ -123,6 +126,19 @@ export default function Timer({frameId}) {
         }
     }
 
+    // Mode Change
+    useEffect(() => {
+        const checkBox = document.getElementsByName('check-box' + frameId);
+        console.log(checkBox[0].after)
+        if(alarmMode) {
+            checkBox[0].style["border-color"] = 'rgb(0, 184, 147)';
+            checkBox[1].style["border-color"] = 'rgb(0, 184, 147)';
+        }else {
+            checkBox[0].style["border-color"] = 'rgb(0, 129, 255)';
+            checkBox[1].style["border-color"] = 'rgb(0, 129, 255)';
+        }
+    }, [alarmMode])
+
     return (
         <div className={styles.frame}>
             <div className={styles.timer}>
@@ -170,14 +186,20 @@ export default function Timer({frameId}) {
                 <div className={styles.timer__option}>
                     <div className={styles["checkbox-wrapper-19"]}>
                         <input type="checkbox" id={"cbtest-19-link" + frameId} checked={checkLink} onChange={handleOptionCheck}/>
-                        <label htmlFor={"cbtest-19-link" + frameId} className={styles["check-box"]}/>
+                        { !alarmMode ? 
+                            <label htmlFor={"cbtest-19-link" + frameId} className={styles["check-box"]} name={'check-box' + frameId}/> :
+                            <label htmlFor={"cbtest-19-link" + frameId} className={styles["check-box-alarmMode"]} name={'check-box' + frameId}/>
+                        }
                     </div>
                     
                     <p>Link</p>
 
                     <div className={styles["checkbox-wrapper-19"]}>
                         <input type="checkbox" id={"cbtest-19-alarm" + frameId} checked={checkText} onChange={handleOptionCheck}/>
-                        <label htmlFor={"cbtest-19-alarm" + frameId} className={styles["check-box"]}/>
+                        { !alarmMode ?
+                            <label htmlFor={"cbtest-19-alarm" + frameId} className={styles["check-box"]} name={'check-box' + frameId}/> :
+                            <label htmlFor={"cbtest-19-alarm" + frameId} className={styles["check-box-alarmMode"]} name={'check-box' + frameId}/>
+                        }
                     </div>
                     <p>Text</p>
                 </div>
@@ -187,16 +209,13 @@ export default function Timer({frameId}) {
                 </div>
 
                 <div className={styles.timer__button}>
-                    <div className={styles["timer__button--startStop"]}>
-                        <button onClick={start}>
-                            {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
-                        </button>
-                    </div>
-                    <div className={styles["timer__button--reset"]}>
-                        <button onClick={reset}>
-                            Reset
-                        </button>
-                    </div>
+                    <button onClick={start}>
+                        {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
+                    </button>
+
+                    <button onClick={reset}>
+                        Reset
+                    </button>
                 </div>
             </div>
         </div>

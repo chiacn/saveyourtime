@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { setCSS } from '../../common/common';
 import Timer from '../feature/timer';
 import styles from './frame.module.css';
@@ -12,6 +13,8 @@ export default function Frame({
     closeFrame,
     frameId,
 }) {
+
+    const [alarmMode, setAlarmMode] = useState(false)
     
     const originCSS = !defaultTailwind ? {
     // CSS
@@ -67,23 +70,42 @@ export default function Frame({
         closeFrame(frameId);
     }
 
+    const changeFormat = (e) => {
+        const wrapping = document.getElementById('wrapping' + frameId);
+        const frame__header = document.getElementById('frame__header' + frameId)
+        const timer = document.getElementById(frameId)
+        console.log(timer)
+        console.log('frame__header = ', frame__header)
+        if(e.target.innerHTML === 'Timer') {
+            wrapping.style.color = 'rgb(0, 129, 255)';
+            wrapping.style["border-color"] = 'rgb(0, 129, 255)';
+            frame__header.style["background-color"] = 'rgb(0, 129, 255)';
+            setAlarmMode(false);
+        }else {
+            wrapping.style.color = 'rgb(0, 184, 147)';
+            wrapping.style["border-color"] = 'rgb(0, 184, 147)';
+            frame__header.style["background-color"] = 'rgb(0, 184, 147)';
+            setAlarmMode(true);
+        }
+    }
+
     return (
             <>
-                <div className={wrapping}>
+                <div className={wrapping} id={'wrapping' + frameId}>
                     <div className={styles.button}>
-                        <div className={styles.button__timer}>
-                            <button>Timer</button>
+                        <div className={styles.button__timer} onClick={changeFormat}>
+                            Timer
                         </div>
-                        <div className={styles.button__alarm}>
-                            <button>Alarm</button>
+                        <div className={styles.button__alarm} onClick={changeFormat}>
+                            Alarm
                         </div>
                     </div>
                     <div className={styles.frame}>
-                        <div className={styles.frame__header}>
+                        <div className={styles.frame__header} id={'frame__header' + frameId}>
 
                         </div>
                         <div className={styles.frame__timer}>
-                            <Timer frameId={frameId}/>
+                            <Timer frameId={frameId} alarmMode={alarmMode}/>
                         </div>
                     </div>
                 </div>
