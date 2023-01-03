@@ -5,11 +5,15 @@ import { useState } from 'react';
 import { useInterval } from '../../common/common';
 import styles from './timer.module.css';
 
-export default function Timer({unifiedTemplate=false}) {
+export default function Timer({unifiedTemplate=false, frameId}) {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
     const [isRunning, setIsRunning] = useState(false);
+
+    // Checkbox 관련 
+    const [checkLink, setCheckLink] = useState(false);
+    const [checkText, setCheckText] = useState(false);
 
     const start = (e) => {
         if(e.target.innerHTML === 'START') {
@@ -100,6 +104,24 @@ export default function Timer({unifiedTemplate=false}) {
         if(num.substr(0,2) == '59') formattedNum = '5' + num.substr(-1,1);
          
         return formattedNum;
+    }
+
+    // checkbox 관련 로직
+    const handleOptionCheck = (e) => {
+        console.log('handleOptionCheck / e = ', e.target.id)
+        console.log('frameId = ', frameId)
+        if(e.target.id === 'cbtest-19-link' + frameId) { // Link 클릭할 때
+            !checkLink && setCheckLink(true) 
+            if(!checkLink) {
+                setCheckLink(true); 
+                setCheckText(false);
+            }
+        }else {
+            if(!checkText) {
+                setCheckText(true);
+                setCheckLink(false);
+            }
+        }
     }
 
     return (
@@ -205,14 +227,20 @@ export default function Timer({unifiedTemplate=false}) {
                 {/* unifiedTemplate 속성 추가 시 button 구성 */}
                 <div className={styles.uni_timer__option}>
                     <div className={styles["checkbox-wrapper-19"]}>
-                        <input type="checkbox" id="cbtest-19-link" />
-                        <label htmlFor="cbtest-19-link" className={styles["check-box"]}/>
+                        {/* 
+                            id에 frameId를 넣어서 timer 컴포넌트 별로 별개의 input label id를 만드는 이유
+                            - checkbox 관련 CSS에서 input의 display를 지우고 label을 사용하고 있음.
+                                => 그래서 특정 timer의 checkbox를 체크해도 다른 timer의 체크박스가 체크됐음. -> 각 고유의 id값을 줘서 해결.
+                        */}
+                        <input type="checkbox" id={"cbtest-19-link" + frameId} checked={checkLink} onChange={handleOptionCheck}/>
+                        <label htmlFor={"cbtest-19-link" + frameId} className={styles["check-box"]}/>
                     </div>
+                    
                     <p>Link</p>
 
                     <div className={styles["checkbox-wrapper-19"]}>
-                        <input type="checkbox" id="cbtest-19-alarm" />
-                        <label htmlFor="cbtest-19-alarm" className={styles["check-box"]}/>
+                        <input type="checkbox" id={"cbtest-19-alarm" + frameId} checked={checkText} onChange={handleOptionCheck}/>
+                        <label htmlFor={"cbtest-19-alarm" + frameId} className={styles["check-box"]}/>
                     </div>
                     <p>Text</p>
                 </div>

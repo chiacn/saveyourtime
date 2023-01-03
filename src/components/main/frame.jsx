@@ -128,7 +128,7 @@ export default function Frame({
 
                         </div>
                         <div className={styles.uni_frame__timer}>
-                            <Timer unifiedTemplate={unifiedTemplate}/>
+                            <Timer unifiedTemplate={unifiedTemplate} frameId={frameId}/>
                         </div>
                     </div>
                 </div>
