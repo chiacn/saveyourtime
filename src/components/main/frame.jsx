@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { setCSS } from '../../common/common';
 import Timer from '../feature/timer';
@@ -13,7 +14,7 @@ export default function Frame({
     closeFrame,
     frameId,
 }) {
-    const [themeColor, setThemeColor] = useState({timer:'rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
+    const [themeColor, setThemeColor] = useState({timer:' rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
     const [alarmMode, setAlarmMode] = useState(false)
     
     const originCSS = !defaultTailwind ? {
@@ -89,14 +90,28 @@ export default function Frame({
         }
     }
 
+    // themeColor Change
+    useEffect(() => {
+        const wrapping = document.getElementById('wrapping' + frameId);
+        const button__timer = document.getElementById('button__timer' + frameId);
+        const button__alarm = document.getElementById('button__alarm' + frameId);
+        const frame__header = document.getElementById('frame__header' + frameId);
+
+        wrapping.style.color = themeColor.timer;
+        wrapping.style["border-color"] = themeColor.timer;
+        button__timer.style["background-color"] = themeColor.timer;
+        button__alarm.style["background-color"] = themeColor.alarm;
+        frame__header.style["background-color"] = themeColor.timer;
+    },[themeColor])
+
     return (
             <>
                 <div className={wrapping} id={'wrapping' + frameId}>
                     <div className={styles.button}>
-                        <div className={styles.button__timer} onClick={changeFormat}>
+                        <div className={styles.button__timer} onClick={changeFormat} id={'button__timer' + frameId}>
                             Timer
                         </div>
-                        <div className={styles.button__alarm} onClick={changeFormat}>
+                        <div className={styles.button__alarm} onClick={changeFormat} id={'button__alarm' + frameId}>
                             Alarm
                         </div>
                     </div>
