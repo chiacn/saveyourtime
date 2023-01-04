@@ -9,6 +9,7 @@ import styles from './timer.module.css';
 export default function Timer({
     frameId,
     alarmMode=false,
+    themeColor,
 }) {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
@@ -132,15 +133,15 @@ export default function Timer({
         const btnStart = document.getElementById("btn_start" + frameId);
         const btnReset = document.getElementById("btn_reset" + frameId);
         if(alarmMode) {
-            checkBox[0].style["border-color"] = 'rgb(0, 184, 147)';
-            checkBox[1].style["border-color"] = 'rgb(0, 184, 147)';
-            btnStart.style["background-color"] = 'rgb(0, 184, 147)';
-            btnReset.style["background-color"] = 'rgb(0, 184, 147)';
+            checkBox[0].style["border-color"] = themeColor.alarm;
+            checkBox[1].style["border-color"] = themeColor.alarm;
+            btnStart.style["background-color"] = themeColor.alarm;
+            btnReset.style["background-color"] = themeColor.alarm;
         }else {
-            checkBox[0].style["border-color"] = 'rgb(0, 129, 255)';
-            checkBox[1].style["border-color"] = 'rgb(0, 129, 255)';
-            btnStart.style["background-color"] = 'rgb(0, 129, 255)';
-            btnReset.style["background-color"] = 'rgb(0, 129, 255)';
+            checkBox[0].style["border-color"] = themeColor.timer;
+            checkBox[1].style["border-color"] = themeColor.timer;
+            btnStart.style["background-color"] = themeColor.timer;
+            btnReset.style["background-color"] = themeColor.timer;
         }
     }, [alarmMode])
 

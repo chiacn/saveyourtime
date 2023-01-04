@@ -13,7 +13,7 @@ export default function Frame({
     closeFrame,
     frameId,
 }) {
-
+    const [themeColor, setThemeColor] = useState({timer:'rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
     const [alarmMode, setAlarmMode] = useState(false)
     
     const originCSS = !defaultTailwind ? {
@@ -77,14 +77,14 @@ export default function Frame({
         console.log(timer)
         console.log('frame__header = ', frame__header)
         if(e.target.innerHTML === 'Timer') {
-            wrapping.style.color = 'rgb(0, 129, 255)';
-            wrapping.style["border-color"] = 'rgb(0, 129, 255)';
-            frame__header.style["background-color"] = 'rgb(0, 129, 255)';
+            wrapping.style.color = themeColor.timer;
+            wrapping.style["border-color"] = themeColor.timer;
+            frame__header.style["background-color"] = themeColor.timer;
             setAlarmMode(false);
         }else {
-            wrapping.style.color = 'rgb(0, 184, 147)';
-            wrapping.style["border-color"] = 'rgb(0, 184, 147)';
-            frame__header.style["background-color"] = 'rgb(0, 184, 147)';
+            wrapping.style.color = themeColor.alarm;
+            wrapping.style["border-color"] = themeColor.alarm;
+            frame__header.style["background-color"] = themeColor.alarm;
             setAlarmMode(true);
         }
     }
@@ -105,7 +105,7 @@ export default function Frame({
 
                         </div>
                         <div className={styles.frame__timer}>
-                            <Timer frameId={frameId} alarmMode={alarmMode}/>
+                            <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor}/>
                         </div>
                     </div>
                 </div>
