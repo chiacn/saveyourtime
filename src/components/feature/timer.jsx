@@ -150,8 +150,9 @@ export default function Timer({
         const btnReset = document.getElementById("btn_reset" + frameId);
         if(calculateTime() === 0 && !isRunning) {
             btnReset.style.display = 'none';
+            btnStart.style["margin-right"] = '0px';
         }else if(isRunning) {
-            btnReset.style.display = 'flex'
+            btnReset.style.display = 'flex';
         }
     }, [isRunning])
 
@@ -201,6 +202,16 @@ export default function Timer({
             <div className={styles["timer__feature"]}>
                 <div className={styles.timer__option}>
                     <div className={styles["checkbox-wrapper-19"]}>
+                        <input type="checkbox" id={"cbtest-19-text" + frameId} checked={checkText} onChange={handleOptionCheck}/>
+                        { !alarmMode ?
+                            <label htmlFor={"cbtest-19-text" + frameId} className={styles["check-box"]} name={'check-box' + frameId}/> :
+                            <label htmlFor={"cbtest-19-text" + frameId} className={styles["check-box-alarmMode"]} name={'check-box' + frameId}/>
+                        }
+                    </div>
+
+                    <p>Text</p>   
+                                     
+                    <div className={styles["checkbox-wrapper-19"]}>
                         <input type="checkbox" id={"cbtest-19-link" + frameId} checked={checkLink} onChange={handleOptionCheck}/>
                         { !alarmMode ? 
                             <label htmlFor={"cbtest-19-link" + frameId} className={styles["check-box"]} name={'check-box' + frameId}/> :
@@ -209,15 +220,6 @@ export default function Timer({
                     </div>
                     
                     <p>Link</p>
-
-                    <div className={styles["checkbox-wrapper-19"]}>
-                        <input type="checkbox" id={"cbtest-19-alarm" + frameId} checked={checkText} onChange={handleOptionCheck}/>
-                        { !alarmMode ?
-                            <label htmlFor={"cbtest-19-alarm" + frameId} className={styles["check-box"]} name={'check-box' + frameId}/> :
-                            <label htmlFor={"cbtest-19-alarm" + frameId} className={styles["check-box-alarmMode"]} name={'check-box' + frameId}/>
-                        }
-                    </div>
-                    <p>Text</p>
                 </div>
 
                 <div className={styles["timer__input"]}>
@@ -225,7 +227,7 @@ export default function Timer({
                 </div>
 
                 <div className={styles.timer__button}>
-                    { !isRunning ?
+                    {/* { !isRunning ?
                         <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start}>
                             {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
                         </div>
@@ -235,7 +237,10 @@ export default function Timer({
                             <div className={styles["loading-button2"]} />
                             <div className={styles["loading-button3"]} />
                         </div>
-                    }
+                    } */}
+                    <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start}>
+                        {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
+                    </div>
 
                     <div className={styles["timer__button--reset"]} id={"btn_reset" + frameId} onClick={reset}>
                         Reset
