@@ -155,7 +155,7 @@ export default function Timer({
         }else if(isRunning) {
             btnReset.style.display = 'flex';
         }
-    }, [isRunning])
+    })
 
 
     // themeColor Change

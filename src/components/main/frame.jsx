@@ -14,7 +14,7 @@ export default function Frame({
     closeFrame,
     frameId,
 }) {
-    const [themeColor, setThemeColor] = useState({timer:'black', alarm:'rgb(0, 184, 147)'});
+    const [themeColor, setThemeColor] = useState({timer:'rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
     const [alarmMode, setAlarmMode] = useState(false)
     
     const originCSS = !defaultTailwind ? {
