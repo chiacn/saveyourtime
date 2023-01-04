@@ -10,10 +10,12 @@
     border-radius: 50%;
     background-color: rgb(218,219,221);
     position: relative;
+    opacity: 0.6;
 }
 
 .icon_background:hover {
     cursor: pointer;
+    opacity: 1;
 }
 
 .plus::before {
