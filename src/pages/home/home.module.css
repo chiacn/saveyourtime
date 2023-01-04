@@ -15,7 +15,9 @@ p {
     flex-wrap:wrap;
 }
 
-.frames > button {
-    margin-left: 30px;
+.frames > .addButton {
+    margin-left: 50px;
+    /* margin-top: 80px; */
+    margin-bottom: 10px;
     align-self: flex-end;
 }

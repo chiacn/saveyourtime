@@ -75,8 +75,7 @@ export default function Frame({
         const wrapping = document.getElementById('wrapping' + frameId);
         const frame__header = document.getElementById('frame__header' + frameId)
         const timer = document.getElementById(frameId)
-        console.log(timer)
-        console.log('frame__header = ', frame__header)
+
         if(e.target.innerHTML === 'Timer') {
             wrapping.style.color = themeColor.timer;
             wrapping.style["border-color"] = themeColor.timer;

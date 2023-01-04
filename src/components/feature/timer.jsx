@@ -22,7 +22,6 @@ export default function Timer({
 
     const start = (e) => {
         if(e.target.innerHTML === 'START') {
-            console.log('start = ', hour + minute + second)
             if(calculateTime() > 0) {
                 setIsRunning(true);
             }
@@ -48,7 +47,6 @@ export default function Timer({
     }
 
     function run() {
-        console.log('run 작동---- ')
         const totalTime = calculateTime(1);
 
         // 정수로 바꿔주기 위해 parseInt

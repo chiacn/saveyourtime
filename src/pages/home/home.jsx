@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { clone } from '../../common/common';
 import Frame from '../../components/main/frame';
+import Button from '../../components/ui/button';
 import styles from './home.module.css'
 
  const Home = (props) => {
@@ -26,13 +27,15 @@ import styles from './home.module.css'
         setFrames( frames.filter((frame) => frame.props.frameId != closeFrameId));
     },[closeFrameId])
 
-
     return (
         <>
             <div className={styles.main}>
                 <div className={styles.frames}>
                     {frames.map((frame) => frame)}
-                    <button onClick={addFrame}>Add</button>
+                    {/* <button onClick={addFrame}>Add</button> */}
+                    <div className={styles.addButton}>
+                        <Button onClick={addFrame} type="plus"/>
+                    </div>
                 </div>
             </div>
         </>

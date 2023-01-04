@@ -3,3 +3,39 @@
 .button {
     background-color:white;
 }
+
+.icon_background {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgb(218,219,221);
+    position: relative;
+}
+
+.icon_background:hover {
+    cursor: pointer;
+}
+
+.plus::before {
+  content: '';
+  display: block;
+  width: 30%;
+  height: 8%;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.plus::after {
+  content: '';
+  display: block;
+  width: 8%;
+  height: 30%;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

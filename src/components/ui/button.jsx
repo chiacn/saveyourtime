@@ -7,29 +7,69 @@ export default function Button({
   onClick,
   defaultTailwind = false,
   tailwind = false,
+  type='text',
+  shape='round',
 }) {
 
   const originCSS = !defaultTailwind ? {
     // CSS
-    button: styles.button, } :
+    button: styles.button, 
+    backgroundColor: styles["background-color"],
+    icon_background: styles.icon_background,} :
   {
     // defaultTailwind
-    button: 'bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110'
+    button: 'bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110',
+    backgroundColor: '',
+    icon_background: '',
   }
 
   //customTailwind
   const assignCSS = setCSS(originCSS, tailwind);
 
   // assignCSS
-  const {button} = assignCSS;
+  const {button, backgroundColor, icon_background} = assignCSS;
 
 
   return (
-    <button
-      className={button}
-      onClick={onClick}
-    >
-      {text}
-    </button>
+      //  (type == 'text') ?
+      //   <button
+      //     className={button}
+      //     onClick={onClick}
+      //   >
+      //     {text}
+      //   </button>
+      //   :
+      //   <button
+      //     className={button}
+      //     onClick={onClick}
+      //   >
+      //     {text}
+      //   </button>
+      <>
+      {
+        (() => {
+            switch(type) {
+              case 'text':
+                return ( 
+                  <button
+                    className={button}
+                    onClick={onClick}
+                  >
+                    {text}
+                  </button>
+                )
+
+              case 'plus':
+                return (
+                  <div className={icon_background} onClick={onClick}>
+                        <div className={styles.plus}/>
+                  </div>
+                )
+              
+            }
+        })()
+      }
+      </>
+      
   );
 }
