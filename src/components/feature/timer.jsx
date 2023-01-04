@@ -157,6 +157,15 @@ export default function Timer({
         }
     }, [isRunning])
 
+
+    // themeColor Change
+    /*
+        자바스크립트에서 동적으로 CSS Pseudo element를 제어할 수는 없는듯 함. 
+        theme color가 변경되면 
+        CSS에서 .checkbox-wrapper-19 .check-box::after 의 background-color를 변경해주기
+     */
+
+
     return (
         <div className={styles.frame}>
             <div className={styles.timer}>
