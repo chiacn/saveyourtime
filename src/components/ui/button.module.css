@@ -5,6 +5,10 @@
   font-size: 25px;
 }
 
+.common_setting:hover {
+  cursor: pointer;
+}
+
 .button {
     background-color:white;
 }

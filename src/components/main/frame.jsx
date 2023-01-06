@@ -123,14 +123,17 @@ export default function Frame({
                     </div>
                 </div>
                 {/* <div className={styles.closeButton}>X</div> */}
+                { (frameId !== 'frame1') &&
                 <div className={styles.closeButton}>
                     <Button 
                         type="text_shape"
                         text='X'
                         font="eng_rubik_bubbles"
                         color={alarmMode ? themeColor.alarm : themeColor.timer}
+                        onClick={submitFrameId}
                     />
                 </div>
+                }
                 
                 {/* Modal */}
                 {/* <div className={modal}>
