@@ -106,34 +106,36 @@ export default function Frame({
 
     return (
             <>
-                <div className={wrapping} id={'wrapping' + frameId}>
-                    <div className={styles.button}>
-                        <div className={styles.button__timer} onClick={changeFormat} id={'button__timer' + frameId}>
-                            Timer
+                <div className={styles.container}>
+                    <div className={wrapping} id={'wrapping' + frameId}>
+                        <div className={styles.button}>
+                            <div className={styles.button__timer} onClick={changeFormat} id={'button__timer' + frameId}>
+                                Timer
+                            </div>
+                            <div className={styles.button__alarm} onClick={changeFormat} id={'button__alarm' + frameId}>
+                                Alarm
+                            </div>
                         </div>
-                        <div className={styles.button__alarm} onClick={changeFormat} id={'button__alarm' + frameId}>
-                            Alarm
+                        <div className={styles.frame}>
+                            <div className={styles.frame__header} id={'frame__header' + frameId} />
+                            <div className={styles.frame__timer}>
+                                <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor}/>
+                            </div>
                         </div>
                     </div>
-                    <div className={styles.frame}>
-                        <div className={styles.frame__header} id={'frame__header' + frameId} />
-                        <div className={styles.frame__timer}>
-                            <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor}/>
-                        </div>
+                    {/* <div className={styles.closeButton}>X</div> */}
+                    { (frameId !== 'frame1') &&
+                    <div className={styles.closeButton}>
+                        <Button 
+                            type="text_shape"
+                            text='X'
+                            font="eng_rubik_bubbles"
+                            color={alarmMode ? themeColor.alarm : themeColor.timer}
+                            onClick={submitFrameId}
+                        />
                     </div>
+                    }
                 </div>
-                {/* <div className={styles.closeButton}>X</div> */}
-                { (frameId !== 'frame1') &&
-                <div className={styles.closeButton}>
-                    <Button 
-                        type="text_shape"
-                        text='X'
-                        font="eng_rubik_bubbles"
-                        color={alarmMode ? themeColor.alarm : themeColor.timer}
-                        onClick={submitFrameId}
-                    />
-                </div>
-                }
                 
                 {/* Modal */}
                 {/* <div className={modal}>
