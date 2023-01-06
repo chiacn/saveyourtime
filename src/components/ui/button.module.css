@@ -1,7 +1,16 @@
 
 /* bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110' */
+
+.common_setting {
+  font-size: 25px;
+}
+
 .button {
     background-color:white;
+}
+
+.text_shape_background {
+
 }
 
 .icon_background {

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { setCSS } from '../../common/common';
 import Timer from '../feature/timer';
+import Button from '../ui/button';
 import styles from './frame.module.css';
 
 export default function Frame({
@@ -115,13 +116,20 @@ export default function Frame({
                         </div>
                     </div>
                     <div className={styles.frame}>
-                        <div className={styles.frame__header} id={'frame__header' + frameId}>
-
-                        </div>
+                        <div className={styles.frame__header} id={'frame__header' + frameId} />
                         <div className={styles.frame__timer}>
                             <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor}/>
                         </div>
                     </div>
+                </div>
+                {/* <div className={styles.closeButton}>X</div> */}
+                <div className={styles.closeButton}>
+                    <Button 
+                        type="text_shape"
+                        text='X'
+                        font="eng_rubik_bubbles"
+                        color={alarmMode ? themeColor.alarm : themeColor.timer}
+                    />
                 </div>
                 
                 {/* Modal */}
