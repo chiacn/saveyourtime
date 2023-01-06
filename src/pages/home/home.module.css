@@ -18,8 +18,11 @@ p {
 }
 
 .frames > .addButton {
-    margin-left: 50px;
-    /* margin-top: 80px; */
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     align-self: flex-end;
+    opacity: 0.8;
+}
+
+.frames > .addButton:hover {
+    opacity: 1;
 }

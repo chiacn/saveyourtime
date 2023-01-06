@@ -85,13 +85,12 @@
 
 .closeButton {
     margin-left: 20px;
-    /* margin-top: 80px; */
     margin-top: 75px;
     align-self: flex-start;
-    /* font-family: 'Rubik Bubbles', cursive; */
-    /* font-family: 'Press Start 2P', cursive; */
-    /* font-size: 20px;
-    color: rgb(0, 129, 255); */
+    opacity: 0.8;
 }
 
+.closeButton:hover {
+    opacity: 1;
+}
 

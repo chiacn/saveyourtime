@@ -13,6 +13,8 @@ export default function Button({
   font=null,
   color=null,
   font_size=null,
+  background_shape=false,
+  background_type=false,
 }) {
 
   const originCSS = !defaultTailwind ? {
@@ -65,6 +67,7 @@ export default function Button({
   return (
       <>
         <div className={styles.common_setting} style={style_common_setting}>
+        {/* <div className={styles.background} style={background_setting} onClick={onClick}> */}
         {
           (() => {
               switch(type) {
@@ -95,6 +98,7 @@ export default function Button({
               }
           })()
         }
+        {/* </div> */}
         </div>
       </>
       
