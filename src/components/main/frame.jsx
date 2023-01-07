@@ -14,6 +14,7 @@ export default function Frame({
     timer=false,
     closeFrame,
     frameId,
+    changeMode,
 }) {
     const [themeColor, setThemeColor] = useState({timer:'rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
     const [alarmMode, setAlarmMode] = useState(false)
@@ -82,11 +83,13 @@ export default function Frame({
             wrapping.style["border-color"] = themeColor.timer;
             frame__header.style["background-color"] = themeColor.timer;
             setAlarmMode(false);
+            changeMode(frameId, false)
         }else {
             wrapping.style.color = themeColor.alarm;
             wrapping.style["border-color"] = themeColor.alarm;
             frame__header.style["background-color"] = themeColor.alarm;
             setAlarmMode(true);
+            changeMode(frameId, true)
         }
     }
 
