@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
+import { useReducer } from 'react';
 import { useState } from 'react';
 import { useInterval } from '../../common/common';
 import Button from '../ui/button';
@@ -94,17 +95,27 @@ export default function Timer({
         }
     }
 
-    function setFormat(num) {
+    function setFormat(num, type=false) {
         let formattedNum;
         formattedNum = num.toString().padStart(2, "0"); 
 
         if(num.length > 2) {
             formattedNum = num.substr(-2,2);
         }
-        
-        // 1. 59일 때 대체  -> 일의 자리만 대체
-        if(formattedNum > 59) formattedNum = '59';
-        if(num.substr(0,2) == '59') formattedNum = '5' + num.substr(-1,1);
+    
+        if(!type) {
+            // 1. 59일 때 대체  -> 일의 자리만 대체
+            if(formattedNum > 59) formattedNum = '59';
+            if(num.substr(0,2) == '59') formattedNum = '5' + num.substr(-1,1);
+        }else if(type == 'alarm_hour_am' || type == 'alarm_hour_pm') {
+            if(type === 'alarm_hour_am') {
+                if(formattedNum > 11) formattedNum = '11';
+                if(num.substr(0,2) == '11') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '1');    
+            }else {
+                if(formattedNum > 12) formattedNum = '12';
+                if(num.substr(0,2) == '12') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '2');
+            }
+        }
          
         return formattedNum;
     }
@@ -164,49 +175,124 @@ export default function Timer({
      */
 
 
+    // Alarm Mode 관련 로직
+    const [alarmInfo, dispatchAlarm] = useReducer(manageAlarm, {DAY:'AM', HOUR: undefined, MINUTE: undefined});
+
+    function manageAlarm(alarmInfo, action) {
+        switch(action.type) {
+            case 'DAY':
+                alarmInfo.HOUR = '00';
+                alarmInfo.MINUTE = '00';
+                return {...alarmInfo, DAY: (action.value == 'AM' ? 'PM' : 'AM')}
+            case 'HOUR':
+                const type = ((alarmInfo.DAY == 'AM') ? 'alarm_hour_am' : 'alarm_hour_pm');
+                return {...alarmInfo, HOUR: setFormat(action.value, type)}
+            case 'MINUTE':
+                return {...alarmInfo, MINUTE: setFormat(action.value)}
+        }
+    }
+
+    const changeAlarm = (e) => {
+        switch(e.target.id) {
+            case 'alarmDay':
+                dispatchAlarm({type:'DAY', value: e.target.innerHTML});
+                break;
+            case 'alarmHour':
+                dispatchAlarm({type:'HOUR', value: e.target.value});
+                break;
+            case 'alarmMinute':
+                dispatchAlarm({type:'MINUTE', value: e.target.value});
+                break;
+        }
+    }
+
     return (
         <div className={styles.frame}>
-            <div className={styles.timer}>
-                <div className={styles.timer__hourArea}>
-                    <input 
-                        type="number"
-                        name="hour"
-                        placeholder="00" 
-                        value={hour || ''} 
-                        onChange={onChange} 
-                        maxLength="2"
-                        max="30"
-                        min="0"
-                        pattern="\d*"
-                    /> :
-                </div> 
+            {!alarmMode &&
+                <div className={styles.timer}>
+                    <div className={styles.timer__hourArea}>
+                        <input 
+                            type="number"
+                            name="hour"
+                            placeholder="00" 
+                            value={hour || ''} 
+                            onChange={onChange} 
+                            maxLength="2"
+                            max="30"
+                            min="0"
+                            pattern="\d*"
+                        /> :
+                    </div> 
 
-                <div className={styles.timer__minuteArea}>
-                    <input 
-                        type="number" 
-                        name="minute"
-                        placeholder="00" 
-                        value={minute || ''}
-                        onChange={onChange} 
-                        maxLength="2" 
-                        max="59"
-                        min="0"
-                    /> :
-                </div>
+                    <div className={styles.timer__minuteArea}>
+                        <input 
+                            type="number" 
+                            name="minute"
+                            placeholder="00" 
+                            value={minute || ''}
+                            onChange={onChange} 
+                            maxLength="2" 
+                            max="59"
+                            min="0"
+                        /> :
+                    </div>
 
-                <div className={styles.timer__secondArea}>
-                    <input 
-                        type="number" 
-                        name="second"
-                        placeholder="00" 
-                        value={second || ''}
-                        onChange={onChange} 
-                        maxLength="2"
-                        max="59"
-                        min="0"
-                    />
+                    <div className={styles.timer__secondArea}>
+                        <input 
+                            type="number" 
+                            name="second"
+                            placeholder="00" 
+                            value={second || ''}
+                            onChange={onChange} 
+                            maxLength="2"
+                            max="59"
+                            min="0"
+                        />
+                    </div>
                 </div>
-            </div>
+            }
+            {alarmMode &&
+                <div className={styles.alarm}>
+                    <div className={styles.alarm__day}>
+                        {/* <div className={styles["alarm__day--btnUp"]}/> */}
+                        <div className={styles["alarm__day--text"]} id="alarmDay" onClick={changeAlarm}>
+                            {alarmInfo.DAY}
+                        </div>
+                        {/* <div className={styles["alarm__day--btnDown"]}/> */}
+                    
+                    </div>
+                    <div className={styles.alarm__wrapping_time}>
+                        <div className={styles.alarm__hour}>
+                            <input 
+                                type="number"
+                                id="alarmHour"
+                                value={alarmInfo.HOUR}
+                                onChange={changeAlarm}
+                                placeholder="00"
+                                maxLength="2"
+                                max="59"
+                                min="0"
+                            />
+                        </div>
+                        <div className={styles.alarm__hour_colon}>
+                            :
+                        </div>
+                        
+                        <div className={styles.alarm__minute}>
+                            <input
+                                type="number"
+                                id="alarmMinute"
+                                value={alarmInfo.MINUTE}
+                                onChange={changeAlarm}
+                                placeholder="00"
+                                maxLength="2"
+                                max="59"
+                                min="0"
+                            />
+                        </div>
+                    </div>
+                </div>                    
+            }
             <div className={styles["timer__feature"]}>
                 <div className={styles.timer__option}>
                     <div className={styles["checkbox-wrapper-19"]}>
