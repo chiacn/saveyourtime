@@ -21,13 +21,27 @@ export default function Timer({
     const [checkLink, setCheckLink] = useState(false);
     const [checkText, setCheckText] = useState(false);
 
+    // alarmMode 관련
+    const [alarmRunning, setAlarmRunning] = useState(false);
+    const [alarmInfo, dispatchAlarm] = useReducer(manageAlarm, {DAY:'AM', HOUR: '00', MINUTE: '00'});
+
+    //useRef
+    const refCheckBox = useRef();
+    const refBtnStart = useRef();
+    const refBtnReset = useRef();
+    const refLoadingBtn = useRef();
+
     const start = (e) => {
-        if(e.target.innerHTML === 'START') {
-            if(calculateTime() > 0) {
-                setIsRunning(true);
+        if(!alarmMode) {
+            if(e.target.innerHTML === 'START') {
+                if(calculateTime() > 0) {
+                    setIsRunning(true);
+                }
+            }else {
+                setIsRunning(false);
             }
         }else {
-            setIsRunning(false);
+            dispatchAlarm({type:'RUN'});
         }
     }
 
@@ -139,30 +153,35 @@ export default function Timer({
     // Mode Change
     useEffect(() => {
         const checkBox = document.getElementsByName('check-box' + frameId);
-        const btnStart = document.getElementById("btn_start" + frameId);
-        const btnReset = document.getElementById("btn_reset" + frameId);
+        // const btnStart = document.getElementById("btn_start" + frameId);
+        // const btnReset = document.getElementById("btn_reset" + frameId);
+        // const btnLoading = document.getElementById("btn_loading" + frameId);
         if(alarmMode) {
             checkBox[0].style["border-color"] = themeColor.alarm;
             checkBox[1].style["border-color"] = themeColor.alarm;
-            btnStart.style["background-color"] = themeColor.alarm;
-            btnReset.style["background-color"] = themeColor.alarm;
+            refBtnStart.current.style["background-color"] = themeColor.alarm;
+            refBtnReset.current.style.display = 'none';
+            refLoadingBtn.current.style["background-color"] = themeColor.alarm;
+            refLoadingBtn.current.style.display = 'none'
         }else {
             checkBox[0].style["border-color"] = themeColor.timer;
             checkBox[1].style["border-color"] = themeColor.timer;
-            btnStart.style["background-color"] = themeColor.timer;
-            btnReset.style["background-color"] = themeColor.timer;
+            refBtnStart.current.style["background-color"] = themeColor.timer;
+            refBtnReset.current.style["background-color"] = themeColor.timer;
+            refLoadingBtn.current.style.display = 'none';
+            refLoadingBtn.current.style["background-color"] = themeColor.timer;
         }
     }, [alarmMode])
 
     // Button 관련
     useEffect(() => { 
-        const btnStart = document.getElementById("btn_start" + frameId);
-        const btnReset = document.getElementById("btn_reset" + frameId);
+    //     const btnStart = document.getElementById("btn_start" + frameId);
+    //     const btnReset = document.getElementById("btn_reset" + frameId);
         if(calculateTime() === 0 && !isRunning) {
-            btnReset.style.display = 'none';
-            btnStart.style["margin-right"] = '0px';
-        }else if(isRunning) {
-            btnReset.style.display = 'flex';
+            refBtnReset.current.style.display = 'none';
+            refBtnStart.current.style["margin-right"] = '0px';
+        }else if(isRunning && !alarmMode) {
+            refBtnReset.current.style.display = 'flex';
         }
     })
 
@@ -176,19 +195,23 @@ export default function Timer({
 
 
     // Alarm Mode 관련 로직
-    const [alarmInfo, dispatchAlarm] = useReducer(manageAlarm, {DAY:'AM', HOUR: undefined, MINUTE: undefined});
-
     function manageAlarm(alarmInfo, action) {
         switch(action.type) {
             case 'DAY':
                 alarmInfo.HOUR = '00';
                 alarmInfo.MINUTE = '00';
                 return {...alarmInfo, DAY: (action.value == 'AM' ? 'PM' : 'AM')}
+
             case 'HOUR':
                 const type = ((alarmInfo.DAY == 'AM') ? 'alarm_hour_am' : 'alarm_hour_pm');
                 return {...alarmInfo, HOUR: setFormat(action.value, type)}
+
             case 'MINUTE':
                 return {...alarmInfo, MINUTE: setFormat(action.value)}
+
+            case 'RUN':
+                setAlarmRunning(true);
+                break;
         }
     }
 
@@ -298,7 +321,7 @@ export default function Timer({
                     <div className={styles["checkbox-wrapper-19"]}>
                         <input type="checkbox" id={"cbtest-19-text" + frameId} checked={checkText} onChange={handleOptionCheck}/>
                         { !alarmMode ?
-                            <label htmlFor={"cbtest-19-text" + frameId} className={styles["check-box"]} name={'check-box' + frameId}/> :
+                            <label htmlFor={"cbtest-19-text" + frameId} className={styles["check-box"]} name={'check-box' + frameId} ref={refCheckBox}/> :
                             <label htmlFor={"cbtest-19-text" + frameId} className={styles["check-box-alarmMode"]} name={'check-box' + frameId}/>
                         }
                     </div>
@@ -321,22 +344,22 @@ export default function Timer({
                 </div>
 
                 <div className={styles.timer__button}>
-                    {/* { !isRunning ?
-                        <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start}>
-                            {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
-                        </div>
-                        :
-                        <div className={styles["timer__button--loading"]} id={"btn_start" + frameId}>
-                            <div className={styles["loading-button1"]} />
-                            <div className={styles["loading-button2"]} />
-                            <div className={styles["loading-button3"]} />
-                        </div>
-                    } */}
-                    <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start}>
-                        {isRunning && (hour + minute + second) > 0? 'STOP' : 'START'}
+                    
+                    <div className={styles["timer__button--loading"]} id={"btn_loading" + frameId} ref={refLoadingBtn}>
+                        <div className={styles["loading-button1"]} />
+                        <div className={styles["loading-button2"]} />
+                        <div className={styles["loading-button3"]} />
+                    </div>
+                    
+                    
+                    <div className={styles["timer__button--start"]} id={"btn_start" + frameId} onClick={start} ref={refBtnStart}>
+                        { !alarmMode ? 
+                            (isRunning && (hour + minute + second) > 0 ? 'STOP' : 'START') : 
+                            (alarmRunning ? 'STOP' : 'START')
+                        }
                     </div>
 
-                    <div className={styles["timer__button--reset"]} id={"btn_reset" + frameId} onClick={reset}>
+                    <div className={styles["timer__button--reset"]} id={"btn_reset" + frameId} onClick={reset} ref={refBtnReset}>
                         Reset
                     </div>
                 </div>
