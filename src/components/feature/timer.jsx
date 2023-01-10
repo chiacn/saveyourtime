@@ -44,7 +44,9 @@ export default function Timer({
             }
         }else {
             if(e.target.innerHTML === 'START') {
-                dispatchAlarm({type:'RUN'});
+                // Button 변경
+                refLoadingBtn.current.style.display = 'flex';
+                setAlarmRunning(true);
             }else {
                 refLoadingBtn.current.style.display = 'none';
                 setAlarmRunning(false);
@@ -144,13 +146,15 @@ export default function Timer({
             if(formattedNum > 59) formattedNum = '59';
             if(num.substr(0,2) == '59') formattedNum = '5' + num.substr(-1,1);
         }else if(type == 'alarm_hour_am' || type == 'alarm_hour_pm') {
-            if(type === 'alarm_hour_am') {
-                if(formattedNum > 11) formattedNum = '11';
-                if(num.substr(0,2) == '11') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '1');    
-            }else {
-                if(formattedNum > 12) formattedNum = '12';
-                if(num.substr(0,2) == '12') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '2');
-            }
+            // if(type === 'alarm_hour_am') {
+            //     if(formattedNum > 11) formattedNum = '11';
+            //     if(num.substr(0,2) == '11') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '1');    
+            // }else {
+            //     if(formattedNum > 12) formattedNum = '12';
+            //     if(num.substr(0,2) == '12') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '2');
+            // }
+            if(formattedNum > 12) formattedNum = '12';
+            if(num.substr(0,2) == '12') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '2');
         }
          
         return formattedNum;
@@ -242,12 +246,6 @@ export default function Timer({
             case 'MINUTE':
                 return {...alarmInfo, MINUTE: setFormat(action.value)}
 
-            case 'RUN':
-                setAlarmRunning(true);
-                
-                // Button 변경
-                refLoadingBtn.current.style.display = 'flex';
-                return {...alarmInfo}
         }
     }
 
@@ -268,7 +266,7 @@ export default function Timer({
     // Popup
     function popupBrowser() {
         if(checkText) {
-            let popup = window.open();
+            const popup = window.open();
             popup.document.write(
                 `
                     <style>
@@ -297,7 +295,8 @@ export default function Timer({
             if(inputText.indexOf('https://') === -1 && inputText.indexOf('http://') === -1) {
                 formattedInputText = `https://${inputText}`;
             }
-            window.open(formattedInputText);
+            const popup = setTimeout(window.open(formattedInputText));
+            popup.alert('test')
         }
     }
 
