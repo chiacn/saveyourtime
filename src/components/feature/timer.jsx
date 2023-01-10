@@ -16,10 +16,11 @@ export default function Timer({
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
     const [isRunning, setIsRunning] = useState(false);
+    const [inputText, setInputText] = useState();
 
     // Checkbox 관련 
     const [checkLink, setCheckLink] = useState(false);
-    const [checkText, setCheckText] = useState(false);
+    const [checkText, setCheckText] = useState(true);
 
     //useRef
     const refCheckBox = useRef();
@@ -68,23 +69,38 @@ export default function Timer({
     }
 
     function run() {
-        const totalTime = calculateTime(1);
 
-        // 정수로 바꿔주기 위해 parseInt
-        const hour = parseInt(totalTime / 3600).toString().padStart(2,"0");
-        const remaining_hour = parseInt(totalTime % 3600).toString().padStart(2,"0");
-        const minute = parseInt(remaining_hour / 60).toString().padStart(2,"0");
-        const second = parseInt(remaining_hour % 60).toString().padStart(2,"0");
+        if(isRunning) {
+            const totalTime = calculateTime(1);
 
-        if(totalTime < 0) {
-            setIsRunning(false)
-            return;
-        };
+            // 정수로 바꿔주기 위해 parseInt
+            const hour = parseInt(totalTime / 3600).toString().padStart(2,"0");
+            const remaining_hour = parseInt(totalTime % 3600).toString().padStart(2,"0");
+            const minute = parseInt(remaining_hour / 60).toString().padStart(2,"0");
+            const second = parseInt(remaining_hour % 60).toString().padStart(2,"0");
 
-        setHour(hour);
-        setMinute(minute);
-        setSecond(second);
+            if(totalTime < 0) {
+                setIsRunning(false)
+                popupBrowser();
+                return;
+            };
 
+            setHour(hour);
+            setMinute(minute);
+            setSecond(second);
+
+        }else if(alarmRunning) {
+            const date = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+            const presentTime = new Intl.DateTimeFormat('en-US', options).format(date);
+            const settingTime = alarmInfo.HOUR + ':' + alarmInfo.MINUTE + ' ' + alarmInfo.DAY;
+
+            if(presentTime == settingTime) {
+                refLoadingBtn.current.style.display = 'none';
+                setAlarmRunning(false);
+                popupBrowser();
+            }
+        }
     }
 
     function calculateTime(minusNum=false) {
@@ -156,6 +172,11 @@ export default function Timer({
         }
     }
 
+    // InputText
+    const handleInputText = (e)  => {
+        setInputText(e.target.value);
+    }
+
     // Mode Change
     useEffect(() => {
         const checkBox = document.getElementsByName('check-box' + frameId);
@@ -201,6 +222,12 @@ export default function Timer({
 
 
     // Alarm Mode 관련 로직
+    
+    useInterval(
+        run,
+        alarmRunning ? 1000 : null
+    )     
+
     function manageAlarm(alarmInfo, action) {
         switch(action.type) {
             case 'DAY':
@@ -235,6 +262,42 @@ export default function Timer({
             case 'alarmMinute':
                 dispatchAlarm({type:'MINUTE', value: e.target.value});
                 break;
+        }
+    }
+
+    // Popup
+    function popupBrowser() {
+        if(checkText) {
+            let popup = window.open();
+            popup.document.write(
+                `
+                    <style>
+                        body {
+
+                        }
+                        .container {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        p {
+                            color: rgb(0, 129, 255);
+                            font-size: 100px;
+                        }
+                    </style>
+                    <div class="container">
+                        <p>${inputText}</p>
+                    </div>
+                `
+            )
+            popup.alert(inputText)
+        }else {
+            // Link format
+            let formattedInputText = inputText;
+            if(inputText.indexOf('https://') === -1 && inputText.indexOf('http://') === -1) {
+                formattedInputText = `https://${inputText}`;
+            }
+            window.open(formattedInputText);
         }
     }
 
@@ -347,9 +410,12 @@ export default function Timer({
                     
                     <p>Link</p>
                 </div>
-
+           
                 <div className={styles["timer__input"]}>
-                    <input type="text" />
+                    <input 
+                        type="text"
+                        onChange={handleInputText}
+                    />
                 </div>
 
                 <div className={styles.timer__button}>

@@ -20,10 +20,12 @@ const Navbar = () => {
     // <header className='flex justify-between border-b border-gray-300 p-2'>
     <header className={styles.header}>
       {/* <Link to='/' className='flex items-center text-4xl text-brand'> */}
-      <Link to='/' className={styles.header__home}>
+      {/* <Link to='/' className={styles.header__home}> */}
+      <div className={styles.header__home}>
         <h1>Save Your Day</h1>
         {/* <h1>Time Saver</h1> */}
-      </Link>
+      </div>
+      {/* </Link> */}
       <nav className={styles.header__nav}>
         {/* <Link to='/products'>Products</Link> */}
 

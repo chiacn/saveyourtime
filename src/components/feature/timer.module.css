@@ -59,7 +59,7 @@ button:hover {
 
 .timer__input > input {
   border-bottom: 1.5px solid;
-  width: 240px; 
+  width: 240px;
 }
 
 .timer__input > input:focus {
