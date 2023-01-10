@@ -21,15 +21,16 @@ export default function Timer({
     const [checkLink, setCheckLink] = useState(false);
     const [checkText, setCheckText] = useState(false);
 
-    // alarmMode 관련
-    const [alarmRunning, setAlarmRunning] = useState(false);
-    const [alarmInfo, dispatchAlarm] = useReducer(manageAlarm, {DAY:'AM', HOUR: '00', MINUTE: '00'});
-
     //useRef
     const refCheckBox = useRef();
     const refBtnStart = useRef();
     const refBtnReset = useRef();
     const refLoadingBtn = useRef();
+
+    // alarmMode 관련
+    const [alarmRunning, setAlarmRunning] = useState(false);
+    const [alarmInfo, dispatchAlarm] = useReducer(manageAlarm, {DAY:'AM', HOUR: '00', MINUTE: '00'});
+
 
     const start = (e) => {
         if(!alarmMode) {
@@ -41,7 +42,12 @@ export default function Timer({
                 setIsRunning(false);
             }
         }else {
-            dispatchAlarm({type:'RUN'});
+            if(e.target.innerHTML === 'START') {
+                dispatchAlarm({type:'RUN'});
+            }else {
+                refLoadingBtn.current.style.display = 'none';
+                setAlarmRunning(false);
+            }
         }
     }
 
@@ -162,7 +168,7 @@ export default function Timer({
             refBtnStart.current.style["background-color"] = themeColor.alarm;
             refBtnReset.current.style.display = 'none';
             refLoadingBtn.current.style["background-color"] = themeColor.alarm;
-            refLoadingBtn.current.style.display = 'none'
+            alarmRunning && (refLoadingBtn.current.style.display = 'flex');
         }else {
             checkBox[0].style["border-color"] = themeColor.timer;
             checkBox[1].style["border-color"] = themeColor.timer;
@@ -211,7 +217,10 @@ export default function Timer({
 
             case 'RUN':
                 setAlarmRunning(true);
-                break;
+                
+                // Button 변경
+                refLoadingBtn.current.style.display = 'flex';
+                return {...alarmInfo}
         }
     }
 
