@@ -88,6 +88,7 @@
     margin-top: 75px;
     align-self: flex-start;
     opacity: 0.8;
+    width: 30px;
 }
 
 .closeButton:hover {

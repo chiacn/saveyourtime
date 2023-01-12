@@ -15,6 +15,7 @@ p {
 .frames {
     display: flex;
     flex-wrap:wrap;
+    margin-bottom: 80px;
 }
 
 .frames > .addButton {
@@ -25,4 +26,8 @@ p {
 
 .frames > .addButton:hover {
     opacity: 1;
+}
+
+.dummyDiv {
+    width: 1px;
 }

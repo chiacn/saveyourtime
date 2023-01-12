@@ -266,29 +266,33 @@ export default function Timer({
     // Popup
     function popupBrowser() {
         if(checkText) {
+            const text = (inputText === undefined) ? '' : inputText;
             const popup = window.open();
             popup.document.write(
                 `
                     <style>
-                        body {
-
-                        }
                         .container {
                             display: flex;
                             justify-content: center;
                             align-items: center;
                         }
                         p {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
                             color: rgb(0, 129, 255);
                             font-size: 100px;
+                            overflow-wrap: break-word;
+                            height: 200px;
+                            width: 100%;
                         }
                     </style>
                     <div class="container">
-                        <p>${inputText}</p>
+                        <p>${text}</p>
                     </div>
                 `
             )
-            popup.alert(inputText)
+            popup.alert(text)
         }else {
             // Link format
             let formattedInputText = inputText;
