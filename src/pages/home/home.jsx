@@ -16,10 +16,13 @@ import { useWindowSize } from 'react-use';
     const addButton = useRef();
     const [addButtonColor, setAddButtonColor] = useState();
 
-    const [dummyFrames, dispatchDummy] = useReducer(manageDummy, [{frameId: 'frame1', alarmMode: false}]);
-
+    // Add버튼 flex-wrap 관련
     const {width, height} = useWindowSize();
-    const dummyDiv = useRef();
+    const ref_main = useRef();
+    const [lastAddBtn, setLastAddBtn] = useState();
+    const [lastDummyPoint, setLastDummyPoint] = useState();
+
+    const [dummyFrames, dispatchDummy] = useReducer(manageDummy, [{frameId: 'frame1', alarmMode: false}]);
 
     function manageDummy(dummyFrames, action) {
         switch(action.type) {
@@ -102,42 +105,54 @@ import { useWindowSize } from 'react-use';
         }
     })
 
-    /**
-        브라우저 크기에 따른 wrapping 조절
-
-        <도입 목적>
-        1. [Add 버튼]의 경우 frame 컴포넌트들과 같은 층위로 나열됨.
-            => 즉 flex-wrap: wrap이 적용될 때, Add 버튼만 개별적으로 적용된다는 것.
-        2. Add버튼을 마지막 wrap과 묶는 등의 방법은 특정 타이머를 close할 때, Add버튼과 묶이는 frame 객체가 변동되어 불변성에 영향이 가는 것으로 보임.
-           (타이머의 state 값들이 초기화되는 등 문제가 생김)
-        3. 상태관리에 최대한 영향이 안 가게끔 ui 측면에서만 이 문제를 해결하면 좀 더 안정성이 확보 되지 않을까 하는 생각이 들었음.
-
-        <해결방안>
-        1. [브라우저의 크기]와 [브라우저 좌측 끝에서 Add버튼 끝까지의 거리를 구한다]
-        2. 브라우저 크기가 Add버튼 까지의 거리를 넘어 설 때, 인위적으로 flex-wrap이 일어나게 만든다.
-            => (addButton의 css에 width 값을 주고, dummyDiv의 margin-left를 마이너스 값으로 넣어서 순간적으로 침범하게 조정한다.)
-        3. 이후 flex-wrap이 일어나서 다시 브라우저 크기 > Add버튼까지의 거리가 되면 원상복귀시킨다.
-     */
     useEffect(() => {
-        const addBtn = document.querySelector(`.${styles.addButton}`);
-        const distanceAddBtn = addBtn.getBoundingClientRect().right;
+
+        const element_addBtn = document.querySelector(`.${styles.addButton}`);
+        const element_dummyPoint = document.getElementById('dummyPoint');
         
         // distanceAddBtn 에 추가분량의 크기를 주는 이유 : Add버튼이 접히기 전에 wrapping을 일으켜야하므로.
-        if(distanceAddBtn + 30 >= width) { 
-            dummyDiv.current.style.width = '20px'   
-            dummyDiv.current.style["margin-left"] = '-100px'
-        }else {
-            dummyDiv.current.style.width = '0px';
-            dummyDiv.current.style["margin-left"] = '0px'
+        const addBtnRect =  element_addBtn.getBoundingClientRect();
+        const distance_addBtn = addBtnRect.right + 30;
+        const distance_dummyPoint = element_dummyPoint.getBoundingClientRect().right;
+
+        const width_addBtn = addBtnRect.right - addBtnRect.left;
+
+        /*
+            작동방식
+                <문제>
+                1. Add버튼 - <Home> 컴포넌트, Close 버튼 - <Frame> 컴포넌트임.
+                2. flex-wrap은 Home 컴포넌트에서 적용되는데,
+                    <Frame/> <Frame/> <Frame/> ... Add 이런식으로 Frame 컴포넌트와 Add버튼에 개별 적용됨.
+                    그래서 Add버튼만 따로 접히는 경우가 생긴다.
+                    => Add버튼과 Frame 컴포넌트가 동시에 접히게 해야 한다.
+                <해결>
+                1.  Home 컴포넌트에서 dummyDiv를 만들고 브라우저 너비가 Add버튼을 침범하면 
+                    main div의 크기(width값)를 조절해서 Add버튼과 Frame 컴포넌트가 함께 접히도록 한다.
+
+                2. 다시 main div의 width값을 원상복구 시킬 때도
+                   Add버튼과 Frame 컴포넌트가 개별적으로 움직이지 않게하기 위해서, 
+                   [Add버튼 + Frame 컴포넌트]가 접힐 당시의 Add버튼과 Frame 컴포넌트의 위치값을 useState로 저장.
+                   이 구간 사이에 브라우저 width값이 위치했을 땐 main div의 width값이 원상복구되지 않도록 한다.
+            
+         */
+
+        if( distance_addBtn > width ) { // 1. dummyPoint + add 를 브라우저 width가 침범.
+            ref_main.current.style.width = `${width - (width_addBtn + 60)}px`
+            setLastAddBtn(distance_addBtn);
+            setLastDummyPoint(distance_dummyPoint);
+
+        // distance_originAddBtn을 width가 침범하자마자 distance_originAddBtn < width가 됨. 
+        }else if(lastDummyPoint > width || lastAddBtn <= width) { 
+            ref_main.current.style.width = `${width}px`;
         }
     })
 
     return (
         <>
-            <div className={styles.main}>
+            <div className={styles.main} ref={ref_main}>
                 <div className={styles.frames}>
                     {frames.map((frame) => frame)}
-                    {/* <button onClick={addFrame}>Add</button> */}
+                    <div className={styles.dummyPoint} id="dummyPoint"/>
                     <div className={styles.addButton}  ref={addButton}>
                         {/* <Button onClick={addFrame} type="plus"/> */}
                         <Button 
@@ -149,7 +164,6 @@ import { useWindowSize } from 'react-use';
                             font_size="24px"
                         />
                     </div>
-                    <div className={styles.dummyDiv} ref={dummyDiv}/>
                 </div>
             </div>
         </>
