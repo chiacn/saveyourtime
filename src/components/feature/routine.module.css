@@ -1,0 +1,10 @@
+.routineFrame {
+    border: 3px solid rgb(0, 184, 147);
+    border-radius: 5%;
+    margin-top: 30px;
+    color: rgb(0, 184, 147);
+    width: 80%;
+    height: 100px;
+    display: flex;
+    
+}

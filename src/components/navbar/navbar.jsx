@@ -27,7 +27,12 @@ const Navbar = () => {
       </div>
       {/* </Link> */}
       <nav className={styles.header__nav}>
-        {/* <Link to='/products'>Products</Link> */}
+        <div className={styles["header__nav--timer"]}>
+          <Link to='/'>Timer</Link>
+        </div>
+        <div className={styles["header__nav--routine"]}>
+          <Link to='/routine'>Routine</Link>
+        </div>
 
         {/* {user && (
           <Link to='/carts'>
@@ -55,7 +60,7 @@ const Navbar = () => {
       </nav>
         
       {/* <User user={user} tailwind={{div: 'flex items-center shrink-0', div__img: 'w-10 h-10 rounded-full mr-2', div__name: 'hidden md:block'}}/> */}
-      <div className={styles['header__user-ui']}>
+      {/* <div className={styles['header__user-ui']}>
         <div className={styles.header__user}>
           {user && <User user={user} tailwind={{div: 'flex items-center shrink-0'}}/> }
         </div>
@@ -64,7 +69,7 @@ const Navbar = () => {
           {!user && <Button tailwind={{button:'text-2xl rounded-full mr-4'}} text={'Login'} onClick={onLogin} />}
           {user && <Button tailwind={{button:'text-2xl rounded-full mr-4'}} text={'Logout'} onClick={logout} />}
         </div>
-      </div>
+      </div> */}
     </header>
   );
 };

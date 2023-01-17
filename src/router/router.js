@@ -11,11 +11,17 @@ import NotFound from "../pages/error/notFound";
 import ProtectedRoutes from "./protectedRoutes";
 import Login from "../pages/login/login";
 import App from "../App";
+import RoutineList from "../pages/routine/routineList";
 
 
 
 export const WrappingRouter = (props) => {
 
+  /**
+      <설명>
+      ProtectedRoutes의 하위 Route들은 로그인 관련 리다이렉트를 적용할 컴포넌트들.
+      일반 App 컴포넌트가 최상위인 Route들은 ProtectedRoutes컴포넌트의 기능을 적용하지 않을 컴포넌트들.
+   */
   const router = createBrowserRouter(
     createRoutesFromElements(
         <Route >
@@ -35,6 +41,7 @@ export const WrappingRouter = (props) => {
           <Route element={<App/>}>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="home" element={<Home/>}/>
+            <Route path="routine" element={<RoutineList/>}/>
           </Route>
           <Route path="login" element={<Login/>}/>
           <Route path="*" element={<NotFound/>}/>
