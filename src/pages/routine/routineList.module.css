@@ -17,7 +17,7 @@
     margin-top: 100px;
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
     border: 5px solid rgb(0, 129, 255);
-    width: 80%;
+    width: 70%;
     opacity: 0.7;
 }
 
@@ -33,6 +33,9 @@
 }
 
 .main__closeButton {
+    position: relative;
+    top: 10px;
+    right: 10%;
     align-self: start;
     margin-top: 20px;
     margin-left: 30px;

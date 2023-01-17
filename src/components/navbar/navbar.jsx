@@ -22,7 +22,7 @@ const Navbar = () => {
       {/* <Link to='/' className='flex items-center text-4xl text-brand'> */}
       {/* <Link to='/' className={styles.header__home}> */}
       <div className={styles.header__home}>
-        <h1>Save Your Day</h1>
+        <h1>Save Your Time</h1>
         {/* <h1>Time Saver</h1> */}
       </div>
       {/* </Link> */}

@@ -13,7 +13,6 @@ import styles from './routineList.module.css'
     }
 
     const closeRoutine = (closeRoutineId) => {
-        console.log('closeRoutine 실헹')
         setRoutines(routines.filter((routine) => routine.props.routineId !== closeRoutineId))
     }
 
