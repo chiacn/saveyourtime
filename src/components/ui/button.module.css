@@ -22,8 +22,8 @@
     height: 60px;
     border-radius: 50%;
     /* background-color: rgb(218,219,221); */
-    /* background-color: rgb(0, 129, 255); */
-    background-color: rgb(0, 184, 147);
+    background-color: rgb(0, 129, 255);
+    /* background-color: rgb(0, 184, 147); */
     position: relative;
     opacity: 0.6;
 }

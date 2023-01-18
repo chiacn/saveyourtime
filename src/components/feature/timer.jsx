@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useInterval } from '../../common/common';
 import Button from '../ui/button';
 import styles from './timer.module.css';
+import { FiRepeat } from "react-icons/fi";
 
 export default function Timer({
     frameId,
@@ -27,10 +28,14 @@ export default function Timer({
     const refBtnStart = useRef();
     const refBtnReset = useRef();
     const refLoadingBtn = useRef();
+    const refRepeat = useRef();
 
     // alarmMode 관련
     const [alarmRunning, setAlarmRunning] = useState(false);
     const [alarmInfo, dispatchAlarm] = useReducer(manageAlarm, {DAY:'AM', HOUR: '00', MINUTE: '00'});
+
+    // repeat버튼
+    const [isRepeat, setIsRepeat] = useState(false);
 
 
     const start = (e) => {
@@ -68,6 +73,7 @@ export default function Timer({
         setMinute(0);
         setSecond(0);
         setIsRunning(false);
+        setIsRepeat(false);
     }
 
     function run() {
@@ -84,6 +90,19 @@ export default function Timer({
             if(totalTime < 0) {
                 setIsRunning(false)
                 popupBrowser();
+
+                // repeat 기능 추가
+                if(isRepeat) {
+                    // 최소 10분 이상이어야 수행되는 로직? (안전성을 위해서)
+                    if(Number(isRepeat.h)*3600 + Number(isRepeat.m)*60 + Number(isRepeat.s) >= 600) {
+                        console.log('repeat 동작 ====')
+                        setHour(isRepeat.h);
+                        setMinute(isRepeat.m);
+                        setSecond(isRepeat.s);
+                        setIsRunning(true);
+                    }
+                }
+
                 return;
             };
 
@@ -112,7 +131,7 @@ export default function Timer({
         if(minusNum) {
             return (h*3600 + m*60 + s) - minusNum;
         }else {
-            return (h + m + s);
+            return (h*3600 + m*60 + s);
         }
     }
 
@@ -300,9 +319,58 @@ export default function Timer({
                 formattedInputText = `https://${inputText}`;
             }
             const popup = setTimeout(window.open(formattedInputText));
-            popup.alert('test')
         }
     }
+
+    //Repeat
+    const repeat = () => {
+
+        if((calculateTime() < 600 )&& isRepeat === false) {
+            let message;
+            let lang = navigator.language;
+            if(lang.substring(0,2) === 'ko') {
+                message = '반복 기능은 10분 이상일 경우만 사용할 수 있습니다.';
+            }else {
+                message = 'Please set repeat time more than 10 minutes';
+            }
+            alert(message);
+            return;
+        }
+
+        if(!isRunning ) {
+            // isRepeat이 설정됐을 때 repeat 버튼을 누르면 해제 / 설정 안 됐을 때 누르면 설정.
+            isRepeat ? setIsRepeat(false) : setIsRepeat({h: format(hour), m: format(minute), s: format(second)});
+        }else {
+            return;
+        }
+
+        function format(time) {
+            return (time === undefined || time == '0') ? '00' : time;
+        }
+    }
+
+    useEffect(() => {
+        
+        if(isRunning) {
+            refRepeat.current.style.opacity = '0.6';
+        }else {
+            refRepeat.current.style.opacity = '1';
+        }
+
+        if(!alarmMode) {
+            refRepeat.current.style.display = 'flex';
+        }else {
+            refRepeat.current.style.display = 'none';
+        }
+
+        if(isRepeat) {
+            refRepeat.current.style.opacity = '1';
+        }else {
+            refRepeat.current.style.opacity = '0.6';
+        }
+
+
+    }, [isRepeat, alarmMode, isRunning])
 
     return (
         <div className={styles.frame}>
@@ -441,6 +509,20 @@ export default function Timer({
                         Reset
                     </div>
                 </div>
+                
+                
+                <div className={styles.timer__repeatBtn} ref={refRepeat}>
+                    <div className={styles["timer__repeatBtn--text"]}>
+                        {isRepeat ? `Repeat - ${isRepeat.h}:${isRepeat.m}:${isRepeat.s}` : 'Repeat'}
+                    </div>
+                    <div className={styles["timer__repeatBtn--icon"]} onClick={repeat}>
+                        <FiRepeat />
+                    </div>
+                    <div className={styles["timer__repeatBtn--time"]}>
+                        
+                    </div>
+                </div>
+                
             </div>
         </div>
 

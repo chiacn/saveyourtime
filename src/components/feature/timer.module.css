@@ -152,6 +152,38 @@ button:hover {
   cursor: pointer;
 }
 
+.timer__repeatBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6%;
+  position: relative;
+  left: 8%;
+}
+
+.timer__repeatBtn--text {
+  font-size: 14px;
+  align-self: center;
+}
+
+.timer__repeatBtn--icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgb(214, 230, 255);
+  margin-left: 4%;
+}
+
+.timer__repeatBtn--icon:hover {
+  cursor: pointer;
+}
+
+.timer__repeatBtn--time {
+
+}
+
 /* Alarm Mode ==================================================================================*/
 .alarm {
   display: flex;
