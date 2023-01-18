@@ -157,7 +157,7 @@ import { useWindowSize } from 'react-use';
                         {/* <Button onClick={addFrame} type="plus"/> */}
                         <Button 
                             onClick={addFrame} 
-                            type="text_shape" 
+                            type="plus" 
                             text="Add"
                             font="eng_rubik_bubbles" 
                             color={addButtonColor}
