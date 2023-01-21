@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useReducer } from 'react';
 import { useState } from 'react';
-import { clone } from '../../common/common';
+import { clone, getFromLocalStorage } from '../../common/common';
 import Frame from '../../components/main/frame';
 import Button from '../../components/ui/button';
 import styles from './home.module.css'
@@ -11,15 +11,27 @@ import { useWindowSize } from 'react-use';
 
  const Home = (props) => {
 
-    const [frames, setFrames] = useState([<Frame timer frameId="frame1" key="frame1" closeFrame={closeFrame} changeMode={changeMode}/>]);
+    const [addButtonColor, setAddButtonColor] = useState();
+    const [lastAddBtn, setLastAddBtn] = useState();
+    const [frames, setFrames] = useState(
+            [
+                <Frame 
+                    timer 
+                    frameId="frame1" 
+                    key="frame1" 
+                    closeFrame={closeFrame} 
+                    changeMode={changeMode} 
+                />
+            ]
+        );
     const [closeFrameId, setCloseFrameId] = useState();
     const addButton = useRef();
-    const [addButtonColor, setAddButtonColor] = useState();
+
 
     // Add버튼 flex-wrap 관련
     const {width, height} = useWindowSize();
     const ref_main = useRef();
-    const [lastAddBtn, setLastAddBtn] = useState();
+  
     const [lastDummyPoint, setLastDummyPoint] = useState();
 
     const [dummyFrames, dispatchDummy] = useReducer(manageDummy, [{frameId: 'frame1', alarmMode: false}]);
@@ -58,7 +70,17 @@ import { useWindowSize } from 'react-use';
 
     const addFrame = () => {
         const frameId = createFrameId();
-        setFrames((prevFrames) => [...prevFrames, <Frame timer frameId={frameId} key={frameId} closeFrame={closeFrame} changeMode={changeMode}/>])
+        setFrames(
+            (prevFrames) => [...prevFrames, 
+                                <Frame 
+                                    timer 
+                                    frameId={frameId} 
+                                    key={frameId} 
+                                    closeFrame={closeFrame} 
+                                    changeMode={changeMode}
+                                />
+                            ]
+        )
         dispatchDummy({
             type: 'add',
             frame: {frameId: frameId, alarmMode: false}
@@ -82,6 +104,7 @@ import { useWindowSize } from 'react-use';
     }
 
     function createFrameId() {
+        // frameId를 frame1 frame2 frame3 이런식으로하면 중간에 frame2가 삭제되고 그러면 뒤죽박죽됨.
         return new Date().getTime().toString();
     }
 
@@ -146,6 +169,21 @@ import { useWindowSize } from 'react-use';
             ref_main.current.style.width = `${width}px`;
         }
     })
+
+    // local storage
+    useEffect(() => {
+        window.localStorage.setItem('addButtonColor', JSON.stringify(addButtonColor));
+        window.localStorage.setItem('lastAddBtn', JSON.stringify(lastAddBtn));
+    }, [addButtonColor, lastAddBtn])
+
+    // local storage update
+    useEffect(() => {
+        const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
+        setFrames(localStorageInfo.storedFrames);
+        setAddButtonColor(localStorageInfo.homeData.addButtonColor);
+        setLastAddBtn(localStorageInfo.homeData.lastAddBtn);
+        console.log('home / local storage update ===========================')
+    }, [])
 
     return (
         <>

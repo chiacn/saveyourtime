@@ -12,6 +12,7 @@ export default function Timer({
     frameId,
     alarmMode=false,
     themeColor,
+    localStorage,
 }) {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
@@ -265,6 +266,10 @@ export default function Timer({
             case 'MINUTE':
                 return {...alarmInfo, MINUTE: setFormat(action.value)}
 
+            case 'localStorage':
+                console.log('d여기까진 실행')
+                return {...alarmInfo, DAY: action.value.DAY, HOUR: action.value.HOUR, MINUTE: action.value.MINUTE};
+
         }
     }
 
@@ -371,6 +376,42 @@ export default function Timer({
 
 
     }, [isRepeat, alarmMode, isRunning])
+
+
+    // local storage
+    useEffect(() => {
+        const storeKey = JSON.stringify(frameId);
+        const storeValue = JSON.stringify({
+            frameId: frameId,
+            alarmMode: alarmMode,
+            hour: hour,
+            minute: minute,
+            second: second,
+            isRunning: isRunning,
+            inputText: inputText,
+            checkLink: checkLink,
+            checkText: checkText,
+            alarmRunning: alarmRunning,
+            alarmInfo: alarmInfo,
+            isRepeat: isRepeat
+        });
+        window.localStorage.setItem(storeKey, storeValue)
+    }, [alarmMode, hour, minute, second, isRunning, inputText, checkLink, checkText, alarmRunning, alarmInfo, isRepeat])
+
+    useEffect(() => {
+        if(localStorage) {
+            setHour(localStorage.hour);
+            setMinute(localStorage.minute);
+            setSecond(localStorage.second);
+            setIsRunning(localStorage.isRunning);
+            setInputText(localStorage.inputText);
+            setCheckLink(localStorage.checkLink);
+            setCheckText(localStorage.checkText);
+            setAlarmRunning(localStorage.alarmRunning);
+            setIsRepeat(localStorage.isRepeat);
+            dispatchAlarm({type:'localStorage', value:localStorage.alarmInfo})
+        }
+    }, [])
 
     return (
         <div className={styles.frame}>
@@ -486,6 +527,7 @@ export default function Timer({
                     <input 
                         type="text"
                         onChange={handleInputText}
+                        value={inputText}
                     />
                 </div>
 

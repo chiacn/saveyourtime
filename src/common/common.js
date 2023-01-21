@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import Frame from "../components/main/frame";
 
 // Component CSS
 export const setCSS = (originCSS, addCSS) => {
@@ -43,4 +44,48 @@ export const clone = (obj) => {
         output[i] = obj[i]
     }
     return output;
+}
+
+// local storage
+export const getFromLocalStorage = (closeFrame, changeMode) => {
+    const localStorage = window.localStorage;
+    let localStorageData = [];
+    let homeData = {addButtonColor: 'rgb(0, 184, 147)', lastAddBtn: undefined};
+    let storedFrames = [];
+
+    for(let key in localStorage) {
+        if(
+            key == 'darkyState' ||
+            key == 'darkyMode' ||
+            key == 'darkySupported' ||
+            key == 'length' ||
+            key == 'clear' ||
+            key == 'getItem' ||
+            key == 'removeItem' ||
+            key == 'key' ||
+            key == 'setItem' ||
+
+            key == 'addButtonColor' ||
+            key == 'lastAddBtn'
+        ) continue;
+
+        let gettedItem = localStorage.getItem(key);
+        localStorageData.push(((gettedItem !== 'undefined') ? JSON.parse(gettedItem) : gettedItem));
+    }
+
+    homeData.addButtonColor = (localStorage.getItem('addButtonColor') != 'undefined') && JSON.parse(localStorage.getItem('addButtonColor'));
+    homeData.lastAddBtn = (localStorage.getItem('lastAddBtn') != 'undefined') && JSON.parse(localStorage.getItem('lastAddBtn'));
+
+    // localStorageData frameId에 따라 정렬.
+    localStorageData.sort(function(a, b) {
+        return ((a.frameId == 'frame1') ? '1' : a.frameId)  -  ((b.frameId == 'frame1') ? '1' : b.frameId);
+    });
+
+
+    // home 컴포넌트에서 frames 배열에 넣어줄 Frame 컴포넌트 배열 설정.
+    localStorageData.map(data => {
+        storedFrames.push(<Frame timer key={data.frameId} frameId={data.frameId} closeFrame={closeFrame} changeMode={changeMode} localStorage={data}/>)
+    })
+
+    return {storedFrames: storedFrames, homeData: homeData};
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { setCSS } from '../../common/common';
@@ -15,9 +16,13 @@ export default function Frame({
     closeFrame,
     frameId,
     changeMode,
+    localStorage,
 }) {
     const [themeColor, setThemeColor] = useState({timer:'rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
-    const [alarmMode, setAlarmMode] = useState(false)
+    const [alarmMode, setAlarmMode] = useState(false);
+
+    const ref_wrapping = useRef();
+    const ref_frame__header = useRef();
     
     const originCSS = !defaultTailwind ? {
     // CSS
@@ -71,23 +76,23 @@ export default function Frame({
     
     const submitFrameId = () => {
         closeFrame(frameId);
-    }
 
+        //local storage에서도 해당 값 제거.
+        window.localStorage.removeItem(JSON.stringify(frameId));
+    }
+    
     const changeFormat = (e) => {
-        const wrapping = document.getElementById('wrapping' + frameId);
-        const frame__header = document.getElementById('frame__header' + frameId)
-        const timer = document.getElementById(frameId)
 
         if(e.target.innerHTML === 'Timer') {
-            wrapping.style.color = themeColor.timer;
-            wrapping.style["border-color"] = themeColor.timer;
-            frame__header.style["background-color"] = themeColor.timer;
+            ref_wrapping.current.style.color = themeColor.timer;
+            ref_wrapping.current.style["border-color"] = themeColor.timer;
+            ref_frame__header.current.style["background-color"] = themeColor.timer;
             setAlarmMode(false);
             changeMode(frameId, false)
         }else {
-            wrapping.style.color = themeColor.alarm;
-            wrapping.style["border-color"] = themeColor.alarm;
-            frame__header.style["background-color"] = themeColor.alarm;
+            ref_wrapping.current.style.color = themeColor.alarm;
+            ref_wrapping.current.style["border-color"] = themeColor.alarm;
+            ref_frame__header.current.style["background-color"] = themeColor.alarm;
             setAlarmMode(true);
             changeMode(frameId, true)
         }
@@ -107,10 +112,26 @@ export default function Frame({
         frame__header.style["background-color"] = themeColor.timer;
     },[themeColor])
 
+    // local storage update
+    useEffect(() => {
+        if(localStorage) {
+            setAlarmMode(localStorage.alarmMode);
+            if(!localStorage.alarmMode) {
+                ref_wrapping.current.style.color = themeColor.timer;
+                ref_wrapping.current.style["border-color"] = themeColor.timer;
+                ref_frame__header.current.style["background-color"] = themeColor.timer;
+            }else {
+                ref_wrapping.current.style.color = themeColor.alarm;
+                ref_wrapping.current.style["border-color"] = themeColor.alarm;
+                ref_frame__header.current.style["background-color"] = themeColor.alarm;
+            }
+        }
+    }, [])
+
     return (
             <>
                 <div className={styles.container}>
-                    <div className={wrapping} id={'wrapping' + frameId}>
+                    <div className={wrapping} id={'wrapping' + frameId} ref={ref_wrapping}>
                         <div className={styles.button}>
                             <div className={styles.button__timer} onClick={changeFormat} id={'button__timer' + frameId}>
                                 Timer
@@ -120,9 +141,9 @@ export default function Frame({
                             </div>
                         </div>
                         <div className={styles.frame}>
-                            <div className={styles.frame__header} id={'frame__header' + frameId} />
+                            <div className={styles.frame__header} id={'frame__header' + frameId} ref={ref_frame__header}/>
                             <div className={styles.frame__timer}>
-                                <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor}/>
+                                <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor} localStorage={localStorage}/>
                             </div>
                         </div>
                     </div>
