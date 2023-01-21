@@ -10,10 +10,13 @@ import styles from './home.module.css'
 import { useWindowSize } from 'react-use';
 
  const Home = (props) => {
-
+    const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
     const [addButtonColor, setAddButtonColor] = useState();
     const [lastAddBtn, setLastAddBtn] = useState();
     const [frames, setFrames] = useState(
+            (localStorageInfo.storedFrames.length > 0 ) ?
+            []
+            :
             [
                 <Frame 
                     timer 
@@ -23,6 +26,7 @@ import { useWindowSize } from 'react-use';
                     changeMode={changeMode} 
                 />
             ]
+
         );
     const [closeFrameId, setCloseFrameId] = useState();
     const addButton = useRef();
@@ -178,11 +182,10 @@ import { useWindowSize } from 'react-use';
 
     // local storage update
     useEffect(() => {
-        const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
+        // const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
         setFrames(localStorageInfo.storedFrames);
         setAddButtonColor(localStorageInfo.homeData.addButtonColor);
         setLastAddBtn(localStorageInfo.homeData.lastAddBtn);
-        console.log('home / local storage update ===========================')
     }, [])
 
     return (
