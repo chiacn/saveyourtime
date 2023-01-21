@@ -13,21 +13,7 @@ import { useWindowSize } from 'react-use';
     const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
     const [addButtonColor, setAddButtonColor] = useState();
     const [lastAddBtn, setLastAddBtn] = useState();
-    const [frames, setFrames] = useState(
-            (localStorageInfo.storedFrames.length > 0 ) ?
-            []
-            :
-            [
-                <Frame 
-                    timer 
-                    frameId="frame1" 
-                    key="frame1" 
-                    closeFrame={closeFrame} 
-                    changeMode={changeMode} 
-                />
-            ]
-
-        );
+    const [frames, setFrames] = useState([]);
     const [closeFrameId, setCloseFrameId] = useState();
     const addButton = useRef();
 
@@ -35,7 +21,6 @@ import { useWindowSize } from 'react-use';
     // Add버튼 flex-wrap 관련
     const {width, height} = useWindowSize();
     const ref_main = useRef();
-  
     const [lastDummyPoint, setLastDummyPoint] = useState();
 
     const [dummyFrames, dispatchDummy] = useReducer(manageDummy, [{frameId: 'frame1', alarmMode: false}]);
@@ -183,7 +168,23 @@ import { useWindowSize } from 'react-use';
     // local storage update
     useEffect(() => {
         // const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
-        setFrames(localStorageInfo.storedFrames);
+        console.log('useEffect / localStorageInfo.storedFrames = ', localStorageInfo.storedFrames)
+        if(localStorageInfo.storedFrames.length > 0) {
+            setFrames(localStorageInfo.storedFrames);
+        }else {
+            setFrames(     
+                [          
+                    <Frame 
+                        timer 
+                        frameId="frame1" 
+                        key="frame1" 
+                        closeFrame={closeFrame} 
+                        changeMode={changeMode} 
+                    />
+                ]
+            )
+        }
+        
         setAddButtonColor(localStorageInfo.homeData.addButtonColor);
         setLastAddBtn(localStorageInfo.homeData.lastAddBtn);
     }, [])
