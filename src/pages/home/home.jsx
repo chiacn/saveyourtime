@@ -133,7 +133,6 @@ import { useWindowSize } from 'react-use';
             console.log('ref_memoArea width = ', ref_memoArea.current.style)
             browserWidth = width - 450;
         }
-        console.log('작동 ==== ')
      
         const element_addBtn = document.querySelector(`.${styles.addButton}`);
         const element_dummyPoint = document.getElementById('dummyPoint');
@@ -164,7 +163,7 @@ import { useWindowSize } from 'react-use';
             
          */
 
-        if( distance_addBtn > width ) { // 1. dummyPoint + add 를 브라우저 width가 침범.
+        if( distance_addBtn > browserWidth ) { // 1. dummyPoint + add 를 브라우저 width가 침범.
             ref_main.current.style.width = `${browserWidth - (width_addBtn + 60)}px`
             setLastAddBtn(distance_addBtn);
             setLastDummyPoint(distance_dummyPoint);
