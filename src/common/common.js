@@ -50,7 +50,7 @@ export const clone = (obj) => {
 export const getFromLocalStorage = (closeFrame, changeMode) => {
     const localStorage = window.localStorage;
     let localStorageData = [];
-    let homeData = {addButtonColor: 'rgb(0, 184, 147)', lastAddBtn: undefined};
+    let homeData = {addButtonColor: 'rgb(0, 184, 147)', lastAddBtn: undefined, memo: undefined};
     let storedFrames = [];
 
     for(let key in localStorage) {
@@ -66,7 +66,8 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
             key == 'setItem' ||
 
             key == 'addButtonColor' ||
-            key == 'lastAddBtn'
+            key == 'lastAddBtn' ||
+            key == 'memo'
         ) continue;
 
         let gettedItem = localStorage.getItem(key);
@@ -75,6 +76,7 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
 
     homeData.addButtonColor = (localStorage.getItem('addButtonColor') != 'undefined') && JSON.parse(localStorage.getItem('addButtonColor'));
     homeData.lastAddBtn = (localStorage.getItem('lastAddBtn') != 'undefined') && JSON.parse(localStorage.getItem('lastAddBtn'));
+    homeData.memo = (localStorage.getItem('memo') != 'undefined') && JSON.parse(localStorage.getItem('memo'));
 
     // localStorageData frameId에 따라 정렬.
     localStorageData.sort(function(a, b) {

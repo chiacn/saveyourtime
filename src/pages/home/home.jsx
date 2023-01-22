@@ -23,6 +23,14 @@ import { useWindowSize } from 'react-use';
     const ref_main = useRef();
     const [lastDummyPoint, setLastDummyPoint] = useState();
 
+    // memo 기능 관련
+    const [memo, setMemo] = useState();
+    const [foldMemo, setFoldMemo] = useState(true);
+    const ref_memoArea = useRef();
+    const ref_memoButton__arrow = useRef();
+    const ref_memoButton__window = useRef();
+    const ref_memoButton__windowFold = useRef();
+
     const [dummyFrames, dispatchDummy] = useReducer(manageDummy, [{frameId: 'frame1', alarmMode: false}]);
 
     function manageDummy(dummyFrames, action) {
@@ -118,7 +126,15 @@ import { useWindowSize } from 'react-use';
     })
 
     useEffect(() => {
-
+        let browserWidth;
+        if(foldMemo) {
+            browserWidth = width;
+        }else {
+            console.log('ref_memoArea width = ', ref_memoArea.current.style)
+            browserWidth = width - 450;
+        }
+        console.log('작동 ==== ')
+     
         const element_addBtn = document.querySelector(`.${styles.addButton}`);
         const element_dummyPoint = document.getElementById('dummyPoint');
         
@@ -149,13 +165,13 @@ import { useWindowSize } from 'react-use';
          */
 
         if( distance_addBtn > width ) { // 1. dummyPoint + add 를 브라우저 width가 침범.
-            ref_main.current.style.width = `${width - (width_addBtn + 60)}px`
+            ref_main.current.style.width = `${browserWidth - (width_addBtn + 60)}px`
             setLastAddBtn(distance_addBtn);
             setLastDummyPoint(distance_dummyPoint);
 
         // distance_originAddBtn을 width가 침범하자마자 distance_originAddBtn < width가 됨. 
-        }else if(lastDummyPoint > width || lastAddBtn <= width) { 
-            ref_main.current.style.width = `${width}px`;
+        }else if(lastDummyPoint > browserWidth || lastAddBtn <= browserWidth) { 
+            ref_main.current.style.width = `${browserWidth}px`;
         }
     })
 
@@ -163,7 +179,8 @@ import { useWindowSize } from 'react-use';
     useEffect(() => {
         window.localStorage.setItem('addButtonColor', JSON.stringify(addButtonColor));
         window.localStorage.setItem('lastAddBtn', JSON.stringify(lastAddBtn));
-    }, [addButtonColor, lastAddBtn])
+        window.localStorage.setItem('memo', JSON.stringify(memo));
+    }, [addButtonColor, lastAddBtn, memo])
 
     // local storage update
     useEffect(() => {
@@ -187,7 +204,40 @@ import { useWindowSize } from 'react-use';
         
         setAddButtonColor(localStorageInfo.homeData.addButtonColor);
         setLastAddBtn(localStorageInfo.homeData.lastAddBtn);
+        console.log('localStorageInfo.homeData.memo = ', localStorageInfo.homeData.memo)
+        setMemo(localStorageInfo.homeData.memo);
     }, [])
+
+    // memo 기능
+    const unfoldMemo =() => {
+        // arrow 버전
+        // if(ref_memoButton__arrow.current.style.transform !== 'none') {
+        //     ref_memoButton__arrow.current.style.transform = 'none';
+        //     ref_memoArea.current.style.display = 'none';
+        // }else {
+        //     ref_memoButton__arrow.current.style.transform = 'rotate(180deg)';
+        //     ref_memoArea.current.style.display = 'flex';
+        // }
+
+       
+        // window버전
+        if(foldMemo) {
+            ref_memoButton__window.current.style.display = 'none';
+            ref_memoButton__windowFold.current.style.display = 'flex';
+            ref_memoArea.current.style.display = 'flex';
+            setFoldMemo(false);
+        }else {
+            ref_memoButton__window.current.style.display = 'flex';
+            ref_memoButton__windowFold.current.style.display = 'none';
+            ref_memoArea.current.style.display = 'none';
+            setFoldMemo(true);
+        }
+
+    }
+
+    const changeMemo = (e) => {
+        setMemo(e.target.value);
+    }
 
     return (
         <>
@@ -206,6 +256,17 @@ import { useWindowSize } from 'react-use';
                             font_size="24px"
                         />
                     </div>
+                </div>
+            </div>
+            <div className={styles.memo_container}>
+                <div className={styles.memoButton}>
+                    <p>memo</p>
+                    {/* <div class={styles.memoButton__arrow} onClick={unfoldMemo} ref={ref_memoButton__arrow}></div> */}
+                    <div class={styles.memoButton__window} onClick={unfoldMemo} ref={ref_memoButton__window} />
+                    <div class={styles["memoButton__window--fold"]} onClick={unfoldMemo} ref={ref_memoButton__windowFold} />
+                </div>
+                <div className={styles.memoArea} ref={ref_memoArea}>
+                    <textarea value={memo} maxlength="500" onChange={changeMemo}/>
                 </div>
             </div>
         </>
