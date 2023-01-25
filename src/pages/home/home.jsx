@@ -130,7 +130,6 @@ import { useWindowSize } from 'react-use';
         if(foldMemo) {
             browserWidth = width;
         }else {
-            console.log('ref_memoArea width = ', ref_memoArea.current.style)
             browserWidth = width - 450;
         }
      
@@ -183,8 +182,6 @@ import { useWindowSize } from 'react-use';
 
     // local storage update
     useEffect(() => {
-        // const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
-        console.log('useEffect / localStorageInfo.storedFrames = ', localStorageInfo.storedFrames)
         if(localStorageInfo.storedFrames.length > 0) {
             setFrames(localStorageInfo.storedFrames);
         }else {
@@ -203,7 +200,6 @@ import { useWindowSize } from 'react-use';
         
         setAddButtonColor(localStorageInfo.homeData.addButtonColor);
         setLastAddBtn(localStorageInfo.homeData.lastAddBtn);
-        console.log('localStorageInfo.homeData.memo = ', localStorageInfo.homeData.memo)
         setMemo(localStorageInfo.homeData.memo);
     }, [])
 
@@ -261,11 +257,11 @@ import { useWindowSize } from 'react-use';
                 <div className={styles.memoButton}>
                     <p>memo</p>
                     {/* <div class={styles.memoButton__arrow} onClick={unfoldMemo} ref={ref_memoButton__arrow}></div> */}
-                    <div class={styles.memoButton__window} onClick={unfoldMemo} ref={ref_memoButton__window} />
-                    <div class={styles["memoButton__window--fold"]} onClick={unfoldMemo} ref={ref_memoButton__windowFold} />
+                    <div className={styles.memoButton__window} onClick={unfoldMemo} ref={ref_memoButton__window} />
+                    <div className={styles["memoButton__window--fold"]} onClick={unfoldMemo} ref={ref_memoButton__windowFold} />
                 </div>
                 <div className={styles.memoArea} ref={ref_memoArea}>
-                    <textarea value={memo} maxlength="500" onChange={changeMemo}/>
+                    <textarea value={memo} maxLength="500" onChange={changeMemo}/>
                 </div>
             </div>
         </>

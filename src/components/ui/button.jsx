@@ -58,9 +58,9 @@ export default function Button({
       }
 
       return {
-        'font-family': COMMON_FONT,
+        'fontFamily': COMMON_FONT,
         color: COMMON_COLOR,
-        'font-size': COMMON_FONT_SIZE
+        'fontSize': COMMON_FONT_SIZE
       }
   }
 

@@ -15,7 +15,6 @@ const Navbar = () => {
     navigation('/login')
   }
 
-  console.log('Navbar.js / user = ', user)
   return (
     // <header className='flex justify-between border-b border-gray-300 p-2'>
     <header className={styles.header}>

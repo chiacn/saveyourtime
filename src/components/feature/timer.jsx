@@ -96,7 +96,6 @@ export default function Timer({
                 if(isRepeat) {
                     // 최소 10분 이상이어야 수행되는 로직? (안전성을 위해서)
                     if(Number(isRepeat.h)*3600 + Number(isRepeat.m)*60 + Number(isRepeat.s) >= 600) {
-                        console.log('repeat 동작 ====')
                         setHour(isRepeat.h);
                         setMinute(isRepeat.m);
                         setSecond(isRepeat.s);
@@ -267,7 +266,6 @@ export default function Timer({
                 return {...alarmInfo, MINUTE: setFormat(action.value)}
 
             case 'localStorage':
-                console.log('d여기까진 실행')
                 return {...alarmInfo, DAY: action.value.DAY, HOUR: action.value.HOUR, MINUTE: action.value.MINUTE};
 
         }
