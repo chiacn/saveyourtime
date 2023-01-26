@@ -156,27 +156,7 @@ import { useWindowSize } from 'react-use';
         const addBtnRect =  element_addBtn.getBoundingClientRect();
         const distance_addBtn = addBtnRect.right + 30;
         const distance_dummyPoint = element_dummyPoint.getBoundingClientRect().right;
-
         const width_addBtn = addBtnRect.right - addBtnRect.left;
-
-        /*
-            작동방식
-                <문제>
-                1. Add버튼 - <Home> 컴포넌트, Close 버튼 - <Frame> 컴포넌트임.
-                2. flex-wrap은 Home 컴포넌트에서 적용되는데,
-                    <Frame/> <Frame/> <Frame/> ... Add 이런식으로 Frame 컴포넌트와 Add버튼에 개별 적용됨.
-                    그래서 Add버튼만 따로 접히는 경우가 생긴다.
-                    => Add버튼과 Frame 컴포넌트가 동시에 접히게 해야 한다.
-                <해결>
-                1.  Home 컴포넌트에서 dummyDiv를 만들고 브라우저 너비가 Add버튼을 침범하면 
-                    main div의 크기(width값)를 조절해서 Add버튼과 Frame 컴포넌트가 함께 접히도록 한다.
-
-                2. 다시 main div의 width값을 원상복구 시킬 때도
-                   Add버튼과 Frame 컴포넌트가 개별적으로 움직이지 않게하기 위해서, 
-                   [Add버튼 + Frame 컴포넌트]가 접힐 당시의 Add버튼과 Frame 컴포넌트의 위치값을 useState로 저장.
-                   이 구간 사이에 브라우저 width값이 위치했을 땐 main div의 width값이 원상복구되지 않도록 한다.
-            
-         */
 
         if( distance_addBtn > browserWidth ) { // 1. dummyPoint + add 를 브라우저 width가 침범.
             ref_main.current.style.width = `${browserWidth - (width_addBtn + 60)}px`
