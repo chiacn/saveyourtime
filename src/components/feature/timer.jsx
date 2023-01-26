@@ -13,6 +13,8 @@ export default function Timer({
     alarmMode=false,
     themeColor,
     localStorage,
+    example=false,
+    example_count,
 }) {
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
@@ -378,22 +380,24 @@ export default function Timer({
 
     // local storage
     useEffect(() => {
-        const storeKey = JSON.stringify(frameId);
-        const storeValue = JSON.stringify({
-            frameId: frameId,
-            alarmMode: alarmMode,
-            hour: hour,
-            minute: minute,
-            second: second,
-            isRunning: isRunning,
-            inputText: inputText,
-            checkLink: checkLink,
-            checkText: checkText,
-            alarmRunning: alarmRunning,
-            alarmInfo: alarmInfo,
-            isRepeat: isRepeat
-        });
-        window.localStorage.setItem(storeKey, storeValue)
+        if(frameId !== 'example') {
+            const storeKey = JSON.stringify(frameId);
+            const storeValue = JSON.stringify({
+                frameId: frameId,
+                alarmMode: alarmMode,
+                hour: hour,
+                minute: minute,
+                second: second,
+                isRunning: isRunning,
+                inputText: inputText,
+                checkLink: checkLink,
+                checkText: checkText,
+                alarmRunning: alarmRunning,
+                alarmInfo: alarmInfo,
+                isRepeat: isRepeat
+            });
+            window.localStorage.setItem(storeKey, storeValue)
+        }
     }, [alarmMode, hour, minute, second, isRunning, inputText, checkLink, checkText, alarmRunning, alarmInfo, isRepeat])
 
     useEffect(() => {
@@ -410,6 +414,18 @@ export default function Timer({
             dispatchAlarm({type:'localStorage', value:localStorage.alarmInfo})
         }
     }, [])
+
+    // example
+    useEffect(() => {
+        const lang = navigator.language;
+        if(example === true) {
+            setCheckLink(true);
+            setCheckText(false);
+            setSecond('10');
+            (lang.substring(0,2) === 'ko') ? setInputText('https://www.youtube.com/watch?v=cjzYyviLnlY') : setInputText('https://www.youtube.com/watch?v=ZXsQAXx_ao0')
+            setIsRunning(true);
+        }
+    }, [example, example_count])
 
     return (
         <div className={styles.frame}>

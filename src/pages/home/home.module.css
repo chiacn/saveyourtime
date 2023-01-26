@@ -10,6 +10,7 @@ p {
 
 .main {
     display: flex;
+    margin-top: 40px;
 }
 
 .frames {
@@ -35,7 +36,7 @@ p {
 .memo_container {
     position: absolute;
     right: 120px;
-    top: 80px;
+    top: 120px;
 
     display: flex;
     flex-direction: column;
@@ -128,4 +129,91 @@ p {
 
 .memoArea > textarea:focus {
     outline: none;
+}
+
+.help__button {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    opacity: 0.6;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.help__button:hover {
+    opacity: 0.7;
+}
+
+.help__window {
+    display: none;
+    flex-wrap: wrap;
+    position: fixed;
+    top: 20%;
+    left: 10%;
+    width: 80%;
+    height: 550px;
+
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border: 5px solid rgb(0, 184, 147);
+
+    color: rgb(0, 184, 147);
+    background-color: white;
+}
+
+.help__window--close {
+    position: absolute;
+    top: 4px;
+    right: 30px;
+    width: 10%;
+}
+
+.help__window--exampleFrame {
+    position: absolute;
+    left: -30px;
+    bottom: 12%;
+}
+
+.help__window--description {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    left: 38%;
+    top: 10%;
+    font-size: 18px;
+    line-height: 50px;
+}
+
+.help__window--example {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    left: 38%;
+    bottom: 15%;
+    border: 2px solid;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    width: 50%;;
+    height: 30%;
+    font-size: 25px;
+}
+
+.help__window--example span:hover {
+    cursor: pointer;
+}
+
+.help__window--info {
+    position: absolute;
+    bottom: 10px;
+    right: 70px;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 1400px) {
+    .help__window {
+        display: none;
+    }
+
+    .help__button {
+        display: none;
+    }
 }

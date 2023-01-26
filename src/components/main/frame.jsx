@@ -17,6 +17,8 @@ export default function Frame({
     frameId,
     changeMode,
     localStorage,
+    example=false,
+    example_count,
 }) {
     const [themeColor, setThemeColor] = useState({timer:'rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
     const [alarmMode, setAlarmMode] = useState(false);
@@ -128,6 +130,14 @@ export default function Frame({
         }
     }, [])
 
+    // example
+    useEffect(() => {
+        console.log('frame/ example 작동 === ')
+        if(example === true) {
+            setAlarmMode(false);
+        }
+    },[example])
+
     return (
             <>
                 <div className={styles.container}>
@@ -143,12 +153,12 @@ export default function Frame({
                         <div className={styles.frame}>
                             <div className={styles.frame__header} id={'frame__header' + frameId} ref={ref_frame__header}/>
                             <div className={styles.frame__timer}>
-                                <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor} localStorage={localStorage}/>
+                                <Timer frameId={frameId} alarmMode={alarmMode} themeColor={themeColor} localStorage={localStorage} example={example} example_count={example_count}/>
                             </div>
                         </div>
                     </div>
                     {/* <div className={styles.closeButton}>X</div> */}
-                    { (frameId !== 'frame1') &&
+                    { (frameId !== 'frame1' && frameId !== 'example') &&
                     <div className={styles.closeButton}>
                         <Button 
                             type="text_shape"
@@ -160,16 +170,6 @@ export default function Frame({
                     </div>
                     }
                 </div>
-                
-                {/* Modal */}
-                {/* <div className={modal}>
-                    <div className={styles.modal__close}>
-                        <button onClick={closeOption}>Close</button>
-                    </div>
-                </div> */}
-
-                {/* Modal Animation */}
-                {/* <div className={styles.modal__ani}/> */}
             </>
             
         
