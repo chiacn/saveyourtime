@@ -2,13 +2,13 @@ import React from "react";
 import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import styles from "./navbar.module.css";
 import Home from "../../pages/home/home"
-import { useAuth } from "../../common/context";
+// import { useAuth } from "../../common/context";
 import Button from "../ui/button";
-import { login, logout } from "../../service/auth_service";
+// import { login, logout } from "../../service/auth_service";
 import User from "../user/user";
 
 const Navbar = () => {
-  const user = useAuth().userInfo;
+  // const user = useAuth().userInfo;
 
   const navigation = useNavigate();
   const onLogin = () => {

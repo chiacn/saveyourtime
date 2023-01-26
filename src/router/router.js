@@ -7,8 +7,8 @@ import Maker from "../components/maker/maker";
 
 import React from 'react';
 import NotFound from "../pages/error/notFound";
-import ProtectedRoutes from "./protectedRoutes";
-import Login from "../pages/login/login";
+// import ProtectedRoutes from "./protectedRoutes";
+// import Login from "../pages/login/login";
 import App from "../App";
 import RoutineList from "../pages/routine/routineList";
 
@@ -24,16 +24,16 @@ export const WrappingRouter = (props) => {
   const router = createBrowserRouter(
     createRoutesFromElements(
         <Route >
-          <Route element={<ProtectedRoutes/>}>
+          {/* <Route element={<ProtectedRoutes/>}>
             <Route element={<App/>}>
             </Route>
-          </Route> 
+          </Route>  */}
           <Route element={<App/>}>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="home" element={<Home/>}/>
             <Route path="routine" element={<RoutineList/>}/>
           </Route>
-          <Route path="login" element={<Login/>}/>
+          {/* <Route path="login" element={<Login/>}/> */}
           <Route path="*" element={<NotFound/>}/>
         </Route>
     )
