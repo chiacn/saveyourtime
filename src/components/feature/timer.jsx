@@ -289,9 +289,19 @@ export default function Timer({
 
     // Popup
     function popupBrowser() {
+        const lang = navigator.language;
+        const alertMessage = (lang.substring(0,2) === 'ko') ? '팝업을 허용해주세요' : 'Please turn off the pop-up blocker'
         if(checkText) {
             const text = (inputText === undefined) ? '' : inputText;
             const popup = window.open();
+
+            // 팝업 차단 시 alert
+            try {
+                popup.focus();
+            }catch(e) {
+                alert(alertMessage)
+            }
+
             popup.document.write(
                 `
                     <style>
@@ -317,13 +327,22 @@ export default function Timer({
                 `
             )
             popup.alert(text)
+
         }else {
             // Link format
             let formattedInputText = inputText;
             if(inputText.indexOf('https://') === -1 && inputText.indexOf('http://') === -1) {
                 formattedInputText = `https://${inputText}`;
             }
-            const popup = setTimeout(window.open(formattedInputText));
+            // const popup = setTimeout(window.open(formattedInputText));
+            const popup = window.open(formattedInputText);
+            
+            // 팝업 차단 시 alert
+            try {
+                popup.focus();
+            }catch(e) {
+                alert(alertMessage)
+            }
         }
     }
 

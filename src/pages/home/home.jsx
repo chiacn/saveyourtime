@@ -280,7 +280,7 @@ import { useWindowSize } from 'react-use';
                 </div>
             </div>
             <div className={styles.memo_container}>
-                <div className={styles.memoButton}>
+                <div className={styles.memoButton} onClick={unfoldMemo}>
                     <p>memo</p>
                     {/* <div class={styles.memoButton__arrow} onClick={unfoldMemo} ref={ref_memoButton__arrow}></div> */}
                     <div className={styles.memoButton__window} onClick={unfoldMemo} ref={ref_memoButton__window} />

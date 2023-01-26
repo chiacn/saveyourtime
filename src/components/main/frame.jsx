@@ -132,7 +132,6 @@ export default function Frame({
 
     // example
     useEffect(() => {
-        console.log('frame/ example 작동 === ')
         if(example === true) {
             setAlarmMode(false);
         }

@@ -10,7 +10,7 @@ p {
 
 .main {
     display: flex;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .frames {
@@ -56,6 +56,10 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.memoButton:hover {
+    cursor: pointer;
 }
 
 .memoButton p {

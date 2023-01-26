@@ -6,7 +6,6 @@ import Home from "../pages/home/home";
 import Maker from "../components/maker/maker";
 
 import React from 'react';
-import Posts from "../components/Post/post";
 import NotFound from "../pages/error/notFound";
 import ProtectedRoutes from "./protectedRoutes";
 import Login from "../pages/login/login";
@@ -27,15 +26,6 @@ export const WrappingRouter = (props) => {
         <Route >
           <Route element={<ProtectedRoutes/>}>
             <Route element={<App/>}>
-              <Route path="maker" element={<Maker/>}/>
-              <Route path="posts" element={
-                  <div> This is Parent Component Example for Outlet Component 
-                    <Outlet/> 
-                  </div>
-                }>
-                  <Route path=":id" element={<Posts/>}/>
-                  <Route path="1" element={<Posts/>}/>
-              </Route>
             </Route>
           </Route> 
           <Route element={<App/>}>
