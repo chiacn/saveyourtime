@@ -222,3 +222,13 @@ p {
         display: none;
     }
 }
+
+@media screen and (max-width: 900px) {
+    .memo_container {
+        display: none;
+    }
+}
+
+/* @media screen and (max-width: 610px) {
+
+} */

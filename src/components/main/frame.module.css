@@ -95,3 +95,19 @@
     opacity: 1;
 }
 
+/* @media screen and (max-width: 610px) {
+    .container {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .wrapping {
+        width: 100%;
+        display: flex;
+    }
+    
+    .frame {
+        width: 100%;
+    }
+} */
