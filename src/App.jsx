@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/navbar/navbar";
 import { Helmet } from 'react-helmet-async';
-import RouteChangeTracker from "../RouteChangeTracker";
+import RouteChangeTracker from "./RouteChangeTracker";
 
 function App() {
   RouteChangeTracker();
