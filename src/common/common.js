@@ -55,19 +55,26 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
 
     for(let key in localStorage) {
         if(
-            key == 'darkyState' ||
-            key == 'darkyMode' ||
-            key == 'darkySupported' ||
-            key == 'length' ||
-            key == 'clear' ||
-            key == 'getItem' ||
-            key == 'removeItem' ||
-            key == 'key' ||
-            key == 'setItem' ||
+            (
+                key == 'darkyState' ||
+                key == 'darkyMode' ||
+                key == 'darkySupported' ||
+                key == 'length' ||
+                key == 'clear' ||
+                key == 'getItem' ||
+                key == 'removeItem' ||
+                key == 'key' ||
+                key == 'setItem' ||
 
-            key == 'addButtonColor' ||
-            key == 'lastAddBtn' ||
-            key == 'memo'
+                key == 'addButtonColor' ||
+                key == 'lastAddBtn' ||
+                key == 'memo' ||
+                key == 'google_experiment_mod44'
+            ) &&
+            (
+                key != 'frame1'||
+                key.length != '13'
+            )
         ) continue;
 
         let gettedItem = localStorage.getItem(key);
