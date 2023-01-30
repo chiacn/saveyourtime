@@ -16,6 +16,7 @@ export default function Timer({
     example=false,
     example_count,
 }) {
+    const lang = navigator.language;
     const [hour, setHour] = useState();
     const [minute, setMinute] = useState();
     const [second, setSecond] = useState();
@@ -32,6 +33,7 @@ export default function Timer({
     const refBtnReset = useRef();
     const refLoadingBtn = useRef();
     const refRepeat = useRef();
+    const refInputText = useRef();
 
     // alarmMode 관련
     const [alarmRunning, setAlarmRunning] = useState(false);
@@ -289,7 +291,6 @@ export default function Timer({
 
     // Popup
     function popupBrowser() {
-        const lang = navigator.language;
         const alertMessage = (lang.substring(0,2) === 'ko') ? '팝업을 허용해주세요' : 'Please turn off the pop-up blocker'
         if(checkText) {
             const text = (inputText === undefined) ? '' : inputText;
@@ -351,7 +352,6 @@ export default function Timer({
 
         if((calculateTime() < 600 )&& isRepeat === false) {
             let message;
-            let lang = navigator.language;
             if(lang.substring(0,2) === 'ko') {
                 message = '반복 기능은 10분 이상일 경우만 사용할 수 있습니다.';
             }else {
@@ -436,7 +436,6 @@ export default function Timer({
 
     // example
     useEffect(() => {
-        const lang = navigator.language;
         if(example === true) {
             setCheckLink(true);
             setCheckText(false);
@@ -445,6 +444,15 @@ export default function Timer({
             setIsRunning(true);
         }
     }, [example, example_count])
+
+    // inputText
+    useEffect(() => {
+        if(lang.substring(0,2) === 'ko') {
+            checkText ? refInputText.current.placeholder = '알림 받을 텍스트를 입력해주세요' :refInputText.current.placeholder = '팝업할 링크를 입력해주세요'
+        }else {
+            checkText ? refInputText.current.placeholder = 'Please input notification text' :refInputText.current.placeholder = 'Please input popup link'
+        }
+    }, [checkText, checkLink])
 
     return (
         <div className={styles.frame}>
@@ -555,14 +563,25 @@ export default function Timer({
                     
                     <p>Link</p>
                 </div>
-           
-                <div className={styles["timer__input"]}>
-                    <input 
-                        type="text"
-                        onChange={handleInputText}
-                        value={inputText}
-                    />
-                </div>
+                { !alarmMode ?
+                    <div className={styles["timer__input"]}>
+                        <input 
+                            type="text"
+                            onChange={handleInputText}
+                            value={inputText}
+                            ref={refInputText}
+                        />
+                    </div>
+                    :
+                    <div className={styles["timer__input--alarmMode"]}>
+                        <input 
+                            type="text"
+                            onChange={handleInputText}
+                            value={inputText}
+                            ref={refInputText}
+                        />
+                    </div>    
+                }
 
                 <div className={styles.timer__button}>
                     
