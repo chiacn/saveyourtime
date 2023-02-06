@@ -26,12 +26,12 @@ const Navbar = () => {
       </div>
       {/* </Link> */}
       <nav className={styles.header__nav}>
-        {/* <div className={styles["header__nav--timer"]}>
+        <div className={styles["header__nav--timer"]}>
           <Link to='/'>Timer</Link>
         </div>
         <div className={styles["header__nav--routine"]}>
-          <Link to='/routine'>Routine</Link>
-        </div> */}
+          <Link to='/mission'>Mission</Link>
+        </div>
 
         {/* {user && (
           <Link to='/carts'>
