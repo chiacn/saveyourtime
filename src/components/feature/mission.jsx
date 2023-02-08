@@ -34,7 +34,7 @@ export default function Mission({
             case 'init':
                 return
             case 'success':
-                stateCallback({missionId: missionId, state: 'success'}, 'stateChange');
+                stateCallback({missionId: missionId, state: 'success', time: {h: timeInfo.h, m: timeInfo.m, s: timeInfo.s}}, 'stateChange');
                 return {...timeInfo, state: 'success'};
             case 'failed':
                 stateCallback({missionId: missionId, state: 'failed'}, 'failed');
@@ -60,7 +60,7 @@ export default function Mission({
 
             // 시간 내에 Success 버튼을 누르지 못했을 경우
             (totalTime === 0 && timeInfo.state !== 'success') && dispatchTime({type: 'failed'});
-            
+
             return
         }
         // 정수로 바꿔주기 위해 parseInt

@@ -13,7 +13,6 @@
 
 .percent {
     display: flex;
-
     justify-content: center;
     align-items: center;
     /* align-self: center; */
@@ -28,6 +27,35 @@
     position: relative;
     top: 20px;
     right: 50px;
+}
+
+.savedTime {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* align-self: center; */
+    font-size: 80px;
+    opacity: 0.5;
+    color: rgb(0, 129, 255);
+    /* color: rgb(0, 184, 147); */
+    width: 250px;
+    height: 250px;
+    border: 20px solid rgb(0, 129, 255);
+    border-radius: 50%;
+    position: relative;
+    top: 20px;
+    right: 50px;
+}
+
+.savedTime span {
+    font-size: 30px;
+    font-weight:350;
+}
+
+.savedTime__time {
+    font-size: 40px;
+    font-weight: 500;
 }
 
 .registerContainer {
@@ -140,6 +168,7 @@
 .buttonContainer {
     display: flex;
     justify-content:space-between;
+    align-items: center;
     flex-direction: column;
     height: 250px;
     margin-top: 30px;
@@ -184,6 +213,26 @@
 }
 
 .startButton:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.stopButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    border: 2px solid rgb(0, 184, 147);
+    border-radius: 15%;
+    width: 130px;
+    height: 130px;
+    position: relative;
+    top: 20%;
+    opacity: 0.6;
+    color: rgb(0, 184, 147);
+}
+
+.stopButton:hover {
     opacity: 0.8;
     cursor: pointer;
 }

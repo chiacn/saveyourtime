@@ -12,6 +12,7 @@ export default function MissionList (props) {
     const [missionInfo, dispatchMission] = useReducer(manageMission, {h: '00', m: '00', todo: undefined});
     const [missionBox, dispatchBox] = useReducer(manageBox, {success: [], failed: [], changed: 0});
     const [dummyBox, dispatchUpdate] = useReducer(manageUpdate, {boxInfo: [], focusBoxId: undefined});
+    const [stats, dispatchStats] = useReducer(manageStats, {savedTime: 0})
     
 
     function manageMission(missionInfo, action) {
@@ -43,9 +44,14 @@ export default function MissionList (props) {
                            changed: missionBox.changed++}
 
             case 'start':
-                setIsStart(true);
+                if(action.value === 'START') {
+                    setIsStart(true);
+                }else {
+                    setIsStart(false);
+                }
+                
                 const newSuccess = missionBox.success.map((success) => {
-                    const newProps =  {...success.props, setRunning: true, key: success.key}
+                    const newProps =  {...success.props, setRunning: isStart, key: success.key}
                     return <Mission {...newProps}/>;
                 })
                 return {...missionBox, success: newSuccess, changed: missionBox.changed++};
@@ -77,7 +83,7 @@ export default function MissionList (props) {
             case 'stateChange':
                 const newBoxInfo = prevBoxInfo.map((boxInfo) => {
                     if(boxInfo.missionId === action.boxInfo.missionId) {
-                        return {...boxInfo, state: action.boxInfo.state};
+                        return {...boxInfo, state: action.boxInfo.state, time:action.boxInfo?.time};
                     }else {
                         return {...boxInfo}
                     }
@@ -104,6 +110,19 @@ export default function MissionList (props) {
         }
     }
 
+    function manageStats(stats, action) {
+        switch(action.type) {
+            case 'updateSavedTime':
+                let savedTime = 0;
+                dummyBox.boxInfo.map((box) => {
+                    if(box.state === 'success') {
+                        savedTime = savedTime + (Number(box.time.h)*60 + Number(box.time.m));
+                    }
+                })
+                return {...stats, savedTime: savedTime}
+        }
+    }
+
 
     const onChange = (e) => {
         if(e.target.name === 'hour') {
@@ -126,15 +145,14 @@ export default function MissionList (props) {
     }
 
 
-    const start = () => {
-        dispatchBox({type: 'start'});
+    const start = (e) => {
+        dispatchBox({type: 'start', value: e.target.innerHTML});
     }
 
     useEffect(() => {
         const newSuccess = missionBox.success.map((success, index) => {
             let newProps;
             if(success.props.missionId === dummyBox.focusBoxId) {
-                console.log('updateBox.isStart = ', isStart)
                 newProps = {...success.props, key: success.key, focused: true, setRunning: isStart};
             }else {
                 newProps = {...success.props, key: success.key};
@@ -178,6 +196,7 @@ export default function MissionList (props) {
     function stateCallback(boxInfo, type) {
         if(type === 'stateChange') {
             dispatchUpdate({type: 'stateChange', boxInfo: boxInfo });
+            dispatchStats({type: 'updateSavedTime'})
         }else if(type === 'failed') {
             dispatchUpdate({type: 'failed', boxInfo: boxInfo});
             dispatchBox({type: 'updateBox', boxInfo: boxInfo});
@@ -194,8 +213,14 @@ export default function MissionList (props) {
         <>
             <div className={styles.container}>
                 <div className={styles.registerContainer}>
-                    <div className={styles.percent}>
+                    {/* <div className={styles.percent}>
                         <span>0%</span>
+                    </div> */}
+                    <div className={styles.savedTime}>
+                        <span>Saved Time</span>
+                        <div className={styles.savedTime__time}>
+                            {stats.savedTime}{isKor ? '분' : 'min'}
+                        </div>
                     </div>
                     <div className={styles.register}>
                         <div className={styles.register__time}> 
@@ -238,27 +263,20 @@ export default function MissionList (props) {
                         </div>
                     </div>
                     <div className={styles.buttonContainer}>
-                        <div className={styles.register__button} onClick={registerMission}>
-                            Register
-                            {/* <Button 
-                                type="text_shape"
-                                text="Register"
-                                font="eng_rubik_bubbles"
-                                font_size="20px"
-                                color="rgb(0, 129, 255)"
-                            /> */}
-                        </div>
-                        <div className={styles.startButton} onClick={start}>
-                            START
-                            {/* <Button 
-                                type="text_shape"
-                                text="START"
-                                font="eng_rubik_bubbles"
-                                font_size="20px"
-                                color="rgb(0, 184, 147)"
-                                // onClick={() => closeRoutine(map.props.routineId)}
-                            /> */}
-                        </div>
+                        { !isStart ?
+                            <>
+                                <div className={styles.register__button} onClick={registerMission}>
+                                    Register
+                                </div>
+                                <div className={styles.startButton} onClick={start}>
+                                    START
+                                </div>
+                            </>
+                            :
+                            <div className={styles.stopButton} onClick={start}>
+                                STOP
+                            </div>
+                        }
                     </div>
                 </div>
 
