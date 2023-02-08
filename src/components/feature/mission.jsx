@@ -17,7 +17,7 @@ export default function Mission({
     missionId,
     isFailed = false
 }) {
-    console.log(`setRunning = ${setRunning} / isFailed = ${isFailed} / time = ${time.h}`)
+    // console.log(` missionId = ${missionId} / setRunning = ${setRunning} /focused = ${focused} / isFailed = ${isFailed} / time = ${time.m}`)
     const [isRunning, setIsRunning] = useState();
     const ref_text = useRef();
     const ref_container = useRef();
@@ -60,6 +60,8 @@ export default function Mission({
 
             // 시간 내에 Success 버튼을 누르지 못했을 경우
             (totalTime === 0 && timeInfo.state !== 'success') && dispatchTime({type: 'failed'});
+            
+            return
         }
         // 정수로 바꿔주기 위해 parseInt
         const h = parseInt(totalTime / 3600).toString().padStart(2,"0");
@@ -124,8 +126,8 @@ export default function Mission({
     }, [timeInfo.state])
 
     useEffect(() => {
-        setIsRunning(setRunning ? true : false)
-    }, [setRunning])
+        (timeInfo.state === 'proceed') && setIsRunning(setRunning ? true : false)
+    })
 
     useEffect(() => {
         if(focused && !isFailed) {

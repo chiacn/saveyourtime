@@ -8,9 +8,10 @@ import styles from './missionList.module.css';
 export default function MissionList (props) {
     const lang = navigator.language;
     const isKor = lang.substring(0,2) === 'ko';
+    const [isStart, setIsStart]= useState(false);
     const [missionInfo, dispatchMission] = useReducer(manageMission, {h: '00', m: '00', todo: undefined});
     const [missionBox, dispatchBox] = useReducer(manageBox, {success: [], failed: [], changed: 0});
-    const [updateBox, dispatchUpdate] = useReducer(manageUpdate, {boxInfo: [], focusBoxId: undefined});
+    const [dummyBox, dispatchUpdate] = useReducer(manageUpdate, {boxInfo: [], focusBoxId: undefined});
     
 
     function manageMission(missionInfo, action) {
@@ -42,6 +43,7 @@ export default function MissionList (props) {
                            changed: missionBox.changed++}
 
             case 'start':
+                setIsStart(true);
                 const newSuccess = missionBox.success.map((success) => {
                     const newProps =  {...success.props, setRunning: true, key: success.key}
                     return <Mission {...newProps}/>;
@@ -49,19 +51,19 @@ export default function MissionList (props) {
                 return {...missionBox, success: newSuccess, changed: missionBox.changed++};
 
             case 'setFocusBox':
-                return {...missionBox, success: action.newSuccess};
+                return {...missionBox, success: action.newSuccess, changed: missionBox.changed++};
 
             case 'updateBox':
                 const updatedSuccess = missionBox.success.filter((success) => success.props.missionId !== action.boxInfo.missionId);
                 const failedMission = missionBox.success.filter((success) => success.props.missionId === action.boxInfo.missionId);
                 const failedMissionProps = {...failedMission[0]?.props, key: failedMission.key, isFailed: true}
                 const updatedFailed = [...missionBox.failed, <Mission {...failedMissionProps} />]
-                return {...missionBox, success: updatedSuccess, failed: updatedFailed}
+                return {...missionBox, success: updatedSuccess, failed: updatedFailed, changed: missionBox.changed++}
         }
     }
 
-    function manageUpdate(updateBox, action) {
-        const prevBoxInfo = [...updateBox.boxInfo];
+    function manageUpdate(dummyBox, action) {
+        const prevBoxInfo = [...dummyBox.boxInfo];
         switch(action.type) {
             case 'dummyInfo':
                 const missionId = action.boxInfo.missionId;
@@ -70,7 +72,7 @@ export default function MissionList (props) {
                 if(!prevBoxInfo.some(prev => prev.missionId === missionId) || prevBoxInfo.length === 0) {
                     prevBoxInfo.push(action.boxInfo)
                 }
-                return {...updateBox, boxInfo: prevBoxInfo}
+                return {...dummyBox, boxInfo: prevBoxInfo}
 
             case 'stateChange':
                 const newBoxInfo = prevBoxInfo.map((boxInfo) => {
@@ -80,17 +82,17 @@ export default function MissionList (props) {
                         return {...boxInfo}
                     }
                 })
-                return {...updateBox, boxInfo: newBoxInfo}
+                return {...dummyBox, boxInfo: newBoxInfo}
             
             case 'failed':
                 const removedBoxInfo = prevBoxInfo.filter((boxInfo) => boxInfo.missionId !== action.boxInfo.missionId);
-                return {...updateBox, boxInfo: removedBoxInfo}
+                return {...dummyBox, boxInfo: removedBoxInfo}
             
             case 'updateFocusBoxId':
                 let focusBoxId;
 
                 // 정렬 
-                const sortedBoxInfo = updateBox.boxInfo.sort(function(a, b) {
+                const sortedBoxInfo = dummyBox.boxInfo.sort(function(a, b) {
                     return b.missionId - a.missionId 
                 })
 
@@ -98,7 +100,7 @@ export default function MissionList (props) {
                 sortedBoxInfo.map((boxInfo) => {
                     if(boxInfo.state === 'proceed') focusBoxId = boxInfo.missionId;
                 })
-                return {...updateBox, focusBoxId: focusBoxId};
+                return {...dummyBox, focusBoxId: focusBoxId};
         }
     }
 
@@ -131,18 +133,21 @@ export default function MissionList (props) {
     useEffect(() => {
         const newSuccess = missionBox.success.map((success, index) => {
             let newProps;
-            if(success.props.missionId === updateBox.focusBoxId) {
-                newProps = {...success.props, key: success.key, focused: true};
+            if(success.props.missionId === dummyBox.focusBoxId) {
+                console.log('updateBox.isStart = ', isStart)
+                newProps = {...success.props, key: success.key, focused: true, setRunning: isStart};
             }else {
                 newProps = {...success.props, key: success.key};
             }
             return <Mission {...newProps}/>
         })
-
         dispatchBox({type: 'setFocusBox', newSuccess: newSuccess});
-        console.log('boxInfo = ', updateBox.boxInfo)
-    }, [updateBox])
+    }, [dummyBox, isStart])
     // }, [updateBox.changed])
+
+    useEffect(() => {
+        if(!dummyBox.boxInfo.some(box => box.state === 'proceed')) setIsStart(false);
+    }, [dummyBox.boxInfo])
 
 
     // Util
