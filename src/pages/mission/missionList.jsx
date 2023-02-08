@@ -8,8 +8,6 @@ import styles from './missionList.module.css';
 export default function MissionList (props) {
     const lang = navigator.language;
     const isKor = lang.substring(0,2) === 'ko';
-    const [success, setSuccess] = useState([]);
-    const [failed, setFailed] = useState([]);
     const [missionInfo, dispatchMission] = useReducer(manageMission, {h: '00', m: '00', todo: undefined});
     const [missionBox, dispatchBox] = useReducer(manageBox, {success: [], failed: [], changed: 0});
     const [updateBox, dispatchUpdate] = useReducer(manageUpdate, {boxInfo: [], focusBoxId: undefined});
@@ -50,34 +48,43 @@ export default function MissionList (props) {
                 })
                 return {...missionBox, success: newSuccess, changed: missionBox.changed++};
 
-            case 'setFirstBox':
+            case 'setFocusBox':
                 return {...missionBox, success: action.newSuccess};
 
+            case 'updateBox':
+                const updatedSuccess = missionBox.success.filter((success) => success.props.missionId !== action.boxInfo.missionId);
+                const failedMission = missionBox.success.filter((success) => success.props.missionId === action.boxInfo.missionId);
+                const failedMissionProps = {...failedMission[0]?.props, key: failedMission.key, isFailed: true}
+                const updatedFailed = [...missionBox.failed, <Mission {...failedMissionProps} />]
+                return {...missionBox, success: updatedSuccess, failed: updatedFailed}
         }
     }
 
     function manageUpdate(updateBox, action) {
+        const prevBoxInfo = [...updateBox.boxInfo];
         switch(action.type) {
             case 'dummyInfo':
-                const prevBoxInfo = [...updateBox.boxInfo];
                 const missionId = action.boxInfo.missionId;
 
-                if(prevBoxInfo.some(prev => prev.missionId !== missionId) || prevBoxInfo.length === 0)
+                // some - 요소 중 하나라도 true면 true반환 -> 여기선 하나라도 일치하는게 없어야하므로 prev.missionId === missionId가 false가 나와야함. => !붙여줌
+                if(!prevBoxInfo.some(prev => prev.missionId === missionId) || prevBoxInfo.length === 0) {
                     prevBoxInfo.push(action.boxInfo)
-
+                }
                 return {...updateBox, boxInfo: prevBoxInfo}
 
             case 'stateChange':
-                const beforeBoxInfo = [...updateBox.boxInfo];
-                const newBoxInfo = beforeBoxInfo.map((boxInfo) => {
+                const newBoxInfo = prevBoxInfo.map((boxInfo) => {
                     if(boxInfo.missionId === action.boxInfo.missionId) {
-                        console.log('boxIsadnfo = ', action.boxInfo.state)
                         return {...boxInfo, state: action.boxInfo.state};
                     }else {
                         return {...boxInfo}
                     }
                 })
                 return {...updateBox, boxInfo: newBoxInfo}
+            
+            case 'failed':
+                const removedBoxInfo = prevBoxInfo.filter((boxInfo) => boxInfo.missionId !== action.boxInfo.missionId);
+                return {...updateBox, boxInfo: removedBoxInfo}
             
             case 'updateFocusBoxId':
                 let focusBoxId;
@@ -122,20 +129,18 @@ export default function MissionList (props) {
     }
 
     useEffect(() => {
-        console.log('focusBoxId = ', updateBox.focusBoxId)
         const newSuccess = missionBox.success.map((success, index) => {
             let newProps;
-            console.log('success.props.missionId = ', success.props.missionId);
-            
             if(success.props.missionId === updateBox.focusBoxId) {
-                newProps = {...success.props, key: success.key, isFirst: true};
+                newProps = {...success.props, key: success.key, focused: true};
             }else {
                 newProps = {...success.props, key: success.key};
             }
             return <Mission {...newProps}/>
         })
 
-        dispatchBox({type: 'setFirstBox', newSuccess: newSuccess});
+        dispatchBox({type: 'setFocusBox', newSuccess: newSuccess});
+        console.log('boxInfo = ', updateBox.boxInfo)
     }, [updateBox])
     // }, [updateBox.changed])
 
@@ -168,6 +173,9 @@ export default function MissionList (props) {
     function stateCallback(boxInfo, type) {
         if(type === 'stateChange') {
             dispatchUpdate({type: 'stateChange', boxInfo: boxInfo });
+        }else if(type === 'failed') {
+            dispatchUpdate({type: 'failed', boxInfo: boxInfo});
+            dispatchBox({type: 'updateBox', boxInfo: boxInfo});
         }else {
             dispatchUpdate({type: 'dummyInfo', boxInfo: boxInfo });
         }

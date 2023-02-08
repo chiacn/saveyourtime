@@ -12,20 +12,21 @@ export default function Mission({
     todo,
     run,
     setRunning=false,
-    isFirst=false,
+    focused=false,
     stateCallback,
     missionId,
+    isFailed = false
 }) {
-
-    console.log('isFirst = ', isFirst)
-    console.log('setRunning = ', setRunning)
-    
+    console.log(`setRunning = ${setRunning} / isFailed = ${isFailed} / time = ${time.h}`)
     const [isRunning, setIsRunning] = useState();
     const ref_text = useRef();
     const ref_container = useRef();
     const ref_percent__bar = useRef();
     const ref_success = useRef();
     const ref_completed = useRef();
+    const ref_failed = useRef();
+
+    const ref_percent_value = useRef(180);
 
     const [timeInfo, dispatchTime] = useReducer(manageTime, {h: time.h, m: time.m, s: '00', time: `${time.h}:${time.m}:00`, state: 'proceed'});
     function manageTime(timeInfo, action) {
@@ -34,7 +35,10 @@ export default function Mission({
                 return
             case 'success':
                 stateCallback({missionId: missionId, state: 'success'}, 'stateChange');
-                return {...timeInfo, state: 'success', run: false};
+                return {...timeInfo, state: 'success'};
+            case 'failed':
+                stateCallback({missionId: missionId, state: 'failed'}, 'failed');
+                return {...timeInfo, state: 'failed'}
             case 'run':
                 return {...timeInfo, h: action.h, m: action.m, s: action.s};
             }
@@ -48,10 +52,14 @@ export default function Mission({
     )
 
     function run() {
-        console.log('run 실행 ==== ')
+        if(isFailed) return;
+        
         const totalTime = calculateTime(1);
-        if(totalTime === 0) {
-            setIsRunning(false)
+        if(totalTime === 0 || !focused || timeInfo.state !== 'proceed' ) {
+            setIsRunning(false);
+
+            // 시간 내에 Success 버튼을 누르지 못했을 경우
+            (totalTime === 0 && timeInfo.state !== 'success') && dispatchTime({type: 'failed'});
         }
         // 정수로 바꿔주기 위해 parseInt
         const h = parseInt(totalTime / 3600).toString().padStart(2,"0");
@@ -92,7 +100,14 @@ export default function Mission({
             ref_text.current.style["font-size"] = '20px';
         }
 
-        // ref_completed.current.style.display = 'none';
+        if(isFailed) {
+            ref_failed.current.style.display = 'flex';
+            ref_success.current.style.display = 'none';
+            ref_container.current.style.color = 'rgb(228, 54, 69)';
+            ref_percent__bar.current.style["background-color"] = 'rgb(228, 54, 69)';
+        }else {
+            ref_failed.current.style.display = 'none';
+        }
     }, [])
 
     useEffect(() => {
@@ -113,12 +128,20 @@ export default function Mission({
     }, [setRunning])
 
     useEffect(() => {
-        if(isFirst) {
+        if(focused && !isFailed) {
             ref_success.current.style.display = 'flex';
         }else {
             ref_success.current.style.display = 'none';
         }
-    }, [isFirst])
+    }, [focused])
+
+    useEffect(() => {
+        // 시간에 따라 줄어드는 bar UI 
+        const originWidth = ref_percent__bar.current.style.width.replace('px', '');
+        const minusWidth = originWidth / calculateTime();
+        ref_percent_value.current = ref_percent_value.current - minusWidth
+        ref_percent__bar.current.style.width = ref_percent_value.current + 'px';
+    }, [timeInfo])
 
 
     return (
@@ -139,6 +162,9 @@ export default function Mission({
             </div>
             <div className={styles.completed} ref={ref_completed}>
                 Completed
+            </div>
+            <div className={styles.failed} ref={ref_failed}>
+                Failed
             </div>
         </div>
     );
