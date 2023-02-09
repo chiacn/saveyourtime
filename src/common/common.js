@@ -93,7 +93,7 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
 
     // localStorageData frameId에 따라 정렬.
     localStorageData.sort(function(a, b) {
-        return ((a.frameId == 'timerframe1') ? '1' : a.frameId)  -  ((b.frameId == 'timerframe1') ? '1' : b.frameId);
+        return ((a.frameId == 'frame1') ? '1' : a.frameId)  -  ((b.frameId == 'frame1') ? '1' : b.frameId);
     });
 
 
