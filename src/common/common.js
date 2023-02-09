@@ -147,13 +147,10 @@ export const getMissionLocalInfo = (stateCallback) => {
         return a.missionId - b.missionId;
     });
 
-    console.log(localStorageData)
     localStorageData.map(data => {
         const time = data.time?.split(':');
         const time_h = time[0];
         const time_m = time[1];
-
-        console.log('data = ', data)
 
         if(data.state !== 'failed') {
             missionBox.success.push(

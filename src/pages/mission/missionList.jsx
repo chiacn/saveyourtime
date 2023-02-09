@@ -5,6 +5,7 @@ import { getMissionLocalInfo } from '../../common/common';
 import Mission from '../../components/feature/mission';
 import Button from '../../components/ui/button';
 import styles from './missionList.module.css';
+import { GrPowerReset } from "react-icons/gr";
 
 export default function MissionList (props) {
     const localStorageInfo = getMissionLocalInfo(stateCallback);
@@ -25,6 +26,8 @@ export default function MissionList (props) {
                 return {...missionInfo, m: action.m};
             case 'setTodo':
                 return {...missionInfo, todo: action.todo};
+            case 'reset':
+                return {...missionInfo, h: '00', m: '00', todo: ''}
             case 'localStorage':
                 return {...missionInfo};
         }
@@ -34,13 +37,17 @@ export default function MissionList (props) {
         switch(action.type) {
             case 'register':
                 const missionKey = createMissionId();
+                const h = missionInfo.h;
+                const m = missionInfo.m;
+                const todo = missionInfo.todo;
+                dispatchMission({type: 'reset'});
                 return {...missionBox, 
                            success: [
                             ...missionBox.success, 
                             <Mission 
                                 key={missionKey} 
-                                time={{h:missionInfo.h, m:missionInfo.m}} 
-                                todo={missionInfo.todo} 
+                                time={{h:h, m:m}} 
+                                todo={todo} 
                                 stateCallback={stateCallback}
                                 missionId={missionKey}
                             />
@@ -72,6 +79,9 @@ export default function MissionList (props) {
             
             case 'localStorage':
                 return {...missionBox, success: action.info.success, failed: action.info.failed};
+            
+            case 'reset':
+                return {...missionBox, success: [], failed: [], changed: 0};
 
         }
     }
@@ -118,6 +128,9 @@ export default function MissionList (props) {
 
             case 'localStorage':
                 return {...dummyBox, boxInfo: action.info.boxInfo};
+
+            case 'reset':
+                return {...dummyBox, boxInfo: [], focusBoxId: undefined};
         }
     }
 
@@ -134,6 +147,9 @@ export default function MissionList (props) {
 
             case 'localStorage':
                 return {...stats, savedTime: action.info.savedTime};
+
+            case 'reset':
+                return {...stats, savedTime: 0};
         }
     }
 
@@ -163,6 +179,22 @@ export default function MissionList (props) {
 
     const start = (e) => {
         dispatchBox({type: 'start', value: e.target.innerHTML});
+    }
+
+    const reset = () => {
+        window.localStorage.removeItem('isStart');
+        window.localStorage.removeItem('missionInfo');
+        window.localStorage.removeItem('stats');
+        window.localStorage.removeItem('dummyBox');
+        for( let box of dummyBox.boxInfo) {
+            window.localStorage.removeItem(JSON.stringify('mission' + box.missionId));
+        }
+
+        setIsStart(false);
+        dispatchMission({type: 'reset'});
+        dispatchBox({type: 'reset'});
+        dispatchUpdate({type: 'reset'});
+        dispatchStats({type: 'reset'});
     }
 
     useEffect(() => {
@@ -325,6 +357,9 @@ export default function MissionList (props) {
                                 STOP
                             </div>
                         }
+                    </div>
+                    <div className={styles.reset} onClick={reset}>
+                        <GrPowerReset className={styles.reset__icon}/>
                     </div>
                 </div>
 

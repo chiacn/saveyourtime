@@ -100,7 +100,6 @@ export default function Mission({
     }
 
     useEffect(() => {
-        console.log('useEffect 작동 ========')
         const lang = navigator.language;
         if(lang.substring(0,2) === 'ko') {
             ref_text.current.style["font-family"] = "'Jua', sans-serif";
@@ -159,8 +158,6 @@ export default function Mission({
 
    // local storage
     useEffect(() => {
-        console.log('localStorage 저장 ============== ')
-        console.log('timeInfo.state = ', timeInfo.state)
         const storeKey = JSON.stringify('mission' + missionId);
         const storeValue = JSON.stringify({
             missionId: missionId,

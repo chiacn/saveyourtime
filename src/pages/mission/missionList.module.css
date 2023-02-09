@@ -237,6 +237,30 @@
     cursor: pointer;
 }
 
+.reset {
+    /* color: rgb(0, 129, 255); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    left: 30px;
+    /* font-family: "julius_sans_one_ENG", Georgia, monospace; */
+    font-family: 'Rubik Bubbles', cursive;
+    /* font-family: 'Press Start 2P', cursive; */
+    /* font-family: 'Roboto', sans-serif; */
+    opacity: 0.6;
+}
+
+.reset:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.reset__icon {
+    font-size: 35px;
+}
+
 .missionContainer {
     display: flex;
     flex-wrap: wrap;
