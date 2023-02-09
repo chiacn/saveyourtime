@@ -399,8 +399,8 @@ export default function Timer({
 
     // local storage
     useEffect(() => {
-        if(frameId !== 'example') {
-            const storeKey = JSON.stringify(frameId);
+        if(frameId !== 'example' && frameId !== undefined) {
+            const storeKey = JSON.stringify('timer' + frameId);
             const storeValue = JSON.stringify({
                 frameId: frameId,
                 alarmMode: alarmMode,

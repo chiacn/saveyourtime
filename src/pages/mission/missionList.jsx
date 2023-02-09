@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useReducer } from 'react';
+import { getMissionLocalInfo } from '../../common/common';
 import Mission from '../../components/feature/mission';
 import Button from '../../components/ui/button';
 import styles from './missionList.module.css';
 
 export default function MissionList (props) {
+    const localStorageInfo = getMissionLocalInfo(stateCallback);
     const lang = navigator.language;
     const isKor = lang.substring(0,2) === 'ko';
     const [isStart, setIsStart]= useState(false);
@@ -23,6 +25,8 @@ export default function MissionList (props) {
                 return {...missionInfo, m: action.m};
             case 'setTodo':
                 return {...missionInfo, todo: action.todo};
+            case 'localStorage':
+                return {...missionInfo};
         }
     }
 
@@ -65,6 +69,10 @@ export default function MissionList (props) {
                 const failedMissionProps = {...failedMission[0]?.props, key: failedMission.key, isFailed: true}
                 const updatedFailed = [...missionBox.failed, <Mission {...failedMissionProps} />]
                 return {...missionBox, success: updatedSuccess, failed: updatedFailed, changed: missionBox.changed++}
+            
+            case 'localStorage':
+                return {...missionBox, success: action.info.success, failed: action.info.failed};
+
         }
     }
 
@@ -107,6 +115,9 @@ export default function MissionList (props) {
                     if(boxInfo.state === 'proceed') focusBoxId = boxInfo.missionId;
                 })
                 return {...dummyBox, focusBoxId: focusBoxId};
+
+            case 'localStorage':
+                return {...dummyBox, boxInfo: action.info.boxInfo};
         }
     }
 
@@ -120,6 +131,9 @@ export default function MissionList (props) {
                     }
                 })
                 return {...stats, savedTime: savedTime}
+
+            case 'localStorage':
+                return {...stats, savedTime: action.info.savedTime};
         }
     }
 
@@ -141,6 +155,8 @@ export default function MissionList (props) {
     }
 
     const registerMission = () => {
+        if(missionInfo.h == '00' && missionInfo.m == '00') {alert(isKor ? '시간을 입력해주세요' : 'Please input time'); return;}
+        if(missionInfo.todo == undefined || missionInfo.todo == '') {alert(isKor ? '도전 과제를 입력해주세요' : 'Please input a challenge message'); return;}
         dispatchBox({type: 'register'});
     }
 
@@ -166,6 +182,38 @@ export default function MissionList (props) {
     useEffect(() => {
         if(!dummyBox.boxInfo.some(box => box.state === 'proceed')) setIsStart(false);
     }, [dummyBox.boxInfo])
+
+    // local storage
+    useEffect(() => {
+        window.localStorage.setItem('isStart', JSON.stringify(isStart));
+        window.localStorage.setItem('missionInfo', JSON.stringify(missionInfo));
+        // window.localStorage.setItem('missionBox', JSON.stringify(missionBox)); -- 순환참조 오류
+        window.localStorage.setItem('dummyBox', JSON.stringify(dummyBox));
+        window.localStorage.setItem('stats', JSON.stringify(stats));
+    }, [isStart, missionInfo, missionBox, dummyBox, stats])
+
+    useEffect(() => {
+        if(localStorageInfo?.missionBox !== undefined) {
+            dispatchBox({type: 'localStorage', info: localStorageInfo.missionBox});
+        }else {
+            return;
+        }
+
+        if(
+            localStorageInfo?.missionListData !== undefined && 
+            localStorageInfo.missionListData.isStart !== null &&
+            localStorageInfo.missionListData.missionInfo !== null &&
+            localStorageInfo.missionListData.dummyBox !== null &&
+            localStorageInfo.missionListData.stats !== null
+          ) {
+            dispatchMission({type: 'localStorage', info: localStorageInfo.missionListData.missionInfo});
+            dispatchUpdate({type: 'localStorage', info: localStorageInfo.missionListData.dummyBox});
+            dispatchStats({type: 'localStorage', info: localStorageInfo.missionListData.stats})
+        }else {
+            return;
+        }
+    }, [])
+    
 
 
     // Util

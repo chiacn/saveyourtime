@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import Mission from "../components/feature/mission";
 import Frame from "../components/main/frame";
 
 // Component CSS
@@ -71,12 +72,17 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
                 key == 'memo' ||
                 key == 'google_experiment_mod44'
             ) &&
+            // (
+            //     key != 'frame1'||
+            //     key.length != '13'
+            // )
             (
-                key != 'frame1'||
-                key.length != '13'
+                key != 'timerframe1' ||
+                key.length != '18'
             )
         ) continue;
 
+        if(!key.includes('timer') ) continue;
         let gettedItem = localStorage.getItem(key);
         localStorageData.push(((gettedItem !== 'undefined') ? JSON.parse(gettedItem) : gettedItem));
     }
@@ -87,7 +93,7 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
 
     // localStorageData frameId에 따라 정렬.
     localStorageData.sort(function(a, b) {
-        return ((a.frameId == 'frame1') ? '1' : a.frameId)  -  ((b.frameId == 'frame1') ? '1' : b.frameId);
+        return ((a.frameId == 'timerframe1') ? '1' : a.frameId)  -  ((b.frameId == 'timerframe1') ? '1' : b.frameId);
     });
 
 
@@ -97,4 +103,86 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
     })
 
     return {storedFrames: storedFrames, homeData: homeData};
+}
+
+export const getMissionLocalInfo = (stateCallback) => {
+    const localStorage = window.localStorage;
+    let localStorageData = [];
+    let missionBox = {success: [], failed: []};
+    let missionListData = {isStart: false, missionInfo: undefined, dummyBox: undefined, stats: undefined};
+    for(let key in localStorage) {
+        if(
+            (
+                key == 'darkyState' ||
+                key == 'darkyMode' ||
+                key == 'darkySupported' ||
+                key == 'length' ||
+                key == 'clear' ||
+                key == 'getItem' ||
+                key == 'removeItem' ||
+                key == 'key' ||
+                key == 'setItem' ||
+
+                key == 'addButtonColor' ||
+                key == 'lastAddBtn' ||
+                key == 'memo' ||
+                key == 'google_experiment_mod44' ||
+                key.length != '22'
+            )
+        ) continue;
+
+        if(!key.includes('mission')) continue;
+
+        let gettedItem = localStorage.getItem(key);
+        localStorageData.push(((gettedItem !== 'undefined') ? JSON.parse(gettedItem) : gettedItem));
+    }
+
+    missionListData.isStart = (localStorage.getItem('isStart') != 'undefined') && JSON.parse(localStorage.getItem('isStart'));
+    missionListData.missionInfo = (localStorage.getItem('missionInfo') != 'undefined') && JSON.parse(localStorage.getItem('missionInfo'));
+    missionListData.dummyBox = (localStorage.getItem('dummyBox') != 'undefined') && JSON.parse(localStorage.getItem('dummyBox'));
+    missionListData.stats = (localStorage.getItem('stats') != 'undefined') && JSON.parse(localStorage.getItem('stats'));
+
+    // localStorageData frameId에 따라 정렬.
+    localStorageData.sort(function(a, b) {
+        return a.missionId - b.missionId;
+    });
+
+    console.log(localStorageData)
+    localStorageData.map(data => {
+        const time = data.time?.split(':');
+        const time_h = time[0];
+        const time_m = time[1];
+
+        console.log('data = ', data)
+
+        if(data.state !== 'failed') {
+            missionBox.success.push(
+                <Mission 
+                    key={data.missionId} 
+                    missionId={data.missionId} 
+                    time={{h: time_h, m: time_m, s: "00"}} 
+                    todo={data.todo} 
+                    stateCallback={stateCallback} 
+                    localStorage={data}
+                />
+            )
+        }else {
+            missionBox.failed.push(
+                <Mission 
+                    key={data.missionId} 
+                    missionId={data.missionId} 
+                    time={{h: time_h, m: time_m, s: "00"}} 
+                    todo={data.todo} 
+                    stateCallback={stateCallback} 
+                    isFailed={data.state}
+                    localStorage={data}
+                />
+            )
+        }
+    })
+
+
+
+
+    return {missionListData: missionListData ,missionBox: missionBox};
 }

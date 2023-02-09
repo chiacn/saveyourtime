@@ -15,7 +15,8 @@ export default function Mission({
     focused=false,
     stateCallback,
     missionId,
-    isFailed = false
+    isFailed = false,
+    localStorage=false,
 }) {
     // console.log(` missionId = ${missionId} / setRunning = ${setRunning} /focused = ${focused} / isFailed = ${isFailed} / time = ${time.m}`)
     const [isRunning, setIsRunning] = useState();
@@ -25,7 +26,6 @@ export default function Mission({
     const ref_success = useRef();
     const ref_completed = useRef();
     const ref_failed = useRef();
-
     const ref_percent_value = useRef(180);
 
     const [timeInfo, dispatchTime] = useReducer(manageTime, {h: time.h, m: time.m, s: '00', time: `${time.h}:${time.m}:00`, state: 'proceed'});
@@ -41,6 +41,10 @@ export default function Mission({
                 return {...timeInfo, state: 'failed'}
             case 'run':
                 return {...timeInfo, h: action.h, m: action.m, s: action.s};
+            case 'localStorage':
+                return {...timeInfo, h: localStorage.h, m: localStorage.m, s: localStorage.s, state: localStorage.state}
+            case 'isFailed':
+                return {...timeInfo, state: 'failed'};
             }
     }
 
@@ -96,6 +100,7 @@ export default function Mission({
     }
 
     useEffect(() => {
+        console.log('useEffect 작동 ========')
         const lang = navigator.language;
         if(lang.substring(0,2) === 'ko') {
             ref_text.current.style["font-family"] = "'Jua', sans-serif";
@@ -107,13 +112,20 @@ export default function Mission({
             ref_success.current.style.display = 'none';
             ref_container.current.style.color = 'rgb(228, 54, 69)';
             ref_percent__bar.current.style["background-color"] = 'rgb(228, 54, 69)';
+            dispatchTime({type: 'isFailed'})
         }else {
             ref_failed.current.style.display = 'none';
         }
+
+        //localStorage
+        if(localStorage) {
+            dispatchTime({type: 'localStorage'});
+        }
+
     }, [])
 
     useEffect(() => {
-        if(timeInfo.state === 'success') {
+        if(timeInfo.state == 'success') {
             ref_container.current.style.color = 'black';
             ref_percent__bar.current.style["background-color"] ='black';
             
@@ -123,14 +135,14 @@ export default function Mission({
 
         // focussing Box Check
         stateCallback({missionId: missionId, state: timeInfo.state});
-    }, [timeInfo.state])
+    }, [timeInfo])
 
     useEffect(() => {
         (timeInfo.state === 'proceed') && setIsRunning(setRunning ? true : false)
     })
 
     useEffect(() => {
-        if(focused && !isFailed) {
+        if(focused && !isFailed && timeInfo.state != 'success') {
             ref_success.current.style.display = 'flex';
         }else {
             ref_success.current.style.display = 'none';
@@ -144,6 +156,23 @@ export default function Mission({
         ref_percent_value.current = ref_percent_value.current - minusWidth
         ref_percent__bar.current.style.width = ref_percent_value.current + 'px';
     }, [timeInfo])
+
+   // local storage
+    useEffect(() => {
+        console.log('localStorage 저장 ============== ')
+        console.log('timeInfo.state = ', timeInfo.state)
+        const storeKey = JSON.stringify('mission' + missionId);
+        const storeValue = JSON.stringify({
+            missionId: missionId,
+            h: timeInfo.h,
+            m: timeInfo.m,
+            s: timeInfo.s,
+            todo: todo,
+            time: timeInfo.time,
+            state: timeInfo.state
+        });
+        window.localStorage.setItem(storeKey, storeValue)
+    }, [isRunning, timeInfo])    
 
 
     return (

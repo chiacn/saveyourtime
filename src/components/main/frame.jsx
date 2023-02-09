@@ -80,7 +80,7 @@ export default function Frame({
         closeFrame(frameId);
 
         //local storage에서도 해당 값 제거.
-        window.localStorage.removeItem(JSON.stringify(frameId));
+        window.localStorage.removeItem(JSON.stringify('timer' + frameId));
     }
     
     const changeFormat = (e) => {
