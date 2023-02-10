@@ -22,7 +22,6 @@ export default function Frame({
 }) {
     const [themeColor, setThemeColor] = useState({timer:'rgb(0, 129, 255)', alarm:'rgb(0, 184, 147)'});
     const [alarmMode, setAlarmMode] = useState(false);
-
     const ref_wrapping = useRef();
     const ref_frame__header = useRef();
     
@@ -84,7 +83,6 @@ export default function Frame({
     }
     
     const changeFormat = (e) => {
-
         if(e.target.innerHTML === 'Timer') {
             ref_wrapping.current.style.color = themeColor.timer;
             ref_wrapping.current.style["border-color"] = themeColor.timer;

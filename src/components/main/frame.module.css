@@ -66,8 +66,6 @@
 .frame__header > span {
     margin-right:7px;
     margin-top:5px;
-    /* font-family: 'Rubik Bubbles', cursive; */
-    /* font-family: 'Press Start 2P', cursive; */
     font-size: 14px;
 }
 
@@ -94,20 +92,3 @@
 .closeButton:hover {
     opacity: 1;
 }
-
-/* @media screen and (max-width: 610px) {
-    .container {
-        width: 80%;
-        display: flex;
-        justify-content: center;
-    }
-
-    .wrapping {
-        width: 100%;
-        display: flex;
-    }
-    
-    .frame {
-        width: 100%;
-    }
-} */

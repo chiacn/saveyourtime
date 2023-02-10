@@ -1,6 +1,5 @@
 @import url('../../assets/font/kor_jua.css');
 .container {
-    /* border-bottom: 3px solid rgb(0, 129, 255); */
     width: 80%;
     height: 100px;
     margin-top: 20px;
@@ -55,7 +54,6 @@
     border: 3px solid rgb(0, 184, 147);
     color:rgb(0, 184, 147);
     font-size: 17px;
-    /* border-radius: 15%; */
     width: 110px;
     height: 35px;
     position: relative;
@@ -70,7 +68,6 @@
     border: 3px solid rgb(228, 54, 69);
     color:rgb(228, 54, 69);
     font-size: 17px;
-    /* border-radius: 15%; */
     width: 90px;
     height: 35px;
     position: relative;

@@ -132,6 +132,7 @@ export default function Timer({
         const h = hour == undefined ? 0 : Number(hour);
         const m = minute == undefined ? 0 : Number(minute);
         const s = second == undefined ? 0 : Number(second);
+        
         if(minusNum) {
             return (h*3600 + m*60 + s) - minusNum;
         }else {
@@ -169,13 +170,6 @@ export default function Timer({
             if(formattedNum > 59) formattedNum = '59';
             if(num.substr(0,2) == '59') formattedNum = '5' + num.substr(-1,1);
         }else if(type == 'alarm_hour_am' || type == 'alarm_hour_pm') {
-            // if(type === 'alarm_hour_am') {
-            //     if(formattedNum > 11) formattedNum = '11';
-            //     if(num.substr(0,2) == '11') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '1');    
-            // }else {
-            //     if(formattedNum > 12) formattedNum = '12';
-            //     if(num.substr(0,2) == '12') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '2');
-            // }
             if(formattedNum > 12) formattedNum = '12';
             if(num.substr(0,2) == '12') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '2');
         }

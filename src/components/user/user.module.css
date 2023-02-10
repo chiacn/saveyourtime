@@ -7,17 +7,12 @@
 
 /* percent : parent element 대비 너비, 높이 / vw, vh : viewport 대비 너비, 높이 */
 .div__img {
-    /* width: 40%;
-    height: 100%; */
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 2.5rem;
     margin-right: 0.5rem;
 }
 
-/*
-  min-width: 764px - 764px보다 스크린이 커야 됨 (min-width는 width의 하한선, 즉 이 길이보다 커야지 작동한다는 것)
-*/
 .div__name {
   display: none
 }

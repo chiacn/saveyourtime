@@ -3,8 +3,6 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, redirect, Route, RouterProvider, Routes, useLocation, useNavigate } from "react-router-dom";
 import context, { contextWrapping, useAuth } from "../common/context";
 import Home from "../pages/home/home";
-import Maker from "../components/maker/maker";
-
 import React from 'react';
 import NotFound from "../pages/error/notFound";
 // import ProtectedRoutes from "./protectedRoutes";
