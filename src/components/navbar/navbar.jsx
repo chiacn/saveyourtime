@@ -16,21 +16,16 @@ const Navbar = () => {
   }
 
   return (
-    // <header className='flex justify-between border-b border-gray-300 p-2'>
     <header className={styles.header}>
-      {/* <Link to='/' className='flex items-center text-4xl text-brand'> */}
-      {/* <Link to='/' className={styles.header__home}> */}
       <div className={styles.header__home}>
         <h1>Save Your Time</h1>
-        {/* <h1>Time Saver</h1> */}
       </div>
-      {/* </Link> */}
       <nav className={styles.header__nav}>
         <div className={styles["header__nav--timer"]}>
           <Link to='/'>Timer</Link>
         </div>
         <div className={styles["header__nav--routine"]}>
-          <Link to='/mission'>Mission</Link>
+          <Link to='/mission'>Challenge</Link>
         </div>
 
         {/* {user && (
