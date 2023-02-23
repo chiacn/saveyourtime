@@ -1,9 +1,7 @@
 @value makerGreen, makerBlack, makerWhite from '../../common/colors.css';
 
-@import url('../../assets/font/eng_julius_sans_one.css');
 @import url('../../assets/font/eng_roboto.css');
 @import url('../../assets/font/eng_rubik_bubbles.css');
-@import url('../../assets/font/eng_press_start_2p.css');
 
 
 .header {

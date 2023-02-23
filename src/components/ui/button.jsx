@@ -50,8 +50,6 @@ export default function Button({
         switch(font) {
           case 'eng_roboto':
             return "'Roboto', 'sans-serif'";
-          case 'eng_press_start_2p':
-            return "'Press Start 2P', cursive";
           case 'eng_rubik_bubbles':
             return "'Rubik Bubbles', cursive";
         }

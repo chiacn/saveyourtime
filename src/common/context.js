@@ -43,7 +43,7 @@ const focusReducer = (focusInfo, action) => {
             return {...focusInfo, savedTime: savedTime}
         
         case 'localStorage':
-            return {...focusInfo, missionList: action.info.missionList, focusMissionId: action.info.focusMissionId}
+            return {...focusInfo, missionList: action.info.missionList, focusMissionId: action.info.focusMissionId, savedTime:action.info.savedTime}
     }
 
     // focusBox 특정.
