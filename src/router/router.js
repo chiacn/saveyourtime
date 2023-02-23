@@ -1,7 +1,7 @@
 
 
 import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, redirect, Route, RouterProvider, Routes, useLocation, useNavigate } from "react-router-dom";
-import context, { contextWrapping, useAuth } from "../common/context";
+import context, { contextWrapping, FocusBoxProvider } from "../common/context";
 import Home from "../pages/home/home";
 import React from 'react';
 import NotFound from "../pages/error/notFound";
@@ -10,7 +10,6 @@ import NotFound from "../pages/error/notFound";
 import App from "../App";
 import RoutineList from "../pages/routine/routineList";
 import MissionList from "../pages/mission/missionList";
-
 
 
 export const WrappingRouter = (props) => {
@@ -31,7 +30,14 @@ export const WrappingRouter = (props) => {
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="home" element={<Home/>}/>
             <Route path="routine" element={<RoutineList/>}/>
-            <Route path="mission" element={<MissionList/>}/>
+            <Route 
+                path="mission" 
+                element={
+                  <FocusBoxProvider>
+                    <MissionList/>
+                  </FocusBoxProvider>
+                }
+            />
           </Route>
           {/* <Route path="login" element={<Login/>}/> */}
           <Route path="*" element={<NotFound/>}/>

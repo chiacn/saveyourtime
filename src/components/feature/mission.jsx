@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { useReducer } from 'react';
 import { useInterval } from '../../common/common';
+import { useFocusReducer } from '../../common/context';
 import styles from './mission.module.css';
 
 export default function Mission({
@@ -12,13 +13,14 @@ export default function Mission({
     todo,
     run,
     setRunning=false,
-    focused=false,
-    stateCallback,
     missionId,
     isFailed = false,
     localStorage=false,
 }) {
-    // console.log(` missionId = ${missionId} / setRunning = ${setRunning} /focused = ${focused} / isFailed = ${isFailed} / time = ${time.m}`)
+
+    // Context API
+    const [focusInfo, dispatchFocus] = useFocusReducer();
+
     const [isRunning, setIsRunning] = useState();
     const ref_text = useRef();
     const ref_container = useRef();
@@ -34,22 +36,20 @@ export default function Mission({
             case 'init':
                 return
             case 'success':
-                stateCallback({missionId: missionId, state: 'success', time: {h: timeInfo.h, m: timeInfo.m, s: timeInfo.s}}, 'stateChange');
+                const savedTime = (Number(timeInfo.h)*60 + Number(timeInfo.m));
+                dispatchFocus({type: 'updateState', missionInfo: {missionId: missionId, state: 'success'}})
+                dispatchFocus({type: 'savedTime', savedTime: savedTime})
                 return {...timeInfo, state: 'success'};
             case 'failed':
-                stateCallback({missionId: missionId, state: 'failed'}, 'failed');
+                dispatchFocus({type: 'updateState', missionInfo: {missionId: missionId, state: 'failed'}})
                 return {...timeInfo, state: 'failed'}
             case 'run':
                 return {...timeInfo, h: action.h, m: action.m, s: action.s};
             case 'localStorage':
-                return {...timeInfo, h: localStorage.h, m: localStorage.m, s: localStorage.s, state: localStorage.state}
-            case 'isFailed':
-                return {...timeInfo, state: 'failed'};
+                return {...timeInfo, h: localStorage.h, m: localStorage.m, s: localStorage.s, state: localStorage.state};
             }
     }
 
-
-    // 작동 로직
     useInterval(
         run,
         isRunning ? 1000 : null
@@ -59,7 +59,7 @@ export default function Mission({
         if(isFailed) return;
         
         const totalTime = calculateTime(1);
-        if(totalTime === 0 || !focused || timeInfo.state !== 'proceed' ) {
+        if(totalTime === 0 || !(focusInfo.focusMissionId === missionId) || timeInfo.state !== 'proceed' ) {
             setIsRunning(false);
 
             // 시간 내에 Success 버튼을 누르지 못했을 경우
@@ -111,7 +111,7 @@ export default function Mission({
             ref_success.current.style.display = 'none';
             ref_container.current.style.color = 'rgb(228, 54, 69)';
             ref_percent__bar.current.style["background-color"] = 'rgb(228, 54, 69)';
-            dispatchTime({type: 'isFailed'})
+            dispatchTime({type: 'failed'})
         }else {
             ref_failed.current.style.display = 'none';
         }
@@ -121,6 +121,7 @@ export default function Mission({
             dispatchTime({type: 'localStorage'});
         }
 
+        dispatchFocus({type: 'initListInfo', missionInfo: {missionId: missionId, state: timeInfo.state}})
     }, [])
 
     useEffect(() => {
@@ -132,8 +133,11 @@ export default function Mission({
             ref_completed.current.style.display = 'flex';
         }
 
-        // focussing Box Check
-        stateCallback({missionId: missionId, state: timeInfo.state});
+        // 시간에 따라 줄어드는 bar UI 
+        const originWidth = ref_percent__bar.current.style.width.replace('px', '');
+        const minusWidth = originWidth / calculateTime();
+        ref_percent_value.current = ref_percent_value.current - minusWidth
+        ref_percent__bar.current.style.width = ref_percent_value.current + 'px';
     }, [timeInfo])
 
     useEffect(() => {
@@ -141,20 +145,12 @@ export default function Mission({
     })
 
     useEffect(() => {
-        if(focused && !isFailed && timeInfo.state != 'success') {
+        if(focusInfo.focusMissionId === missionId) {
             ref_success.current.style.display = 'flex';
         }else {
             ref_success.current.style.display = 'none';
         }
-    }, [focused])
-
-    useEffect(() => {
-        // 시간에 따라 줄어드는 bar UI 
-        const originWidth = ref_percent__bar.current.style.width.replace('px', '');
-        const minusWidth = originWidth / calculateTime();
-        ref_percent_value.current = ref_percent_value.current - minusWidth
-        ref_percent__bar.current.style.width = ref_percent_value.current + 'px';
-    }, [timeInfo])
+    }, [focusInfo.focusMissionId])
 
    // local storage
     useEffect(() => {

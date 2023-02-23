@@ -105,11 +105,11 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
     return {storedFrames: storedFrames, homeData: homeData};
 }
 
-export const getMissionLocalInfo = (stateCallback) => {
+export const getMissionLocalInfo = () => {
     const localStorage = window.localStorage;
     let localStorageData = [];
     let missionBox = {success: [], failed: []};
-    let missionListData = {isStart: false, missionInfo: undefined, dummyBox: undefined, stats: undefined};
+    let missionListData = {isStart: false, missionInfo: undefined, focusInfo: undefined, stats: undefined};
     for(let key in localStorage) {
         if(
             (
@@ -139,7 +139,7 @@ export const getMissionLocalInfo = (stateCallback) => {
 
     missionListData.isStart = (localStorage.getItem('isStart') != 'undefined') && JSON.parse(localStorage.getItem('isStart'));
     missionListData.missionInfo = (localStorage.getItem('missionInfo') != 'undefined') && JSON.parse(localStorage.getItem('missionInfo'));
-    missionListData.dummyBox = (localStorage.getItem('dummyBox') != 'undefined') && JSON.parse(localStorage.getItem('dummyBox'));
+    missionListData.focusInfo = (localStorage.getItem('focusInfo') != 'undefined') && JSON.parse(localStorage.getItem('focusInfo'));
     missionListData.stats = (localStorage.getItem('stats') != 'undefined') && JSON.parse(localStorage.getItem('stats'));
 
     // localStorageData frameId에 따라 정렬.
@@ -158,8 +158,7 @@ export const getMissionLocalInfo = (stateCallback) => {
                     key={data.missionId} 
                     missionId={data.missionId} 
                     time={{h: time_h, m: time_m, s: "00"}} 
-                    todo={data.todo} 
-                    stateCallback={stateCallback} 
+                    todo={data.todo}  
                     localStorage={data}
                 />
             )
@@ -170,7 +169,6 @@ export const getMissionLocalInfo = (stateCallback) => {
                     missionId={data.missionId} 
                     time={{h: time_h, m: time_m, s: "00"}} 
                     todo={data.todo} 
-                    stateCallback={stateCallback} 
                     isFailed={data.state}
                     localStorage={data}
                 />

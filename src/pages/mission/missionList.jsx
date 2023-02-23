@@ -6,17 +6,18 @@ import Mission from '../../components/feature/mission';
 import Button from '../../components/ui/button';
 import styles from './missionList.module.css';
 import { GrPowerReset } from "react-icons/gr";
+import { useFocusReducer } from '../../common/context';
 
 export default function MissionList (props) {
-    const localStorageInfo = getMissionLocalInfo(stateCallback);
+    const localStorageInfo = getMissionLocalInfo();
     const lang = navigator.language;
     const isKor = lang.substring(0,2) === 'ko';
+
+    // Context API 
+    const [focusInfo, dispatchFocus] = useFocusReducer();
     const [isStart, setIsStart]= useState(false);
     const [missionInfo, dispatchMission] = useReducer(manageMission, {h: '00', m: '00', todo: undefined});
     const [missionBox, dispatchBox] = useReducer(manageBox, {success: [], failed: [], changed: 0});
-    const [dummyBox, dispatchUpdate] = useReducer(manageUpdate, {boxInfo: [], focusBoxId: undefined});
-    const [stats, dispatchStats] = useReducer(manageStats, {savedTime: 0})
-    
 
     function manageMission(missionInfo, action) {
         switch(action.type) {
@@ -48,34 +49,47 @@ export default function MissionList (props) {
                                 key={missionKey} 
                                 time={{h:h, m:m}} 
                                 todo={todo} 
-                                stateCallback={stateCallback}
                                 missionId={missionKey}
                             />
                            ], 
                            changed: missionBox.changed++}
 
             case 'start':
+                let setStart = (action.value === 'START')
                 if(action.value === 'START') {
                     setIsStart(true);
                 }else {
                     setIsStart(false);
                 }
-                
                 const newSuccess = missionBox.success.map((success) => {
-                    const newProps =  {...success.props, setRunning: isStart, key: success.key}
+                    const newProps =  {...success.props, setRunning: setStart, key: success.key}
                     return <Mission {...newProps}/>;
                 })
                 return {...missionBox, success: newSuccess, changed: missionBox.changed++};
 
-            case 'setFocusBox':
-                return {...missionBox, success: action.newSuccess, changed: missionBox.changed++};
 
             case 'updateBox':
-                const updatedSuccess = missionBox.success.filter((success) => success.props.missionId !== action.boxInfo.missionId);
-                const failedMission = missionBox.success.filter((success) => success.props.missionId === action.boxInfo.missionId);
-                const failedMissionProps = {...failedMission[0]?.props, key: failedMission.key, isFailed: true}
-                const updatedFailed = [...missionBox.failed, <Mission {...failedMissionProps} />]
-                return {...missionBox, success: updatedSuccess, failed: updatedFailed, changed: missionBox.changed++}
+                if(focusInfo?.missionList.length === 0) return {...missionBox}
+
+                const unifiedList = [...missionBox.success, ...missionBox.failed];
+                const successMissionList = focusInfo?.missionList.filter(mission => mission.state !== 'failed');
+                const failedMissionList = focusInfo?.missionList.filter(mission => mission.state === 'failed');
+                let updatedSuccess = [];
+                let updatedFailed = [];
+                
+                unifiedList.map((list) => {
+                    if(successMissionList.some(mission => mission.missionId === list.props.missionId)) updatedSuccess.push(list);
+                    if(failedMissionList.some(mission => mission.missionId === list.props.missionId)) updatedFailed.push(list);
+                })
+
+                let newFailed = [];
+                if(updatedFailed.length !== 0) {
+                    for(let i in updatedFailed) {
+                        const failedMissionProps = {...updatedFailed[i]?.props, key: updatedFailed.key, isFailed: true}
+                        newFailed.push(<Mission {...failedMissionProps} />);
+                    }
+                }
+                return {...missionBox, success: updatedSuccess, failed: newFailed, changed: missionBox.changed++}
             
             case 'localStorage':
                 return {...missionBox, success: action.info.success, failed: action.info.failed};
@@ -86,75 +100,8 @@ export default function MissionList (props) {
         }
     }
 
-    function manageUpdate(dummyBox, action) {
-        const prevBoxInfo = [...dummyBox.boxInfo];
-        switch(action.type) {
-            case 'dummyInfo':
-                const missionId = action.boxInfo.missionId;
 
-                // some - 요소 중 하나라도 true면 true반환 -> 여기선 하나라도 일치하는게 없어야하므로 prev.missionId === missionId가 false가 나와야함. => !붙여줌
-                if(!prevBoxInfo.some(prev => prev.missionId === missionId) || prevBoxInfo.length === 0) {
-                    prevBoxInfo.push(action.boxInfo)
-                }
-                return {...dummyBox, boxInfo: prevBoxInfo}
-
-            case 'stateChange':
-                const newBoxInfo = prevBoxInfo.map((boxInfo) => {
-                    if(boxInfo.missionId === action.boxInfo.missionId) {
-                        return {...boxInfo, state: action.boxInfo.state, time:action.boxInfo?.time};
-                    }else {
-                        return {...boxInfo}
-                    }
-                })
-                return {...dummyBox, boxInfo: newBoxInfo}
-            
-            case 'failed':
-                const removedBoxInfo = prevBoxInfo.filter((boxInfo) => boxInfo.missionId !== action.boxInfo.missionId);
-                return {...dummyBox, boxInfo: removedBoxInfo}
-            
-            case 'updateFocusBoxId':
-                let focusBoxId;
-
-                // 정렬 
-                const sortedBoxInfo = dummyBox.boxInfo.sort(function(a, b) {
-                    return b.missionId - a.missionId 
-                })
-
-                // 정렬된 missionId 중에서 state === 'proceed'인 가장 빠른 값.
-                sortedBoxInfo.map((boxInfo) => {
-                    if(boxInfo.state === 'proceed') focusBoxId = boxInfo.missionId;
-                })
-                return {...dummyBox, focusBoxId: focusBoxId};
-
-            case 'localStorage':
-                return {...dummyBox, boxInfo: action.info.boxInfo};
-
-            case 'reset':
-                return {...dummyBox, boxInfo: [], focusBoxId: undefined};
-        }
-    }
-
-    function manageStats(stats, action) {
-        switch(action.type) {
-            case 'updateSavedTime':
-                let savedTime = 0;
-                dummyBox.boxInfo.map((box) => {
-                    if(box.state === 'success') {
-                        savedTime = savedTime + (Number(box.time.h)*60 + Number(box.time.m));
-                    }
-                })
-                return {...stats, savedTime: savedTime}
-
-            case 'localStorage':
-                return {...stats, savedTime: action.info.savedTime};
-
-            case 'reset':
-                return {...stats, savedTime: 0};
-        }
-    }
-
-
-    const onChange = (e) => {
+    const inputChange = (e) => {
         if(e.target.name === 'hour') {
             const hour = setFormat(e.target.value);
             dispatchMission({type:'setHour', h:hour});
@@ -184,45 +131,22 @@ export default function MissionList (props) {
     const reset = () => {
         window.localStorage.removeItem('isStart');
         window.localStorage.removeItem('missionInfo');
-        window.localStorage.removeItem('stats');
-        window.localStorage.removeItem('dummyBox');
-        for( let box of dummyBox.boxInfo) {
-            window.localStorage.removeItem(JSON.stringify('mission' + box.missionId));
+        for( let mission of focusInfo.missionList) {
+            window.localStorage.removeItem(JSON.stringify('mission' + mission.missionId));
         }
 
         setIsStart(false);
         dispatchMission({type: 'reset'});
         dispatchBox({type: 'reset'});
-        dispatchUpdate({type: 'reset'});
-        dispatchStats({type: 'reset'});
+        dispatchFocus({type:'reset'});
     }
-
-    useEffect(() => {
-        const newSuccess = missionBox.success.map((success, index) => {
-            let newProps;
-            if(success.props.missionId === dummyBox.focusBoxId) {
-                newProps = {...success.props, key: success.key, focused: true, setRunning: isStart};
-            }else {
-                newProps = {...success.props, key: success.key};
-            }
-            return <Mission {...newProps}/>
-        })
-        dispatchBox({type: 'setFocusBox', newSuccess: newSuccess});
-    }, [dummyBox, isStart])
-    // }, [updateBox.changed])
-
-    useEffect(() => {
-        if(!dummyBox.boxInfo.some(box => box.state === 'proceed')) setIsStart(false);
-    }, [dummyBox.boxInfo])
 
     // local storage
     useEffect(() => {
         window.localStorage.setItem('isStart', JSON.stringify(isStart));
         window.localStorage.setItem('missionInfo', JSON.stringify(missionInfo));
-        // window.localStorage.setItem('missionBox', JSON.stringify(missionBox)); -- 순환참조 오류
-        window.localStorage.setItem('dummyBox', JSON.stringify(dummyBox));
-        window.localStorage.setItem('stats', JSON.stringify(stats));
-    }, [isStart, missionInfo, missionBox, dummyBox, stats])
+        window.localStorage.setItem('focusInfo', JSON.stringify(focusInfo));
+    }, [isStart, missionInfo, missionBox, focusInfo])
 
     useEffect(() => {
         if(localStorageInfo?.missionBox !== undefined) {
@@ -235,17 +159,18 @@ export default function MissionList (props) {
             localStorageInfo?.missionListData !== undefined && 
             localStorageInfo.missionListData.isStart !== null &&
             localStorageInfo.missionListData.missionInfo !== null &&
-            localStorageInfo.missionListData.dummyBox !== null &&
-            localStorageInfo.missionListData.stats !== null
+            localStorageInfo.missionListData.focusInfo !== null
           ) {
             dispatchMission({type: 'localStorage', info: localStorageInfo.missionListData.missionInfo});
-            dispatchUpdate({type: 'localStorage', info: localStorageInfo.missionListData.dummyBox});
-            dispatchStats({type: 'localStorage', info: localStorageInfo.missionListData.stats})
+            dispatchFocus({type: 'localStorage', info: localStorageInfo.missionListData.focusInfo});
         }else {
             return;
         }
     }, [])
-    
+
+    useEffect(() => {
+        dispatchBox({type: 'updateBox'})
+    }, [focusInfo.missionList])
 
 
     // Util
@@ -273,22 +198,6 @@ export default function MissionList (props) {
         return formattedNum;
     }
 
-    function stateCallback(boxInfo, type) {
-        if(type === 'stateChange') {
-            dispatchUpdate({type: 'stateChange', boxInfo: boxInfo });
-            dispatchStats({type: 'updateSavedTime'})
-        }else if(type === 'failed') {
-            dispatchUpdate({type: 'failed', boxInfo: boxInfo});
-            dispatchBox({type: 'updateBox', boxInfo: boxInfo});
-        }else {
-            dispatchUpdate({type: 'dummyInfo', boxInfo: boxInfo });
-        }
-        dispatchUpdate({type: 'updateFocusBoxId'});
-    }
-
-
-
-
     return (
         <>
             <div className={styles.container}>
@@ -299,7 +208,7 @@ export default function MissionList (props) {
                     <div className={styles.savedTime}>
                         <span>Saved Time</span>
                         <div className={styles.savedTime__time}>
-                            {stats.savedTime}{isKor ? '분' : 'min'}
+                            {focusInfo.savedTime}{isKor ? '분' : 'min'}
                         </div>
                     </div>
                     <div className={styles.register}>
@@ -311,7 +220,7 @@ export default function MissionList (props) {
                                     name="hour"
                                     placeholder="00" 
                                     value={missionInfo.h || ''} 
-                                    onChange={onChange} 
+                                    onChange={inputChange} 
                                     maxLength="2"
                                     max="30"
                                     min="0"
@@ -326,7 +235,7 @@ export default function MissionList (props) {
                                     name="minute"
                                     placeholder="00" 
                                     value={missionInfo.m || ''}
-                                    onChange={onChange} 
+                                    onChange={inputChange} 
                                     maxLength="2" 
                                     max="59"
                                     min="0"
@@ -368,7 +277,7 @@ export default function MissionList (props) {
                     <div className={styles.success}>
                         <div className={styles.success__title}>
                             Success
-                        </div>
+                        </div>                    
                         {missionBox.success.map(mission => mission)}
                     </div>
                     <div className={styles.failed}>
