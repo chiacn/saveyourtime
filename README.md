@@ -10,6 +10,50 @@ https://holdyourtime.com/
 - 데이터 동기화 : Firebase, local storage
 - 기타 : Context API, React-router
 
+## 고민과 해결
+### 1. 재사용성
+- 컴포넌트 단위에 대한 고민과 한계
+  - Vue 프로젝트에서 경험한 아토믹 디자인을 참고하여 컴포넌트 단위를 적절하게 분리하는 것에 대해 고민함.
+  - 하지만 Timer 컴포넌트를 time, button 등 여러 개의 자식 컴포넌트로 구성했을 시 컴포넌트 간의 복잡도가 쓸데없이 커질 것을 우려하여
+    컴포넌트를 작은 UI 단위로 아토믹하게 설계하지 않았음.
+  - 그 결과 Timer 컴포넌트에서 설계한 UI를 다른 곳에서 재사용하지 못하고 새롭게 구성해야 했음.
+  
+  - Timer 컴포넌트에서 Timer 기능과 관련된 로직을 관리하고, Timer 컴포넌트를 구성하는 UI 자체는 아토믹한 컴포넌트로 설계했다면
+    작은 UI단위의 컴포넌트들을 다른 페이지에서 재사용할 수 있었을 것. 또한 Timer라는 기능 단위의 컴포넌트에서 관련 로직을 관리하기 때문에
+    복잡도가 우려보다 높지 않았을 것이라는 아쉬움이 있음.
+    
+### 2. 결합도(복잡도 개선)
+**대상 컴포넌트 :**
+- Mission (src/components/feature/mission.jsx)
+- MissionList (src/pages/mission/missionList.jsx)
+
+
+**문제 :**
+
+- 부모 컴포넌트(MissionList)와 자식 컴포넌트(Mission)의 양방향 결합으로 인한 복잡도 증가.
+- 자식 컴포넌트들의 순서와 state값에 따라 자식 컴포넌트들 중 하나를 특정해주어야 하는 상황.
+- 자식 컴포넌트의 state 변경 사항을 부모 컴포넌트에 반영하고, 부모 컴포넌트에서 가공된 정보를 자식 컴포넌트에 내려주는 양방향 결합 때문에 state의 플로우를 파악하기 어려웠음.
+
+
+**해결 :**
+
+- Context API를 사용하여 결합도를 완화시킴.
+- 양방향 통신 완화로 로직 복잡도 개선  
+  (특정 로직이 부모, 자식 컴포넌트에 분산되지 않고 Context API에서 관리되는 것으로 일원화)
+  
+<br/>
+<img src="https://user-images.githubusercontent.com/68171739/221398902-70958ea9-7dd9-44a0-8c34-1f22a975854e.png"  width="800" height="500">
+
+
+**관련 커밋 :** Refactor MissionList and mission components for low coupling (7ada132d05119552a359bf9ec9e1cebca19ba702)
+
+### 3. SEO
+- React-helmet 사용, 그러나 Next.js 도입의 필요성을 느낌.
+  - React-helmet 라이브러리를 이용하여 head 태그에 메타데이터를 넣을 수 있었으나, 검색엔진 노출 여부의 불확실성 등 한계 명확.
+
+
+
+
 ## 메뉴 별 소개
 - 타이머
 
