@@ -1,0 +1,39 @@
+.timer__input {
+    margin-top: 8px;
+  }
+  
+.timer__input > input {
+border-bottom: 1.5px solid;
+width: 240px;
+}
+
+.timer__input > input:focus {
+outline: none;
+}
+
+.timer__input > input::placeholder {
+font-size: 14px;
+text-align: center;
+color: rgb(0, 129, 255);
+opacity:0.5;
+}
+
+.timer__input--alarmMode {
+margin-top: 8px;
+}
+
+.timer__input--alarmMode > input {
+border-bottom: 1.5px solid;
+width: 240px;
+}
+
+.timer__input--alarmMode > input:focus {
+outline: none;
+}
+
+.timer__input--alarmMode > input::placeholder {
+font-size: 14px;
+text-align: center;
+color: rgb(0, 184, 147);
+opacity:0.5;
+}

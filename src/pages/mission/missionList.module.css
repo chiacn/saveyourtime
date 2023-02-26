@@ -87,47 +87,18 @@
     justify-content: center;
     font-size: 80px;
 }
-
+  
 .register__time div {
-    display: flex;
-    justify-content: space-evenly;
+display: flex;
+justify-content: space-evenly;
 }
 
 .register__time input {
-    width: 100px;
+width: 100px;
 }
 
 .register__time input:focus {
-    outline: none;
-}
-
-.register__time--colon {
-    margin-top: 20px;
-    margin-right: 30px;
-}
-
-.register__time--hour {
-    display: flex;
-    flex-direction: column;
-}
-
-.register__time--hour p {
-    font-family: 'Roboto', sans-serif;
-    font-size: 25px;
-    margin-left: 4px;
-    opacity: 0.5;
-}
-
-.register__time--minute {
-    display: flex;
-    flex-direction: column;
-    margin-left: 30px;
-}
-
-.register__time--minute p {
-    font-family: 'Roboto', sans-serif;
-    font-size: 25px;
-    opacity: 0.5;
+outline: none;
 }
 
 .register__input {

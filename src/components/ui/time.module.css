@@ -1,0 +1,129 @@
+.timer {
+    display: flex;
+    justify-content: center;
+  }
+
+.timer__hourArea, .timer__minuteArea, .timer__secondArea {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.timer input {
+  width: 65px;
+  height: 50px;
+  font-size:40px;
+  border: 0 solid #ccc;
+  border-radius: 5px;
+  outline:none;
+  text-align: center;
+}
+
+/* Alarm Mode ====================== */
+
+.alarm {
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+}
+
+.alarm input {
+  width: 65px;
+  height: 38px;
+  font-size:38px;
+  border: 0 solid #ccc;
+  border-radius: 5px;
+  outline:none;
+  text-align: center;
+}
+
+.alarm input::placeholder {
+  color: rgb(0, 184, 147);
+}
+
+.alarm__wrapping_time {
+  display: flex;
+  align-items: center;
+  
+}
+
+.alarm__day, .alarm__hour, .alarm__minute {
+  display: flex;
+  align-items: center;
+  margin: 0 3px;
+}
+
+.alarm__day {
+  font-size: 35px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 8px;
+}
+
+.alarm__day:hover {
+  cursor: pointer;
+}
+
+.alarm__day--btnUp {
+  width: 0px;
+  height: 0px;
+  border-bottom: 8px solid;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.alarm__day--btnUp:hover {
+  cursor: pointer;
+}
+
+.alarm__day--btnDown {
+  width: 0px;
+  height: 0px;
+  border-top: 8px solid;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.alarm__day--btnDown:hover {
+  cursor: pointer;
+}
+
+.alarm__hour {
+  display: flex;
+  flex-direction: column;
+}
+
+.alarm__hour_colon {
+  font-size: 20px;
+  margin-right:10px;
+}
+
+.alarm__minute {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.mission__hour {
+  display: flex;
+  flex-direction: column;
+}
+
+.mission__hour p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  margin-left: 4px;
+  opacity: 0.5;
+}
+
+.mission__minute {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
+
+.mission__minute p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  opacity: 0.5;
+}

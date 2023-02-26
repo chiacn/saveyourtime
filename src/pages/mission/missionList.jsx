@@ -7,6 +7,7 @@ import Button from '../../components/ui/button';
 import styles from './missionList.module.css';
 import { GrPowerReset } from "react-icons/gr";
 import { useFocusReducer } from '../../common/context';
+import Time from '../../components/ui/time';
 
 export default function MissionList (props) {
     const localStorageInfo = getMissionLocalInfo();
@@ -101,14 +102,14 @@ export default function MissionList (props) {
     }
 
 
-    const inputChange = (e) => {
+    const timeChange = (e, formattedNum) => {
         if(e.target.name === 'hour') {
-            const hour = setFormat(e.target.value);
+            const hour = formattedNum;
             dispatchMission({type:'setHour', h:hour});
         }
             
         if(e.target.name === 'minute') {
-            const minute = setFormat(e.target.value)
+            const minute = formattedNum;
             dispatchMission({type:'setMinute', m:minute});
         }
     }
@@ -178,26 +179,6 @@ export default function MissionList (props) {
         return new Date().getTime().toString();
     }
 
-    function setFormat(num, type=false) {
-        let formattedNum;
-        formattedNum = num.toString().padStart(2, "0"); 
-
-        if(num.length > 2) {
-            formattedNum = num.substr(-2,2);
-        }
-    
-        if(!type) {
-            // 1. 59일 때 대체  -> 일의 자리만 대체
-            if(formattedNum > 59) formattedNum = '59';
-            if(num.substr(0,2) == '59') formattedNum = '5' + num.substr(-1,1);
-        }else if(type == 'alarm_hour_am' || type == 'alarm_hour_pm') {
-            if(formattedNum > 12) formattedNum = '12';
-            if(num.substr(0,2) == '12') formattedNum = '1' + (num.substr(-1,1) <=1 ? num.substr(-1,1) : '2');
-        }
-         
-        return formattedNum;
-    }
-
     return (
         <>
             <div className={styles.container}>
@@ -213,34 +194,12 @@ export default function MissionList (props) {
                     </div>
                     <div className={styles.register}>
                         <div className={styles.register__time}> 
-                            <div className={styles["register__time--hour"]}>
-                                <p>Hour</p>
-                                <input 
-                                    type="number"
-                                    name="hour"
-                                    placeholder="00" 
-                                    value={missionInfo.h || ''} 
-                                    onChange={inputChange} 
-                                    maxLength="2"
-                                    max="30"
-                                    min="0"
-                                    pattern="\d*"
-                                />
-                            </div>
-                            {/* <div className={styles["register__time--colon"]}>:</div> */}
-                            <div className={styles["register__time--minute"]}>
-                                <p>Minute</p>
-                                <input 
-                                    type="number" 
-                                    name="minute"
-                                    placeholder="00" 
-                                    value={missionInfo.m || ''}
-                                    onChange={inputChange} 
-                                    maxLength="2" 
-                                    max="59"
-                                    min="0"
-                                /> 
-                            </div>
+                            <Time
+                                type="mission"
+                                hour={missionInfo.h}
+                                minute={missionInfo.m}
+                                timeChange={timeChange}
+                            />
                         </div>
                         <div className={styles.register__input}>
                             Todo :   
