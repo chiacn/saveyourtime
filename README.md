@@ -20,8 +20,14 @@ https://holdyourtime.com/
   
   - Timer 컴포넌트에서 Timer 기능과 관련된 로직을 관리하고, Timer 컴포넌트를 구성하는 UI 자체는 아토믹한 컴포넌트로 설계했다면
     작은 UI단위의 컴포넌트들을 다른 페이지에서 재사용할 수 있었을 것. 또한 Timer라는 기능 단위의 컴포넌트에서 관련 로직을 관리하기 때문에
-    복잡도가 우려보다 높지 않았을 것이라는 아쉬움이 있음.
+    복잡도가 우려보다 높지 않았을 것이라는 아쉬움이 있었음.
     
+- 시도
+  - Timer의 주요 기능은 Timer 컴포넌트에 두고 재사용할 수 있는 UI는 하위 컴포넌트로 쪼개서 관리.
+  - 타 페이지와 중복되는 기능을 UI컴포넌트에서 관리하여 재사용성 높임, 관심사 분리.
+<br/>
+<img src="https://user-images.githubusercontent.com/68171739/221430379-6c1ea4f7-f665-49f1-8ce3-bb37a936de23.png"  width="800" height="500">
+  
 ### 2. 결합도(복잡도 개선)
 **대상 컴포넌트 :**
 - Mission (src/components/feature/mission.jsx)
