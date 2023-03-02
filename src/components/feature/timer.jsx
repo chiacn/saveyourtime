@@ -308,7 +308,7 @@ export default function Timer({
         }
     }, [alarmMode])
 
-    // Button 관련
+    // Button
     useEffect(() => { 
         if(calculateTime() === 0 && !isRunning) {
             refBtnReset.current.style.display = 'none';

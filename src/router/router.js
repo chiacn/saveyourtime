@@ -8,7 +8,6 @@ import NotFound from "../pages/error/notFound";
 // import ProtectedRoutes from "./protectedRoutes";
 // import Login from "../pages/login/login";
 import App from "../App";
-import RoutineList from "../pages/routine/routineList";
 import MissionList from "../pages/mission/missionList";
 
 
@@ -29,7 +28,6 @@ export const WrappingRouter = (props) => {
           <Route element={<App/>}>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="home" element={<Home/>}/>
-            <Route path="routine" element={<RoutineList/>}/>
             <Route 
                 path="mission" 
                 element={
