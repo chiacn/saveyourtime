@@ -29,14 +29,12 @@ export default function Frame({
     // CSS
     frame: styles.frame,
     wrapping: styles.wrapping,
-    frame__option: styles.frame__option,
     frame__timer: styles.frame__timer,
     modal: styles.modal, } :
     {
     // defaultTailwind
     frame: 'bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110',
     wrapping: '',
-    frame__option: '',
     frame__timer: '',
     modal: '',
     }
@@ -48,32 +46,9 @@ export default function Frame({
     const {
         frame, 
         wrapping, 
-        frame__option,
         frame__timer,
         modal,
     } = assignCSS;
-
-    const openOption = () => {
-        const modal = document.querySelector(`.${styles.modal}`);
-        const modal_ani = document.querySelector(`.${styles.modal__ani}`);
-        const frame = document.querySelector(`.${styles.frame}`)
-        const absoluteTop = window.scrollY + frame.getBoundingClientRect().top;
-        const absoluteLeft = frame.getBoundingClientRect().left;
-
-        modal_ani.style.top = absoluteTop;
-        modal_ani.style.left = absoluteLeft;
-
-        modal_ani.style.display = 'flex'
-        modal.style.display = 'flex'
-    }
-
-    const closeOption = () => {
-        const modal = document.querySelector(`.${styles.modal}`);
-        const modal_ani = document.querySelector(`.${styles.modal__ani}`);
-
-        modal.style.display = 'none';
-        modal_ani.style.display = 'none';
-    }
     
     const submitFrameId = () => {
         closeFrame(frameId);

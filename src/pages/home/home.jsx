@@ -9,26 +9,24 @@ import Button from '../../components/ui/button';
 import styles from './home.module.css'
 import { useWindowSize } from 'react-use';
 
- const Home = (props) => {
+ const Home = () => {
     const lang = navigator.language
-    const localStorageInfo = getFromLocalStorage(closeFrame, changeMode);
-    const [addButtonColor, setAddButtonColor] = useState();
+    const localStorageInfo = getFromLocalStorage(closeFrame);
     const [lastAddBtn, setLastAddBtn] = useState();
     const [frames, setFrames] = useState([]);
     const [closeFrameId, setCloseFrameId] = useState();
     const addButton = useRef();
 
 
-    // Add버튼 flex-wrap 관련
+    // Add버튼 flex-wrap
     const {width, height} = useWindowSize();
     const ref_main = useRef();
     const [lastDummyPoint, setLastDummyPoint] = useState();
 
-    // memo 기능 관련
+    // memo
     const [memo, setMemo] = useState();
     const [foldMemo, setFoldMemo] = useState(true);
     const ref_memoArea = useRef();
-    const ref_memoButton__arrow = useRef();
     const ref_memoButton__window = useRef();
     const ref_memoButton__windowFold = useRef();
 
@@ -41,45 +39,10 @@ import { useWindowSize } from 'react-use';
             frameId="example" 
             key="example" 
             closeFrame={closeFrame} 
-            changeMode={changeMode}
             example={false}
-            example_count={ref_example_count}
+            example_count={ref_example_count.current}
         />
     );
-
-    const [dummyFrames, dispatchDummy] = useReducer(manageDummy, [{frameId: 'frame1', alarmMode: false}]);
-
-    function manageDummy(dummyFrames, action) {
-        switch(action.type) {
-            case 'add':
-                selectBtnColor();
-                return [...dummyFrames, action.frame];
-
-            case 'delete':
-                // mode 변경 시, Add버튼을 마지막 Frame의 색과 같게 지정.
-                selectBtnColor();
-                return dummyFrames.filter((frame) => frame.frameId != action.frameId);
-                
-            case 'changeMode':
-                for(let i in dummyFrames) {
-                    if(dummyFrames[i].frameId === action.frameId) {
-                        dummyFrames[i].alarmMode = action.alarmMode;
-
-                        // mode 변경 시, Add버튼을 마지막 Frame의 색과 같게 지정.
-                        selectBtnColor();
-                    }
-                }
-                return dummyFrames
-        }
-
-        function selectBtnColor() {
-            if(dummyFrames[dummyFrames.length -1].alarmMode === true) {
-                return setAddButtonColor('rgb(0, 184, 147)');
-            }else {
-                return setAddButtonColor('rgb(0, 129, 255)');
-            }
-        }
-    }
 
     const addFrame = () => {
         const frameId = createFrameId();
@@ -90,30 +53,13 @@ import { useWindowSize } from 'react-use';
                                     frameId={frameId} 
                                     key={frameId} 
                                     closeFrame={closeFrame} 
-                                    changeMode={changeMode}
                                 />
                             ]
         )
-        dispatchDummy({
-            type: 'add',
-            frame: {frameId: frameId, alarmMode: false}
-        })
     }
 
     function closeFrame(frameId) {
-        setCloseFrameId(frameId)
-        dispatchDummy({
-            type: 'delete',
-            frameId: frameId
-        })
-    }
-
-    function changeMode(frameId, alarmMode) {
-        dispatchDummy({
-            type: 'changeMode',
-            frameId: frameId,
-            alarmMode: alarmMode
-        })
+        setCloseFrameId(frameId);
     }
 
     function createFrameId() {
@@ -122,8 +68,9 @@ import { useWindowSize } from 'react-use';
     }
 
     useEffect(() => {
-        setFrames( frames.filter((frame) => frame.props.frameId != closeFrameId));
-    },[closeFrameId])
+        const newFrames = frames.filter((frame) => frame.props.frameId !== closeFrameId);
+        setFrames(newFrames);
+    }, [closeFrameId])
 
     useEffect(() => {
         if(frames.length > 1) {
@@ -132,14 +79,6 @@ import { useWindowSize } from 'react-use';
             addButton.current.style = 'margin-left: 20px'
         }
     }, [frames])
-
-    useEffect(() => {
-        if(dummyFrames[dummyFrames.length -1].alarmMode === true) {
-            setAddButtonColor('rgb(0, 184, 147)');
-        }else {
-            setAddButtonColor('rgb(0, 129, 255)');
-        }
-    })
 
     useEffect(() => {
         let browserWidth;
@@ -174,10 +113,9 @@ import { useWindowSize } from 'react-use';
 
     // local storage
     useEffect(() => {
-        window.localStorage.setItem('addButtonColor', JSON.stringify(addButtonColor));
         window.localStorage.setItem('lastAddBtn', JSON.stringify(lastAddBtn));
         window.localStorage.setItem('memo', JSON.stringify(memo));
-    }, [addButtonColor, lastAddBtn, memo])
+    }, [lastAddBtn, memo])
 
     // local storage update
     useEffect(() => {
@@ -191,13 +129,10 @@ import { useWindowSize } from 'react-use';
                         frameId="frame1" 
                         key="frame1" 
                         closeFrame={closeFrame} 
-                        changeMode={changeMode} 
                     />
                 ]
             )
         }
-        
-        setAddButtonColor(localStorageInfo.homeData.addButtonColor);
         setLastAddBtn(localStorageInfo.homeData.lastAddBtn);
         setMemo(localStorageInfo.homeData.memo);
     }, [])
@@ -241,6 +176,7 @@ import { useWindowSize } from 'react-use';
     const closeHelp = () => {
         ref_help.current.style.display = 'none';
     }
+
     const example = (e) => {
         switch(e.target.innerHTML) {
             case 'Example 1':
@@ -250,8 +186,7 @@ import { useWindowSize } from 'react-use';
                         timer 
                         frameId="example" 
                         key="example" 
-                        closeFrame={closeFrame} 
-                        changeMode={changeMode}
+                        closeFrame={closeFrame}
                         example={true}
                         example_count={num}
                     />
@@ -273,7 +208,6 @@ import { useWindowSize } from 'react-use';
                             type="plus" 
                             text="Add"
                             font="eng_rubik_bubbles" 
-                            color={addButtonColor}
                             font_size="24px"
                         />
                     </div>
@@ -282,7 +216,6 @@ import { useWindowSize } from 'react-use';
             <div className={styles.memo_container}>
                 <div className={styles.memoButton} onClick={unfoldMemo}>
                     <p>memo</p>
-                    {/* <div class={styles.memoButton__arrow} onClick={unfoldMemo} ref={ref_memoButton__arrow}></div> */}
                     <div className={styles.memoButton__window} onClick={unfoldMemo} ref={ref_memoButton__window} />
                     <div className={styles["memoButton__window--fold"]} onClick={unfoldMemo} ref={ref_memoButton__windowFold} />
                 </div>

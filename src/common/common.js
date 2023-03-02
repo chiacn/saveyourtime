@@ -48,7 +48,7 @@ export const clone = (obj) => {
 }
 
 // local storage
-export const getFromLocalStorage = (closeFrame, changeMode) => {
+export const getFromLocalStorage = (closeFrame) => {
     const localStorage = window.localStorage;
     let localStorageData = [];
     let homeData = {addButtonColor: 'rgb(0, 184, 147)', lastAddBtn: undefined, memo: undefined};
@@ -99,7 +99,7 @@ export const getFromLocalStorage = (closeFrame, changeMode) => {
 
     // home 컴포넌트에서 frames 배열에 넣어줄 Frame 컴포넌트 배열 설정.
     localStorageData.map(data => {
-        storedFrames.push(<Frame timer key={data.frameId} frameId={data.frameId} closeFrame={closeFrame} changeMode={changeMode} localStorage={data}/>)
+        storedFrames.push(<Frame timer key={data.frameId} frameId={data.frameId} closeFrame={closeFrame} localStorage={data}/>)
     })
 
     return {storedFrames: storedFrames, homeData: homeData};
