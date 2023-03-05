@@ -1,0 +1,23 @@
+@import url('../public/assets/font/eng_roboto.css');
+@import url('../public/assets/font/eng_rubik_bubbles.css');
+@import url('../public/assets/font/kor_jua.css');
+
+.app {
+width: 100%;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+  
+p {
+    font-size: 50px;
+}
+
+button:hover {
+    font-weight: bold;
+}

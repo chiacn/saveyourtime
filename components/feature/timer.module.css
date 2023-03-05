@@ -1,0 +1,154 @@
+.frame {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.timer__feature {
+  margin-top: 24px;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+}
+
+.timer__option {
+  display: flex;
+  justify-content: space-around;
+}
+
+.timer__option > div {
+  display: flex;
+  flex-direction: row;
+}
+
+.timer__option p {
+  font-size:20px;
+  margin-top:5px;
+}
+
+.timer__inputText {
+  margin-top: -10px;
+}
+
+.timer__button {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  color: white;
+}
+
+.timer__button--start {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(0, 129, 255);
+  border-radius: 50%;
+  margin-right:10%;
+}
+
+.timer__button--start:hover {
+  cursor: pointer;
+}
+
+@keyframes loading_button {
+  /* 0% {
+    opacity: 1;
+  }
+  33% {
+    opacity: 0.5;
+  }
+  66% {
+    opacity: 0.2;
+  } */
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+.timer__button--loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(0, 129, 255);
+  border-radius: 50%;
+  margin-right:4%;
+}
+
+.timer__button--loading div {
+  width:8px;
+  height:8px;
+  margin: 6%;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.timer__button--loading .loading-button1 {
+  animation: loading_button 2s infinite;
+}
+.timer__button--loading .loading-button2 {
+  animation: loading_button 2s infinite;
+  animation-delay: 0.7s;
+}
+.timer__button--loading .loading-button3 {
+  animation: loading_button 2s infinite;
+  animation-delay: 1.4s;
+}
+
+
+.timer__button--reset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(0, 129, 255);
+  border-radius: 50%;
+}
+
+.timer__button--reset:hover {
+  cursor: pointer;
+}
+
+.timer__repeatBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6%;
+  position: relative;
+  left: 8%;
+}
+
+.timer__repeatBtn--text {
+  font-size: 14px;
+  align-self: center;
+}
+
+.timer__repeatBtn--icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgb(214, 230, 255);
+  margin-left: 4%;
+}
+
+.timer__repeatBtn--icon:hover {
+  cursor: pointer;
+}
+
+.timer__repeatBtn--time {
+
+}
+
+/* Alarm Mode ==================================================================================*/
+
+
+/* Check Box CSS ===============================================================================*/

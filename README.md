@@ -5,10 +5,10 @@
 https://holdyourtime.com/
 
 ## 사용 기술
-- 프레임워크 : React
+- 프레임워크 : React, Next.js
 - UI : PostCSS, tailwind
 - 데이터 동기화 : Firebase, local storage
-- 기타 : Context API, React-router
+- 기타 : Context API
 
 ## 고민과 해결
 ### 1. 재사용성
@@ -57,6 +57,8 @@ https://holdyourtime.com/
 - React-helmet 사용, 그러나 Next.js 도입의 필요성을 느낌.
   - React-helmet 라이브러리를 이용하여 head 태그에 메타데이터를 넣을 수 있었으나, 검색엔진 노출 여부의 불확실성 등 한계 명확.
 
+- 시도 :
+  - Next.js로 마이그레이션 
 
 
 

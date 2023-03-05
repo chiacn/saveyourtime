@@ -1,0 +1,64 @@
+
+/* bg-brand text-white py-2 px-4 rounded-sm hover:brightness-110' */
+
+.common_setting {
+  font-size: 25px;
+}
+
+.common_setting:hover {
+  cursor: pointer;
+}
+
+.button {
+    background-color:white;
+    border: none;
+    font-family: inherit;
+    color: inherit;
+    font-size: inherit;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.text_shape_background {
+
+}
+
+.icon_background {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: rgb(218,219,221);
+    position: relative;
+    opacity: 0.8;
+}
+
+.icon_background:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.plus::before {
+  content: '';
+  display: block;
+  width: 30%;
+  height: 8%;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.plus::after {
+  content: '';
+  display: block;
+  width: 8%;
+  height: 30%;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

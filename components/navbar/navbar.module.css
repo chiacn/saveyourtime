@@ -1,0 +1,79 @@
+
+.header {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  padding: 0.5em;
+  background-color: white;
+  position: relative;
+  font-family: 'Rubik Bubbles', cursive;
+  line-height: 5em;
+  color: rgb(0, 129, 255);
+}
+
+.header__home {
+  height:100%;
+  color: black;
+  text-decoration-line: none;
+  font-size: 28px;
+  margin-left: 2rem;
+  color: rgb(0, 129, 255);
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+}
+
+.header__home * {
+  font-weight: normal;
+}
+
+.header__nav {
+  flex: 9 9 30px;;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 8px;
+  margin-left: 90px;
+  color: rgb(0, 184, 147);
+  font-size: 25px;
+}
+
+.header__nav * {
+  text-decoration-line: none;
+  color: rgb(0, 184, 147);
+}
+
+.header__nav--timer {
+  opacity: 0.7;
+}
+
+.header__nav--routine {
+  margin-left: 50px;
+  opacity: 0.7;
+}
+
+.header__nav--timer:hover {
+  opacity: 1;
+}
+
+.header__nav--routine:hover {
+  opacity: 1;
+}
+
+.header__user-ui {
+  display:flex;
+}
+
+.header__user {
+  flex: 1;
+  align-self: center; /*align-self: flex-item 각각의 개별적 설정*/
+  margin-left:1rem;
+}
+
+.header__button {
+  flex: 2;
+  align-self: center;
+  margin-right: 1rem;
+}
