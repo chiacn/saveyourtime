@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import styles from "./navbar.module.css";
-import Home from "../../pages/home/home"
+import Home from "../../pages/home/home";
 // import { useAuth } from "../../common/context";
 import Button from "../ui/button";
 // import { login, logout } from "../../service/auth_service";
@@ -12,8 +12,8 @@ const Navbar = () => {
 
   const navigation = useNavigate();
   const onLogin = () => {
-    navigation('/login')
-  }
+    navigation("/login");
+  };
 
   return (
     <header className={styles.header}>
@@ -22,10 +22,10 @@ const Navbar = () => {
       </div>
       <nav className={styles.header__nav}>
         <div className={styles["header__nav--timer"]}>
-          <Link to='/'>Timer</Link>
+          <Link to="/home">Timer</Link>
         </div>
         <div className={styles["header__nav--routine"]}>
-          <Link to='/mission'>Challenge</Link>
+          <Link to="/mission">Challenge</Link>
         </div>
 
         {/* {user && (
@@ -42,7 +42,6 @@ const Navbar = () => {
         )} */}
         {/* {user && <User user={user} />} */}
 
-
         {/* {
           !user && 
           <button
@@ -50,9 +49,8 @@ const Navbar = () => {
             LOGOUT
           </button>
         } */}
-
       </nav>
-        
+
       {/* <User user={user} tailwind={{div: 'flex items-center shrink-0', div__img: 'w-10 h-10 rounded-full mr-2', div__name: 'hidden md:block'}}/> */}
       {/* <div className={styles['header__user-ui']}>
         <div className={styles.header__user}>
