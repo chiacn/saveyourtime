@@ -1,4 +1,5 @@
 {
+  "homepage": "https://chiacn.github.io/saveyourtime",
   "name": "saveyourtime",
   "version": "0.1.0",
   "private": true,
@@ -19,7 +20,6 @@
     "web-vitals": "^2.1.0",
     "yarn": "^1.22.19"
   },
-  "homepages": "https://chiacn.github.io/saveyourtime/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
