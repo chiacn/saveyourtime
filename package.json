@@ -1,5 +1,5 @@
 {
-  "name": "card-maker",
+  "name": "saveyourtime",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,13 +19,15 @@
     "web-vitals": "^2.1.0",
     "yarn": "^1.22.19"
   },
+  "homepages": "https://chiacn.github.io/saveyourtime/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sitemap": "babel-node ./sitemap-generator.js",
-    "predeploy": "npm run sitemap"
+    "predeploy": "npm run sitemap",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^6.1.1",
     "tailwindcss": "^3.2.4"
   }
 }
