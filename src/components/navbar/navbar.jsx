@@ -22,10 +22,10 @@ const Navbar = () => {
       </div>
       <nav className={styles.header__nav}>
         <div className={styles["header__nav--timer"]}>
-          <Link to="/home">Timer</Link>
+          <Link to={`${process.env.PUBLIC_URL}/home`}>Timer</Link>
         </div>
         <div className={styles["header__nav--routine"]}>
-          <Link to="/mission">Challenge</Link>
+          <Link to={`${process.env.PUBLIC_URL}/mission`}>Challenge</Link>
         </div>
 
         {/* {user && (
