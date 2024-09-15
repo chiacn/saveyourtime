@@ -27,27 +27,19 @@ export const WrappingRouter = (props) => {
    */
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route>
-        {/* <Route element={<ProtectedRoutes/>}>
-            <Route element={<App/>}>
-            </Route>
-          </Route>  */}
-        <Route element={<App />}>
-          <Route
-            path={`${process.env.PUBLIC_URL}`}
-            element={<Navigate to="/home" />}
-          />
-          <Route path="home" element={<Home />} />
-          <Route
-            path="mission"
-            element={
-              <FocusBoxProvider>
-                <MissionList />
-              </FocusBoxProvider>
-            }
-          />
-        </Route>
-        {/* <Route path="login" element={<Login/>}/> */}
+      <Route path={`${process.env.PUBLIC_URL}/`} element={<App />}>
+        {/* 루트 경로를 최상위로 설정하고, 기본적으로 home으로 이동 */}
+        <Route index element={<Navigate to="home" />} />
+        <Route path="home" element={<Home />} />
+        <Route
+          path="mission"
+          element={
+            <FocusBoxProvider>
+              <MissionList />
+            </FocusBoxProvider>
+          }
+        />
+        {/* 그 외 경로는 404 페이지 */}
         <Route path="*" element={<NotFound />} />
       </Route>
     )
