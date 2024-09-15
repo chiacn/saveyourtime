@@ -1,79 +1,22 @@
 # Save your time (ko)
-효율적인 자습을 위한 시간 관리 웹.
+효율적인 자습을 위한 시간 관리 웹. (2022년도 프로젝트)
 
 ## 링크
-https://holdyourtime.com/
+https://chiacn.github.io/saveyourtime
 
-## 사용 기술
-- 프레임워크 : React
-- UI : PostCSS, tailwind
-- 데이터 동기화 : Firebase, local storage
-- 기타 : Context API, React-router
+## 프로젝트 소개
+시간관리 웹. Timer와 Challenge 메뉴로 구성되어 있음.
 
-## 고민과 해결
-### 1. 재사용성
-- 컴포넌트 단위에 대한 고민과 한계
-  - Vue 프로젝트에서 경험한 아토믹 디자인을 참고하여 컴포넌트 단위를 적절하게 분리하는 것에 대해 고민함.
-  - 하지만 Timer 컴포넌트를 time, button 등 여러 개의 자식 컴포넌트로 구성했을 시 컴포넌트 간의 복잡도가 쓸데없이 커질 것을 우려하여
-    컴포넌트를 작은 UI 단위로 아토믹하게 설계하지 않았음.
-  - 그 결과 Timer 컴포넌트에서 설계한 UI를 다른 곳에서 재사용하지 못하고 새롭게 구성해야 했음.
-  
-  - Timer 컴포넌트에서 Timer 기능과 관련된 로직을 관리하고, Timer 컴포넌트를 구성하는 UI 자체는 아토믹한 컴포넌트로 설계했다면
-    작은 UI단위의 컴포넌트들을 다른 페이지에서 재사용할 수 있었을 것. 또한 Timer라는 기능 단위의 컴포넌트에서 관련 로직을 관리하기 때문에
-    복잡도가 우려보다 높지 않았을 것이라는 아쉬움이 있었음.
-    
-- 시도
-  - Timer의 주요 기능은 Timer 컴포넌트에 두고 재사용할 수 있는 UI는 하위 컴포넌트로 쪼개서 관리.
-  - 타 페이지와 중복되는 기능을 UI컴포넌트에서 관리하여 재사용성 높임, 관심사 분리.
-<br/>
-<img src="https://user-images.githubusercontent.com/68171739/221430379-6c1ea4f7-f665-49f1-8ce3-bb37a936de23.png"  width="800" height="500">
-  
-### 2. 결합도(복잡도 개선)
-**대상 컴포넌트 :**
-- Mission (src/components/feature/mission.jsx)
-- MissionList (src/pages/mission/missionList.jsx)
+### Timer
+- 타이머를 설정하고 시간이 경과했을 시 지정된 Text를 새 창에서 보여주거나, 새 창에서 지정된 링크를 띄워줌.
+
+### Challenge
+- 도전 과제를 등록하고 성공/실패를 기록할 수 있음.
 
 
-**문제 :**
+## 프로젝트 목적
+- 리액트의 기본적인 상태관리를 이해하기 위한 useEffect, useState, useRef, useReducer 등 기본 Hook 사용
+- 리액트 환경에서 setInterval 사용의 문제점을 다룬 article 내용 실습
+( https://overreacted.io/making-setinterval-declarative-with-react-hooks/ )
 
-- 부모 컴포넌트(MissionList)와 자식 컴포넌트(Mission)의 양방향 결합으로 인한 복잡도 증가.
-- 자식 컴포넌트들의 순서와 state값에 따라 자식 컴포넌트들 중 하나를 특정해주어야 하는 상황.
-- 자식 컴포넌트의 state 변경 사항을 부모 컴포넌트에 반영하고, 부모 컴포넌트에서 가공된 정보를 자식 컴포넌트에 내려주는 양방향 결합 때문에 state의 플로우를 파악하기 어려웠음.
-
-
-**해결 :**
-
-- Context API를 사용하여 결합도를 완화시킴.
-- 양방향 통신 완화로 로직 복잡도 개선  
-  (특정 로직이 부모, 자식 컴포넌트에 분산되지 않고 Context API에서 관리되는 것으로 일원화)
-  
-<br/>
-<img src="https://user-images.githubusercontent.com/68171739/221398902-70958ea9-7dd9-44a0-8c34-1f22a975854e.png"  width="800" height="500">
-
-
-**관련 커밋 :** Refactor MissionList and mission components for low coupling (7ada132d05119552a359bf9ec9e1cebca19ba702)
-
-### 3. SEO
-- React-helmet 사용, 그러나 Next.js 도입의 필요성을 느낌.
-  - React-helmet 라이브러리를 이용하여 head 태그에 메타데이터를 넣을 수 있었으나, 검색엔진 노출 여부의 불확실성 등 한계 명확.
-
-
-
-
-## 메뉴 별 소개
-- 타이머
-
-1. 타이머는 한정된 시간을 관리할 수 있는 효율적인 수단입니다.
-2. 하지만 대부분의 경우 `타이머가 전해주는 메시지`는 "설정해 둔 시간에 도달했다."라는 단조로운 의미가 대부분입니다.
-3. 타이머가 전해주는 메시지가 **동기부여** 또는 **나의 의도를 담은 메시지**라면 시간을 관리하는데 더 효과적이지 않을까요?
-4. 특히 컴퓨터를 켜 놓은 상태로 업무를 해야하거나 공부를 해야하는 사람들의 경우, 그들이 마주하는 시야의 대부분이 모니터라는 점에서
-이러한 이점을 활용할 수 있습니다.
-5. 정해진 시간에 맞추어 평소에 자주 보던 `동기부여 영상`이 재생되도록 하거나, `수강신청 사이트`, 또는 `약속시간`이 팝업되게 한다면 
-더욱 효과적으로 시간을 관리할 수 있을 것입니다.
-
-- 챌린지
-
-1. 도전 과제와 시간을 등록할 수 있습니다.
-2. 성공한 과제는 Success 목록에 남고 실패한 과제는 Failed 목록에 업데이트 됩니다.
-3. 등록한 시간보다 빨리 Success된 만큼 Saved Time이 업데이트 됩니다.
 
